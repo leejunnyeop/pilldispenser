@@ -2,6 +2,8 @@ package gist.pilldispenser.domain.users.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import gist.pilldispenser.common.security.UsersDetails;
+import gist.pilldispenser.common.utils.RedisUtils;
 import gist.pilldispenser.domain.users.model.KakaoUserInfoResponse;
 import gist.pilldispenser.domain.users.model.OAuthTokenResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +24,10 @@ import java.io.IOException;
 @Service
 @RequiredArgsConstructor
 public class OAuthService {
+
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
+    private final RedisUtils redisUtils;
 
     @Value("${kakao.api-key}")
     private String API_KEY;
@@ -37,7 +41,6 @@ public class OAuthService {
     private String INFO_URI;
 
     public OAuthTokenResponse getKakaoToken(String authCode) throws JsonProcessingException {
-
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/x-www-form-urlencoded");
 
@@ -51,8 +54,6 @@ public class OAuthService {
         HttpEntity<MultiValueMap<String,String>> kakaoTokenRequest = new HttpEntity<>(params, headers);
         ResponseEntity<String> token = restTemplate.exchange(
                 TOKEN_URI, HttpMethod.POST, kakaoTokenRequest, String.class);
-
-        log.info(token.getBody());
 
         OAuthTokenResponse tokenResponse = objectMapper.readValue(token.getBody(), OAuthTokenResponse.class);
         log.info("accessToken: "+tokenResponse.getAccessToken());
@@ -70,5 +71,43 @@ public class OAuthService {
                 INFO_URI, HttpMethod.GET, kakaoUserInfoRequest, String.class);
 
         return KakaoUserInfoResponse.fromJson(response.getBody(), objectMapper);
+    }
+
+    public void saveAccessTokenToRedis(OAuthTokenResponse tokenResponse, String email) {
+        String accessTokenKey = "access_token_"+email;
+        redisUtils.saveToken(accessTokenKey, tokenResponse.getAccessToken(),
+                Long.valueOf(tokenResponse.getExpiresIn()));
+    }
+
+    public void saveRefreshTokenToRedis(OAuthTokenResponse tokenResponse, String email) {
+        String refreshTokenKey = "refresh_token_"+email;
+        redisUtils.saveToken(refreshTokenKey, tokenResponse.getRefreshToken(),
+                Long.valueOf(tokenResponse.getRefreshTokenExpiresIn()));
+    }
+
+    public void reissueTokens(UsersDetails usersDetails) throws IOException {
+        String refreshTokenKey = "refresh_token_"+usersDetails.getUsername();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/x-www-form-urlencoded");
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "refresh_token");
+        params.add("client_id", API_KEY);
+        params.add("refresh_token", redisUtils.findToken(refreshTokenKey));
+        params.add("client_secret", SECRET_KEY);
+
+        HttpEntity<MultiValueMap<String,String>> kakaoTokenRequest = new HttpEntity<>(params, headers);
+        ResponseEntity<String> token = restTemplate.exchange(
+                TOKEN_URI, HttpMethod.POST, kakaoTokenRequest, String.class);
+
+        OAuthTokenResponse tokenResponse = objectMapper.readValue(token.getBody(), OAuthTokenResponse.class);
+
+        if (tokenResponse.getRefreshToken() != null) {
+            saveAccessTokenToRedis(tokenResponse, usersDetails.getUsername());
+            saveRefreshTokenToRedis(tokenResponse, usersDetails.getUsername());
+        } else {
+            saveAccessTokenToRedis(tokenResponse, usersDetails.getUsername());
+        }
     }
 }
