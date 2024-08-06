@@ -50,7 +50,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private UserDetails getMemberFromToken(String token) {
-        Long id = (long)jwtProvider.getClaimValue(token, "user-id");
+        Long id = (long)((int)jwtProvider.getClaimValue(token, "user-id"));
         return usersDetailsService.loadUserById(id);
     }
 
