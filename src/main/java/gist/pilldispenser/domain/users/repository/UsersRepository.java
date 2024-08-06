@@ -9,7 +9,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
 
     default Users findFirstById(Long id){
         return findById(id).orElseThrow(() -> new RuntimeException("cannot find member by id "+id));
-    };
+    }
 
     Users findByEmail(String email);
 

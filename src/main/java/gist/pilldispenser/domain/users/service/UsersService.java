@@ -34,8 +34,7 @@ public class UsersService {
     private Users registerUser(UsersRequest request){
         String password = passwordEncoder.encode(request.password());
         Users users = usersConverter.toEntity(request, password);
-        Users newUsers = usersRepository.save(users);
-        return newUsers;
+        return usersRepository.save(users);
     }
 
     // 이미 등록된 회원인지 체크

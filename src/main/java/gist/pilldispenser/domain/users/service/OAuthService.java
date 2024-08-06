@@ -31,10 +31,10 @@ public class OAuthService {
     private String REDIRECT_URI;
     @Value("${kakao.secret-key}")
     private String SECRET_KEY;
-
-    //    private String AUTHORIZE_URI = "https://kauth.kakao.com/oauth/authorize";
-    private String TOKEN_URI = "https://kauth.kakao.com/oauth/token";
-    private String INFO_URI = "https://kapi.kakao.com/v2/user/me";
+    @Value("${kakao.token-uri}")
+    private String TOKEN_URI;
+    @Value("${kakao.info-uri}")
+    private String INFO_URI;
 
     public OAuthTokenResponse getKakaoToken(String authCode) throws JsonProcessingException {
 
@@ -69,7 +69,6 @@ public class OAuthService {
         ResponseEntity<String> response = restTemplate.exchange(
                 INFO_URI, HttpMethod.GET, kakaoUserInfoRequest, String.class);
 
-        KakaoUserInfoResponse userInfo = KakaoUserInfoResponse.fromJson(response.getBody(), objectMapper);
-        return userInfo;
+        return KakaoUserInfoResponse.fromJson(response.getBody(), objectMapper);
     }
 }

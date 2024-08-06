@@ -25,8 +25,6 @@ public class OAuthController {
         log.info("code: "+code);
         OAuthTokenResponse tokenResponse = oAuthService.getKakaoToken(code);
         String accessToken = tokenResponse.getAccessToken();
-        KakaoUserInfoResponse kakaoUserInfo = oAuthService.kakaoUserInfo(accessToken);
-
-        return kakaoUserInfo;
+        return oAuthService.kakaoUserInfo(accessToken);
     }
 }
