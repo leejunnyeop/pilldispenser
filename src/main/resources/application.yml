@@ -1,15 +1,15 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:{????}/{?????? ??}?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: {root password}
+    url: jdbc:mysql://hackathon-db.cfag6omiojwb.ap-northeast-2.rds.amazonaws.com/hackathon?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+    username: admin
+    password: hackathonDB12345!
 
 
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     show-sql: true
     properties:
       hibernate.format_sql: true
@@ -50,3 +50,12 @@ springdoc:
 #    disable-swagger-default-url: ?? Swagger URL? ?????? ???? ?? /swagger-ui.html?? ????? ??.
 #    display-query-params-without-oauth2: Swagger UI?? OAuth2 ?? ?? ????? ????.
 #    doc-expansion: Swagger UI?? ?? ??? ??????.
+
+server:
+  port: 443
+  ssl:
+    key-store: /app/ssl/keystore.p12	# SSL 인증서로 접근할 컨테이너 내부의 경로
+    key-store-type: PKCS12  # 개인키 파일 형식
+    key-alias: mykey  # 개인키 별칭
+    key-store-password: hackathonSSL12345!
+    enabled: true   # SSL 사용 여부
