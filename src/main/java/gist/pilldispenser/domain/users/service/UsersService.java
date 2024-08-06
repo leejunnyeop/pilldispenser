@@ -10,13 +10,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import static gist.pilldispenser.common.security.jwt.JwtProperties.*;
+
 @Service
 @RequiredArgsConstructor
 public class UsersService {
 
     private final PasswordEncoder passwordEncoder;
     private final UsersRepository usersRepository;
-//    private final JwtProvider jwtProvider;
+    private final JwtProvider jwtProvider;
     private final UsersConverter usersConverter;
 
     // 카카오 로그인 -> 연동 여부에 따라 회원정보 db에 저장
@@ -42,13 +44,13 @@ public class UsersService {
     }
 
     // 액세스 토큰 (2주) 발급
-//    public String issueAccessToken(Users users){
-//        return jwtProvider.createToken(users.getId(), ACCESS_TOKEN);
-//    }
-//
-//    // 회원정보 가져오기
-//    public Users getUserInfo(UsersDetails usersDetails){
-//        return usersRepository.findFirstById(usersDetails.getId());
-//    }
+    public String issueAccessToken(Users users){
+        return jwtProvider.createToken(users.getId(), ACCESS_TOKEN);
+    }
+
+    // 회원정보 가져오기
+    public Users getUserInfo(UsersDetails usersDetails){
+        return usersRepository.findFirstById(usersDetails.getId());
+    }
 
 }
