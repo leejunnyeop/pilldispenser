@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Slf4j
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class KakaoUserInfoResponse {
+public class KakaoUserInfoResponse{
     private Long id;
     private LocalDateTime connectedAt;
     private String email;
@@ -21,13 +21,6 @@ public class KakaoUserInfoResponse {
 
     public KakaoUserInfoResponse() {}
 
-    public static UsersRequest toMemberRegisterRequest(KakaoUserInfoResponse userInfo) {
-        return new UsersRequest(userInfo.getEmail(),
-                String.valueOf(userInfo.getId()),
-                userInfo.getProfileImage(),
-                userInfo.getNickname());
-    }
-
     public static KakaoUserInfoResponse fromJson(String jsonResponseBody, ObjectMapper objectMapper) throws IOException {
         KakaoUserInfoResponse userInfo = objectMapper.readValue(jsonResponseBody, KakaoUserInfoResponse.class);
 
@@ -35,6 +28,14 @@ public class KakaoUserInfoResponse {
         userInfo.nickname = userInfo.kakaoAccount.getProfile().getNickname();
         userInfo.profileImage = userInfo.kakaoAccount.getProfile().getProfileImageUrl();
         return userInfo;
+    }
+
+    public static UserInfoResponse fromKakaoUserInfoResponse(KakaoUserInfoResponse userInfo) {
+        return new UserInfoResponse(userInfo.getId(),
+                userInfo.getConnectedAt(),
+                userInfo.getEmail(),
+                userInfo.getNickname(),
+                userInfo.getProfileImage());
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
