@@ -1,4 +1,4 @@
-package gist.pilldispenser.api.drugSummaryAPI.domain.entity;
+package gist.pilldispenser.api.drugSummaryAPI.domain.dto;
 
 import lombok.Builder;
 import lombok.Getter;
