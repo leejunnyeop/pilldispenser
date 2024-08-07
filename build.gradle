@@ -40,8 +40,37 @@ dependencies {
 
 	//Swagger
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
+
+
+	// QueryDSL dependencies
+	//QueryDSL
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+def generated = 'src/main/generated'
+
+// QueryDSL QClass 파일 생성 위치 설정
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src/main/java', generated]
+		}
+	}
+}
+
+compileJava {
+	options.annotationProcessorPath = configurations.annotationProcessor
+	options.generatedSourceOutputDirectory = file(generated)
+}
+
+// gradle clean 시 QClass 디렉토리 삭제
+clean {
+	delete file(generated)
 }
