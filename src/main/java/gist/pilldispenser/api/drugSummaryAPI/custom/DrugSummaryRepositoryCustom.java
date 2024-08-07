@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface DrugSummaryRepositoryCustom {
     List<DrugSummary> searchByItemName(String itemName);
+
+    List<String> searchItemNames(String itemName);
 }

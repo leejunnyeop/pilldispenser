@@ -45,4 +45,15 @@ public class DrugSummaryController {
             return ResponseEntity.status(500).body(null);
         }
     }
+
+    @GetMapping("/auto-complete")
+    @Operation(summary = "자동완성 검색", description = "약 이름 자동완성 검색을 제공합니다.")
+    public ResponseEntity<List<DrugSummaryDTO>> autoComplete(@RequestParam(name = "query") String query) {
+        try {
+            List<DrugSummaryDTO> suggestions = drugSummarySearchService.searchDrugsByName(query);
+            return ResponseEntity.ok(suggestions);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
 }
