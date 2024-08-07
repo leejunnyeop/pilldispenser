@@ -1,6 +1,7 @@
 package gist.pilldispenser.api.drugSummaryAPI.domain.dto;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,8 +11,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DrugSummaryDTO {
 
-    private String itemName; // 알약명
-    private String itemSeq; // 알약 고유번호
-    private String itemImage; // 이미지 URL
+    @Schema(description = "알약명", example = "타이레놀")
+    private String itemName;
 
+    @Schema(description = "알약 고유번호", example = "200808876")
+    private String itemSeq;
+
+    @Schema(description = "이미지 URL", example = "https://example.com/image.jpg")
+    private String itemImage;
 }
