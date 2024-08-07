@@ -1,5 +1,6 @@
 package gist.pilldispenser.api.drugSummaryAPI.service;
 
+import gist.pilldispenser.api.drugSummaryAPI.domain.dto.DrugNameDTO;
 import gist.pilldispenser.api.drugSummaryAPI.domain.dto.DrugSummaryDTO;
 import gist.pilldispenser.api.drugSummaryAPI.domain.entity.DrugSummary;
 import gist.pilldispenser.api.drugSummaryAPI.repository.DrugSummaryRepository;
@@ -33,5 +34,16 @@ public class DrugSummarySearchServiceImpl implements DrugSummarySearchService {
             throw new Exception("약 이름으로 약물을 검색하는 중 오류가 발생했습니다: " + itemName, e);
         }
 
+    }
+
+    public List<DrugNameDTO> searchItemNames(String itemName) throws Exception {
+        try {
+            List<String> itemNames = drugSummaryRepository.searchItemNames(itemName);
+            return itemNames.stream()
+                    .map(DrugNameDTO::new)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new Exception("약 이름을 검색하는 중 오류가 발생했습니다: " + itemName, e);
+        }
     }
 }
