@@ -1,4 +1,4 @@
-package gist.pilldispenser.domain.users.model;
+package gist.pilldispenser.users.domain.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,11 +1,11 @@
-package gist.pilldispenser.domain.users.service;
+package gist.pilldispenser.users.service;
 
 import gist.pilldispenser.common.security.UsersDetails;
 import gist.pilldispenser.common.security.jwt.JwtProvider;
-import gist.pilldispenser.domain.users.converter.UsersConverter;
-import gist.pilldispenser.domain.users.entity.Users;
-import gist.pilldispenser.domain.users.model.UsersRequest;
-import gist.pilldispenser.domain.users.repository.UsersRepository;
+import gist.pilldispenser.users.converter.UsersConverter;
+import gist.pilldispenser.users.domain.entity.Users;
+import gist.pilldispenser.users.domain.model.UsersRequest;
+import gist.pilldispenser.users.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

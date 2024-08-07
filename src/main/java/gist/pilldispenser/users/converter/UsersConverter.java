@@ -1,9 +1,9 @@
-package gist.pilldispenser.domain.users.converter;
+package gist.pilldispenser.users.converter;
 
 import gist.pilldispenser.common.entity.enums.RoleType;
-import gist.pilldispenser.domain.users.entity.Users;
-import gist.pilldispenser.domain.users.model.UsersRequest;
-import gist.pilldispenser.domain.users.model.UsersResponse;
+import gist.pilldispenser.users.domain.entity.Users;
+import gist.pilldispenser.users.domain.model.UsersRequest;
+import gist.pilldispenser.users.domain.model.UsersResponse;
 import org.springframework.stereotype.Component;
 
 @Component

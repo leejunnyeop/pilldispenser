@@ -1,4 +1,4 @@
-package gist.pilldispenser.domain.users.entity;
+package gist.pilldispenser.users.domain.entity;
 
 import gist.pilldispenser.common.entity.BaseEntity;
 import gist.pilldispenser.common.entity.enums.RoleType;

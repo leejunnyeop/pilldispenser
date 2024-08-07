@@ -1,12 +1,12 @@
-package gist.pilldispenser.domain.users.service;
+package gist.pilldispenser.users.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gist.pilldispenser.common.security.UsersDetails;
 import gist.pilldispenser.common.utils.RedisUtils;
-import gist.pilldispenser.domain.users.model.KakaoUserInfoResponse;
-import gist.pilldispenser.domain.users.model.OAuthTokenResponse;
-import gist.pilldispenser.domain.users.model.UserInfoResponse;
+import gist.pilldispenser.users.domain.model.KakaoUserInfoResponse;
+import gist.pilldispenser.users.domain.model.OAuthTokenResponse;
+import gist.pilldispenser.users.domain.model.UserInfoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

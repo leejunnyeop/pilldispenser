@@ -1,6 +1,6 @@
-package gist.pilldispenser.domain.users.repository;
+package gist.pilldispenser.users.repository;
 
-import gist.pilldispenser.domain.users.entity.Users;
+import gist.pilldispenser.users.domain.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UsersRepository extends JpaRepository<Users, Long> {

@@ -1,7 +1,7 @@
 package gist.pilldispenser.common.security;
 
-import gist.pilldispenser.domain.users.entity.Users;
-import gist.pilldispenser.domain.users.repository.UsersRepository;
+import gist.pilldispenser.users.domain.entity.Users;
+import gist.pilldispenser.users.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

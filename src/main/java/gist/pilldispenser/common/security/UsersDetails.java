@@ -1,7 +1,7 @@
 package gist.pilldispenser.common.security;
 
 import gist.pilldispenser.common.entity.enums.RoleType;
-import gist.pilldispenser.domain.users.entity.Users;
+import gist.pilldispenser.users.domain.entity.Users;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;

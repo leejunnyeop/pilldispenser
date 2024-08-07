@@ -1,9 +1,9 @@
-package gist.pilldispenser.domain.users.controller;
+package gist.pilldispenser.users.controller;
 
 import gist.pilldispenser.common.security.UsersDetails;
-import gist.pilldispenser.domain.users.model.OAuthTokenResponse;
-import gist.pilldispenser.domain.users.model.UserInfoResponse;
-import gist.pilldispenser.domain.users.service.OAuthService;
+import gist.pilldispenser.users.domain.model.OAuthTokenResponse;
+import gist.pilldispenser.users.domain.model.UserInfoResponse;
+import gist.pilldispenser.users.service.OAuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

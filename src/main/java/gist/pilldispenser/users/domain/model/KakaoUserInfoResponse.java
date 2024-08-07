@@ -1,4 +1,4 @@
-package gist.pilldispenser.domain.users.model;
+package gist.pilldispenser.users.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;

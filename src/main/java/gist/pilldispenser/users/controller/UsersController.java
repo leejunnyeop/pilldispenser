@@ -1,11 +1,11 @@
-package gist.pilldispenser.domain.users.controller;
+package gist.pilldispenser.users.controller;
 
 import gist.pilldispenser.common.security.UsersDetails;
-import gist.pilldispenser.domain.users.converter.UsersConverter;
-import gist.pilldispenser.domain.users.entity.Users;
-import gist.pilldispenser.domain.users.model.UserInfoResponse;
-import gist.pilldispenser.domain.users.model.UsersResponse;
-import gist.pilldispenser.domain.users.service.UsersService;
+import gist.pilldispenser.users.converter.UsersConverter;
+import gist.pilldispenser.users.domain.entity.Users;
+import gist.pilldispenser.users.domain.model.UserInfoResponse;
+import gist.pilldispenser.users.domain.model.UsersResponse;
+import gist.pilldispenser.users.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
