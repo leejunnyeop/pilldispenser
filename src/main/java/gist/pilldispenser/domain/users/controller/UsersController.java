@@ -3,7 +3,6 @@ package gist.pilldispenser.domain.users.controller;
 import gist.pilldispenser.common.security.UsersDetails;
 import gist.pilldispenser.domain.users.converter.UsersConverter;
 import gist.pilldispenser.domain.users.entity.Users;
-import gist.pilldispenser.domain.users.model.KakaoUserInfoResponse;
 import gist.pilldispenser.domain.users.model.UserInfoResponse;
 import gist.pilldispenser.domain.users.model.UsersResponse;
 import gist.pilldispenser.domain.users.service.UsersService;

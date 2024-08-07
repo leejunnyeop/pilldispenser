@@ -1,7 +1,6 @@
 package gist.pilldispenser.domain.users.controller;
 
 import gist.pilldispenser.common.security.UsersDetails;
-import gist.pilldispenser.domain.users.model.KakaoUserInfoResponse;
 import gist.pilldispenser.domain.users.model.OAuthTokenResponse;
 import gist.pilldispenser.domain.users.model.UserInfoResponse;
 import gist.pilldispenser.domain.users.service.OAuthService;
