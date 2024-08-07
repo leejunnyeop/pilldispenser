@@ -1,9 +1,9 @@
 package gist.pilldispenser.api.drugSummaryAPI.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gist.pilldispenser.api.drugSummaryAPI.domain.dto.DrugSummaryRequest;
+import gist.pilldispenser.api.drugSummaryAPI.domain.dto.request.DrugSummaryRequest;
 import gist.pilldispenser.api.drugSummaryAPI.domain.DrugMapper;
-import gist.pilldispenser.api.drugSummaryAPI.domain.dto.ApiResponse;
+import gist.pilldispenser.api.drugSummaryAPI.domain.dto.response.ApiResponse;
 import gist.pilldispenser.api.drugSummaryAPI.domain.entity.DrugSummary;
 import gist.pilldispenser.api.drugSummaryAPI.repository.DrugSummaryRepository;
 import lombok.RequiredArgsConstructor;

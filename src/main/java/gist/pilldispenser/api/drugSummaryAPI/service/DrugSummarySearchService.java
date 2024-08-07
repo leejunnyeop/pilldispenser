@@ -1,6 +1,6 @@
 package gist.pilldispenser.api.drugSummaryAPI.service;
 
-import gist.pilldispenser.api.drugSummaryAPI.domain.dto.DrugSummaryDTO;
+import gist.pilldispenser.api.drugSummaryAPI.domain.dto.response.DrugSummaryDTO;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package gist.pilldispenser.api.drugSummaryAPI.domain.dto;
+package gist.pilldispenser.api.drugSummaryAPI.domain.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;

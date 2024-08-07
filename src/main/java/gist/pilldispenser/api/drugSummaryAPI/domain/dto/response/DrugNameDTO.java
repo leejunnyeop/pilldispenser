@@ -1,4 +1,4 @@
-package gist.pilldispenser.api.drugSummaryAPI.domain.dto;
+package gist.pilldispenser.api.drugSummaryAPI.domain.dto.response;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;

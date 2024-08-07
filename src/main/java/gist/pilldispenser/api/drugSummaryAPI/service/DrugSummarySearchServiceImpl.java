@@ -1,7 +1,7 @@
 package gist.pilldispenser.api.drugSummaryAPI.service;
 
-import gist.pilldispenser.api.drugSummaryAPI.domain.dto.DrugNameDTO;
-import gist.pilldispenser.api.drugSummaryAPI.domain.dto.DrugSummaryDTO;
+import gist.pilldispenser.api.drugSummaryAPI.domain.dto.response.DrugNameDTO;
+import gist.pilldispenser.api.drugSummaryAPI.domain.dto.response.DrugSummaryDTO;
 import gist.pilldispenser.api.drugSummaryAPI.domain.entity.DrugSummary;
 import gist.pilldispenser.api.drugSummaryAPI.repository.DrugSummaryRepository;
 import lombok.RequiredArgsConstructor;

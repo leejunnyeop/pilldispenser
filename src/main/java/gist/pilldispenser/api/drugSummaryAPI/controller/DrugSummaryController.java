@@ -1,6 +1,6 @@
 package gist.pilldispenser.api.drugSummaryAPI.controller;
 
-import gist.pilldispenser.api.drugSummaryAPI.domain.dto.DrugSummaryDTO;
+import gist.pilldispenser.api.drugSummaryAPI.domain.dto.response.DrugSummaryDTO;
 import gist.pilldispenser.api.drugSummaryAPI.service.DrugSummarySearchService;
 import gist.pilldispenser.api.drugSummaryAPI.service.DrugSummaryService;
 import io.swagger.v3.oas.annotations.Operation;
