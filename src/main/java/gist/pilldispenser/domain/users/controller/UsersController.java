@@ -4,6 +4,7 @@ import gist.pilldispenser.common.security.UsersDetails;
 import gist.pilldispenser.domain.users.converter.UsersConverter;
 import gist.pilldispenser.domain.users.entity.Users;
 import gist.pilldispenser.domain.users.model.KakaoUserInfoResponse;
+import gist.pilldispenser.domain.users.model.UserInfoResponse;
 import gist.pilldispenser.domain.users.model.UsersResponse;
 import gist.pilldispenser.domain.users.service.UsersService;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +23,9 @@ public class UsersController {
     private final UsersConverter usersConverter;
 
     @PostMapping("/login")
-    public ResponseEntity<UsersResponse> login(@RequestBody KakaoUserInfoResponse userInfo){
+    public ResponseEntity<UsersResponse> login(@RequestBody UserInfoResponse userInfo){
         Users user = usersService.loginUser(
-                KakaoUserInfoResponse.toMemberRegisterRequest(userInfo));
+                UserInfoResponse.toMemberRequest(userInfo));
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + usersService.issueAccessToken(user));

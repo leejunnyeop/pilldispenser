@@ -6,6 +6,7 @@ import gist.pilldispenser.common.security.UsersDetails;
 import gist.pilldispenser.common.utils.RedisUtils;
 import gist.pilldispenser.domain.users.model.KakaoUserInfoResponse;
 import gist.pilldispenser.domain.users.model.OAuthTokenResponse;
+import gist.pilldispenser.domain.users.model.UserInfoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,7 +62,7 @@ public class OAuthService {
         return tokenResponse;
     }
 
-    public KakaoUserInfoResponse kakaoUserInfo(String accessToken) throws IOException {
+    public UserInfoResponse kakaoUserInfo(String accessToken) throws IOException {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer "+accessToken);
         headers.add("Content-Type", "application/x-www-form-urlencoded");
@@ -70,7 +71,8 @@ public class OAuthService {
         ResponseEntity<String> response = restTemplate.exchange(
                 INFO_URI, HttpMethod.GET, kakaoUserInfoRequest, String.class);
 
-        return KakaoUserInfoResponse.fromJson(response.getBody(), objectMapper);
+        KakaoUserInfoResponse userInfo = KakaoUserInfoResponse.fromJson(response.getBody(), objectMapper);
+        return KakaoUserInfoResponse.fromKakaoUserInfoResponse(userInfo);
     }
 
     public void saveAccessTokenToRedis(OAuthTokenResponse tokenResponse, String email) {
