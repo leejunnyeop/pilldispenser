@@ -26,34 +26,4 @@ public class DrugInfoServiceImpl implements DrugInfoService {
         drugInfoRepository.save(drugInfo);
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<DrugInfo> getDrugInfoById(Long drugId) {
-        return Optional.ofNullable(drugInfoRepository.findById(drugId)
-                .orElseThrow(() -> new DrugInfoNotFoundException(drugId)));
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<DrugInfo> getAllDrugInfo() {
-        return drugInfoRepository.findAll();
-    }
-
-    @Override
-    @Transactional
-    public void updateDrugInfo(Long drugId, DrugInfoRequest updatedDrugInfoRequest) {
-        DrugInfo existingDrugInfo = drugInfoRepository.findById(drugId)
-                .orElseThrow(() -> new DrugInfoNotFoundException(drugId));
-        existingDrugInfo.partialUpdate(updatedDrugInfoRequest);
-        drugInfoRepository.save(existingDrugInfo);
-    }
-
-    @Override
-    @Transactional
-    public void deleteDrugInfoById(Long drugId) {
-        if (!drugInfoRepository.existsById(drugId)) {
-            throw new DrugInfoNotFoundException(drugId);
-        }
-        drugInfoRepository.deleteById(drugId);
-    }
 }

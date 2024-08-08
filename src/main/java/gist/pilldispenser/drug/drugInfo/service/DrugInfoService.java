@@ -9,9 +9,6 @@ import java.util.Optional;
 public interface DrugInfoService {
 
     void createDrugInfo(DrugInfoRequest DrugInfoRequest);
-    Optional<DrugInfo> getDrugInfoById(Long id);
-    List<DrugInfo> getAllDrugInfo();
-    void updateDrugInfo(Long id, DrugInfoRequest updatedDrugInfoRequest);
-    void deleteDrugInfoById(Long id);
+
 
 }
