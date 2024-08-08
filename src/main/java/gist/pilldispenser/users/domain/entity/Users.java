@@ -2,10 +2,11 @@ package gist.pilldispenser.users.domain.entity;
 
 import gist.pilldispenser.common.entity.BaseEntity;
 import gist.pilldispenser.common.entity.enums.RoleType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import gist.pilldispenser.drug.medication.domain.MedicationDetail;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity(name = "users")
 @Getter
@@ -25,4 +26,7 @@ public class Users extends BaseEntity {
     // 하드웨어 번호
     @Setter
     private String hardwareNo;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<MedicationDetail> medicationDetails;
 }
