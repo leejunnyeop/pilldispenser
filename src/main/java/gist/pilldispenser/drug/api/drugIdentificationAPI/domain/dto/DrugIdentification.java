@@ -1,6 +1,6 @@
 package gist.pilldispenser.drug.api.drugIdentificationAPI.domain.dto;
 
-import gist.pilldispenser.drug.medication.MedicationDetail;
+import gist.pilldispenser.drug.medication.domain.MedicationDetail;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
