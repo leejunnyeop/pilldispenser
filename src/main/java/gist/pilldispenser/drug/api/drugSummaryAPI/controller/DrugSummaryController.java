@@ -52,4 +52,12 @@ public class DrugSummaryController {
     }
 
 
+    @GetMapping("/contraindicated")
+    public ResponseEntity<PrecautionResponseDto> getContraindicationsForDrug(
+            @RequestParam(name = "itemSeq") String itemSeq,
+            @AuthenticationPrincipal UsersDetails userDetails) {
+        Long userId = userDetails.getId();
+        PrecautionResponseDto precautionResponseDto = drugSummarySearchService.findContraindicationsForDrug(userId, itemSeq);
+        return ResponseEntity.ok(precautionResponseDto);
+    }
 }
