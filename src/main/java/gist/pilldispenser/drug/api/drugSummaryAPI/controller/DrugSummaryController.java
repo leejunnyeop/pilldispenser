@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,6 +20,7 @@ import java.util.List;
 @Tag(name = "약 용법 Controller", description = "약물 요약 정보를 검색하는 API를 제공합니다.")
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/drug-info")
 public class DrugSummaryController {
 
     private final DrugSummarySearchService drugSummarySearchService;

@@ -2,7 +2,7 @@ package gist.pilldispenser.users.domain.entity;
 
 import gist.pilldispenser.common.entity.BaseEntity;
 import gist.pilldispenser.common.entity.enums.RoleType;
-import gist.pilldispenser.drug.medication.domain.MedicationDetail;
+import gist.pilldispenser.drug.medication.domain.FullMedicationInfo;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,6 +27,5 @@ public class Users extends BaseEntity {
     @Setter
     private String hardwareNo;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<MedicationDetail> medicationDetails;
+
 }

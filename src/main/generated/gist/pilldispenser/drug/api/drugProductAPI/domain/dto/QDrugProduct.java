@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -15,11 +16,15 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QDrugProduct extends EntityPathBase<DrugProduct> {
 
-    private static final long serialVersionUID = 1714546792L;
+    private static final long serialVersionUID = -1347072652L;
+
+    private static final PathInits INITS = PathInits.DIRECT2;
 
     public static final QDrugProduct drugProduct = new QDrugProduct("drugProduct");
 
     public final StringPath entrps = createString("entrps");
+
+    public final gist.pilldispenser.drug.medication.domain.QFullMedicationInfo fullMedicationInfo;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
@@ -38,15 +43,24 @@ public class QDrugProduct extends EntityPathBase<DrugProduct> {
     public final StringPath qnt = createString("qnt");
 
     public QDrugProduct(String variable) {
-        super(DrugProduct.class, forVariable(variable));
+        this(DrugProduct.class, forVariable(variable), INITS);
     }
 
     public QDrugProduct(Path<? extends DrugProduct> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QDrugProduct(PathMetadata metadata) {
-        super(DrugProduct.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QDrugProduct(PathMetadata metadata, PathInits inits) {
+        this(DrugProduct.class, metadata, inits);
+    }
+
+    public QDrugProduct(Class<? extends DrugProduct> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.fullMedicationInfo = inits.isInitialized("fullMedicationInfo") ? new gist.pilldispenser.drug.medication.domain.QFullMedicationInfo(forProperty("fullMedicationInfo"), inits.get("fullMedicationInfo")) : null;
     }
 
 }

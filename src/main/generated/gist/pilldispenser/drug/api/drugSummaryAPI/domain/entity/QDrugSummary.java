@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -15,7 +16,9 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QDrugSummary extends EntityPathBase<DrugSummary> {
 
-    private static final long serialVersionUID = 1931072764L;
+    private static final long serialVersionUID = 1151714416L;
+
+    private static final PathInits INITS = PathInits.DIRECT2;
 
     public static final QDrugSummary drugSummary = new QDrugSummary("drugSummary");
 
@@ -26,6 +29,8 @@ public class QDrugSummary extends EntityPathBase<DrugSummary> {
     public final StringPath efcyQesitm = createString("efcyQesitm");
 
     public final StringPath entpName = createString("entpName");
+
+    public final gist.pilldispenser.drug.medication.domain.QFullMedicationInfo fullMedicationInfo;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
@@ -42,15 +47,24 @@ public class QDrugSummary extends EntityPathBase<DrugSummary> {
     public final StringPath useMethodQesitm = createString("useMethodQesitm");
 
     public QDrugSummary(String variable) {
-        super(DrugSummary.class, forVariable(variable));
+        this(DrugSummary.class, forVariable(variable), INITS);
     }
 
     public QDrugSummary(Path<? extends DrugSummary> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QDrugSummary(PathMetadata metadata) {
-        super(DrugSummary.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QDrugSummary(PathMetadata metadata, PathInits inits) {
+        this(DrugSummary.class, metadata, inits);
+    }
+
+    public QDrugSummary(Class<? extends DrugSummary> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.fullMedicationInfo = inits.isInitialized("fullMedicationInfo") ? new gist.pilldispenser.drug.medication.domain.QFullMedicationInfo(forProperty("fullMedicationInfo"), inits.get("fullMedicationInfo")) : null;
     }
 
 }

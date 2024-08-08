@@ -1,7 +1,6 @@
 package gist.pilldispenser.drug.drugInfo.domain.entity;
 
 
-import gist.pilldispenser.drug.drugInfo.domain.dto.BeforeAfterMeal;
 import gist.pilldispenser.drug.drugInfo.domain.dto.DrugInfoRequest;
 
 import jakarta.persistence.*;
@@ -38,11 +37,6 @@ public class DrugInfo {
     @Column(name = "time_of_day")
     private List<String> timeOfDay;  // 복용 시간대 (아침, 점심, 저녁)
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private BeforeAfterMeal beforeAfterMeal;  // 복용 시점 (식전, 식후, 공복, 취침 전)
-
-
     @Column(nullable = false)
     private String shape;  // 모양 (예: 원형, 타원형)
 
@@ -67,9 +61,6 @@ public class DrugInfo {
         }
         if (updatedDrugInfo.getTimeOfDay() != null) {
             this.timeOfDay = updatedDrugInfo.getTimeOfDay();
-        }
-        if (updatedDrugInfo.getBeforeAfterMeal() != null) {
-            this.beforeAfterMeal = updatedDrugInfo.getBeforeAfterMeal();
         }
         if (updatedDrugInfo.getShape() != null) {
             this.shape = updatedDrugInfo.getShape();

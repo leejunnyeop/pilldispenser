@@ -12,12 +12,10 @@ public class DrugInfoMapper {
      */
     public static DrugInfo toDrugInfo(DrugInfoRequest drugInfoRequest) {
         return DrugInfo.builder()
-                .id(drugInfoRequest.getId())
                 .name(drugInfoRequest.getName())
                 .usage(drugInfoRequest.getUsage())
                 .dailyDosage(drugInfoRequest.getDailyDosage())
                 .timeOfDay(drugInfoRequest.getTimeOfDay())
-                .beforeAfterMeal(drugInfoRequest.getBeforeAfterMeal())
                 .shape(drugInfoRequest.getShape())
                 .diameter(drugInfoRequest.getDiameter())
                 .thickness(drugInfoRequest.getThickness())
@@ -33,12 +31,10 @@ public class DrugInfoMapper {
      */
     public static DrugInfoRequest toDrugInfoRequest(DrugInfo drugInfo) {
         return DrugInfoRequest.builder()
-                .id(drugInfo.getId())
                 .name(drugInfo.getName())
                 .usage(drugInfo.getUsage())
                 .dailyDosage(drugInfo.getDailyDosage())
                 .timeOfDay(drugInfo.getTimeOfDay())
-                .beforeAfterMeal(drugInfo.getBeforeAfterMeal())
                 .shape(drugInfo.getShape())
                 .diameter(drugInfo.getDiameter())
                 .thickness(drugInfo.getThickness())
