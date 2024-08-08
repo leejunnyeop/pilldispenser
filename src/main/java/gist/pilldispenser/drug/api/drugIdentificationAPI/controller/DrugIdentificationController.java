@@ -3,6 +3,10 @@ package gist.pilldispenser.drug.api.drugIdentificationAPI.controller;
 import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.dto.DrugSizeCategory;
 import gist.pilldispenser.drug.api.drugIdentificationAPI.service.DrugIdentificationService;
 import gist.pilldispenser.drug.api.drugIdentificationAPI.service.DrugIdentificationSizeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
+
+@Tag(name = "DrugIdentification", description = "약물 식별 정보를 관리하는 API를 제공합니다.")
 @RestController
 @RequestMapping("/api/drug-identification")
 @RequiredArgsConstructor
@@ -37,6 +43,13 @@ public class DrugIdentificationController {
         }
     }
 
+
+        @Operation(summary = "약물 크기 조회", description = "품목 기준 코드(itemSeq)를 사용하여 약물의 크기를 조회합니다.")
+        @ApiResponses(value = {
+                @ApiResponse(responseCode = "200", description = "약물 크기 조회 성공"),
+                @ApiResponse(responseCode = "404", description = "해당 itemSeq에 대한 약물 정보를 찾을 수 없음"),
+                @ApiResponse(responseCode = "500", description = "서버 오류")
+        })
     @GetMapping("/{itemSeq}")
     public ResponseEntity<DrugSizeCategory> getDrugSizeByItemSeq(
             @PathVariable String itemSeq) {
