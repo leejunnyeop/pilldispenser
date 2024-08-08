@@ -2,10 +2,16 @@ package gist.pilldispenser.drug.api.drugSummaryAPI.service;
 
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.dto.response.DrugNameDTO;
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.dto.response.DrugSummaryDTO;
+import gist.pilldispenser.drug.api.drugSummaryAPI.domain.dto.response.PrecautionResponseDto;
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.DrugSummary;
 import gist.pilldispenser.drug.api.drugSummaryAPI.repository.DrugSummaryRepository;
+import gist.pilldispenser.drug.userDrugInfo.UserDrugInfo;
+import gist.pilldispenser.drug.userDrugInfo.UserDrugInfoRepository;
+import gist.pilldispenser.users.domain.entity.Users;
+import gist.pilldispenser.users.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,6 +20,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DrugSummarySearchServiceImpl implements DrugSummarySearchService {
 
+
+    private final UsersRepository usersRepository;
+    private final UserDrugInfoRepository userDrugInfoRepository;
     private final DrugSummaryRepository drugSummaryRepository;
 
     /**
@@ -46,4 +55,32 @@ public class DrugSummarySearchServiceImpl implements DrugSummarySearchService {
             throw new Exception("약 이름을 검색하는 중 오류가 발생했습니다: " + itemName, e);
         }
     }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public PrecautionResponseDto findContraindicationsForDrug(Long userId, String itemSeq) {
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 userId에 대한 사용자 정보를 찾을 수 없습니다: " + userId));
+
+        List<UserDrugInfo> userDrugInfos = userDrugInfoRepository.findByUserId(userId);
+
+        boolean hasDrug = userDrugInfos.stream()
+                .anyMatch(userDrugInfo -> userDrugInfo.getFullMedicationInfo().getItemSeq().equals(itemSeq));
+
+        if (!hasDrug) {
+            throw new IllegalArgumentException("사용자가 복용 중인 약 정보가 없습니다: " + itemSeq);
+        }
+
+        DrugSummary drugSummary = drugSummaryRepository.findByItemSeq(itemSeq)
+                .orElseThrow(() -> new IllegalArgumentException("해당 itemSeq에 대한 DrugSummary 정보를 찾을 수 없습니다: " + itemSeq));
+
+        return new PrecautionResponseDto(
+                drugSummary.getAtpnQesitm(),
+                drugSummary.getIntrcQesitm(),
+                drugSummary.getSeQesitm()
+        );
+    }
+
+
 }
