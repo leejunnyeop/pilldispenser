@@ -3,7 +3,7 @@ package gist.pilldispenser.drug.drugInfo.domain.entity;
 
 import gist.pilldispenser.drug.drugInfo.domain.dto.BeforeAfterMeal;
 import gist.pilldispenser.drug.drugInfo.domain.dto.DrugInfoRequest;
-import gist.pilldispenser.drug.medication.domain.MedicationDetail;
+
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,16 +26,6 @@ public class DrugInfo {
     @Column(nullable = false)
     private String name;  // 약 이름
 
-    @Column(nullable = false)
-    private String brand;  // 브랜드명
-
-    @Column(nullable = false)
-    private String dosage;  // 복용량
-
-    @ElementCollection
-    @CollectionTable(name = "drug_ingredients", joinColumns = @JoinColumn(name = "drug_id"))
-    @Column(name = "ingredient")
-    private List<String> ingredients;  // 성분 리스트
 
     @Column(nullable = false)
     private String usage;  // 사용 용법
@@ -52,24 +42,22 @@ public class DrugInfo {
     @Column(nullable = false)
     private BeforeAfterMeal beforeAfterMeal;  // 복용 시점 (식전, 식후, 공복, 취침 전)
 
-    @Column(nullable = false)
-    private boolean mixable;  // 혼용 가능 여부
 
-    @OneToOne(mappedBy = "drugIdentification", fetch = FetchType.LAZY)
-    private MedicationDetail medicationDetail;
+    @Column(nullable = false)
+    private String shape;  // 모양 (예: 원형, 타원형)
+
+    @Column(nullable = false)
+    private double diameter;  // 직경 (mm)
+
+    @Column(nullable = false)
+    private double thickness;  // 두께 (mm)
+
+    @Column(nullable = false)
+    private String color;  // 색상
 
     public void partialUpdate(DrugInfoRequest updatedDrugInfo) {
         if (updatedDrugInfo.getName() != null) {
             this.name = updatedDrugInfo.getName();
-        }
-        if (updatedDrugInfo.getBrand() != null) {
-            this.brand = updatedDrugInfo.getBrand();
-        }
-        if (updatedDrugInfo.getDosage() != null) {
-            this.dosage = updatedDrugInfo.getDosage();
-        }
-        if (updatedDrugInfo.getIngredients() != null) {
-            this.ingredients = updatedDrugInfo.getIngredients();
         }
         if (updatedDrugInfo.getUsage() != null) {
             this.usage = updatedDrugInfo.getUsage();
@@ -83,7 +71,18 @@ public class DrugInfo {
         if (updatedDrugInfo.getBeforeAfterMeal() != null) {
             this.beforeAfterMeal = updatedDrugInfo.getBeforeAfterMeal();
         }
-        this.mixable = updatedDrugInfo.isMixable();
+        if (updatedDrugInfo.getShape() != null) {
+            this.shape = updatedDrugInfo.getShape();
+        }
+        if (updatedDrugInfo.getDiameter() != 0) {
+            this.diameter = updatedDrugInfo.getDiameter();
+        }
+        if (updatedDrugInfo.getThickness() != 0) {
+            this.thickness = updatedDrugInfo.getThickness();
+        }
+        if (updatedDrugInfo.getColor() != null) {
+            this.color = updatedDrugInfo.getColor();
+        }
     }
 
 }

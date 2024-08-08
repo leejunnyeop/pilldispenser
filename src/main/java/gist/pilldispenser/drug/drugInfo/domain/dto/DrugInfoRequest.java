@@ -23,5 +23,9 @@ public class DrugInfoRequest {
         private List<String> timeOfDay;  // 복용 시간대 (아침, 점심, 저녁)
         private BeforeAfterMeal beforeAfterMeal;  // 복용 시점 (식전, 식후, 공복, 취침 전)
         private boolean mixable;  // 혼용 가능 여부
+        private String shape;  // 모양 (예: 원형, 타원형)
+        private double diameter;  // 직경 (mm)
+        private double thickness;  // 두께 (mm)
+        private String color;  // 색상
 
 }

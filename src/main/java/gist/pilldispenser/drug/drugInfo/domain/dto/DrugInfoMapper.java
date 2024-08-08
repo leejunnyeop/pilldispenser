@@ -14,14 +14,14 @@ public class DrugInfoMapper {
         return DrugInfo.builder()
                 .id(drugInfoRequest.getId())
                 .name(drugInfoRequest.getName())
-                .brand(drugInfoRequest.getBrand())
-                .dosage(drugInfoRequest.getDosage())
-                .ingredients(drugInfoRequest.getIngredients())
                 .usage(drugInfoRequest.getUsage())
                 .dailyDosage(drugInfoRequest.getDailyDosage())
                 .timeOfDay(drugInfoRequest.getTimeOfDay())
                 .beforeAfterMeal(drugInfoRequest.getBeforeAfterMeal())
-                .mixable(drugInfoRequest.isMixable())
+                .shape(drugInfoRequest.getShape())
+                .diameter(drugInfoRequest.getDiameter())
+                .thickness(drugInfoRequest.getThickness())
+                .color(drugInfoRequest.getColor())
                 .build();
     }
 
@@ -35,14 +35,15 @@ public class DrugInfoMapper {
         return DrugInfoRequest.builder()
                 .id(drugInfo.getId())
                 .name(drugInfo.getName())
-                .brand(drugInfo.getBrand())
-                .dosage(drugInfo.getDosage())
-                .ingredients(drugInfo.getIngredients())
                 .usage(drugInfo.getUsage())
                 .dailyDosage(drugInfo.getDailyDosage())
                 .timeOfDay(drugInfo.getTimeOfDay())
                 .beforeAfterMeal(drugInfo.getBeforeAfterMeal())
-                .mixable(drugInfo.isMixable())
+                .shape(drugInfo.getShape())
+                .diameter(drugInfo.getDiameter())
+                .thickness(drugInfo.getThickness())
+                .color(drugInfo.getColor())
                 .build();
+
     }
 }

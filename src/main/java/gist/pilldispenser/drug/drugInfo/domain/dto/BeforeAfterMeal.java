@@ -2,10 +2,10 @@ package gist.pilldispenser.drug.drugInfo.domain.dto;
 
 public enum BeforeAfterMeal {
 
-    BEFORE_MEAL("식전"),
-    AFTER_MEAL("식후"),
-    EMPTY_STOMACH("공복"),
-    BEFORE_SLEEP("취침 전");
+    MORNING("아침"),
+    LUNCH("점심"),
+    DINNER("저녁"),
+    UNKNOWN("잘 모르겠어요");
 
     private final String description;
 
