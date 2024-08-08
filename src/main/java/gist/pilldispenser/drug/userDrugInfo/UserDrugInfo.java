@@ -21,15 +21,15 @@ public class UserDrugInfo {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private Users user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "drug_info_id", nullable = false)
+    @JoinColumn(name = "drug_info_id")
     private DrugInfo drugInfo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "full_medication_info_id", nullable = false)
+    @JoinColumn(name = "full_medication_info_id")
     private FullMedicationInfo fullMedicationInfo;
 
     public static UserDrugInfo create(Users user, DrugInfo drugInfo, FullMedicationInfo fullMedicationInfo) {
