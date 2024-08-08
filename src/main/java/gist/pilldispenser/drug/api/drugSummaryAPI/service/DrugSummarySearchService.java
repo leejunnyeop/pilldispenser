@@ -1,0 +1,10 @@
+package gist.pilldispenser.drug.api.drugSummaryAPI.service;
+
+import gist.pilldispenser.drug.api.drugSummaryAPI.domain.dto.response.DrugSummaryDTO;
+
+import java.util.List;
+
+public interface DrugSummarySearchService  {
+
+    public List<DrugSummaryDTO> searchDrugsByName(String itemName) throws Exception;
+}
