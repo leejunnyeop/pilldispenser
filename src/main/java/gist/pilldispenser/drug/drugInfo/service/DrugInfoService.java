@@ -4,7 +4,7 @@ import gist.pilldispenser.drug.drugInfo.domain.dto.DrugInfoRequest;
 
 public interface DrugInfoService {
 
-    void createDrugInfo(Long userId, DrugInfoRequest DrugInfoRequest);
+   void createDrugInfoManually(Long userId, DrugInfoRequest drugInfoRequest);
 
 
 }

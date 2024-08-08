@@ -15,10 +15,13 @@ public class DrugInfoController {
 
     private final DrugInfoService drugInfoService;
 
-    @PostMapping
-    public ResponseEntity<String> createDrugInfo(@AuthenticationPrincipal UsersDetails usersDetails, @RequestBody DrugInfoRequest drugInfoRequest) {
-        drugInfoService.createDrugInfo(usersDetails.getId(), drugInfoRequest);
-        return ResponseEntity.ok("약 직접 등록이 완료되었습니다.");
+    @PostMapping("/register/manual")
+    public ResponseEntity<String> registerDrugInfoManually(
+            @RequestBody DrugInfoRequest drugInfoRequest,
+            @AuthenticationPrincipal UsersDetails userDetails) {
+        Long userId = userDetails.getId();
+        drugInfoService.createDrugInfoManually(userId, drugInfoRequest);
+        return ResponseEntity.ok("직접 약 정보가 성공적으로 저장되었습니다.");
     }
 
 

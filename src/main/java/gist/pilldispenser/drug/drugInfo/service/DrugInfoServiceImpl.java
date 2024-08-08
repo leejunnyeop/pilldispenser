@@ -4,6 +4,8 @@ import gist.pilldispenser.drug.drugInfo.domain.dto.DrugInfoMapper;
 import gist.pilldispenser.drug.drugInfo.repository.DrugInfoRepository;
 import gist.pilldispenser.drug.drugInfo.domain.dto.DrugInfoRequest;
 import gist.pilldispenser.drug.drugInfo.domain.entity.DrugInfo;
+import gist.pilldispenser.drug.userDrugInfo.UserDrugInfo;
+import gist.pilldispenser.drug.userDrugInfo.UserDrugInfoRepository;
 import gist.pilldispenser.users.domain.entity.Users;
 import gist.pilldispenser.users.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,17 +21,19 @@ public class DrugInfoServiceImpl implements DrugInfoService {
 
     private final DrugInfoRepository drugInfoRepository;
     private final UsersRepository usersRepository;
+    private final UserDrugInfoRepository userDrugInfoRepository;
 
     @Override
     @Transactional
-    public void createDrugInfo(Long userId, DrugInfoRequest drugInfoRequest) {
-        Optional<Users> optionalUser = usersRepository.findById(userId);
-        if (optionalUser.isEmpty()) {
-            throw new IllegalArgumentException("해당 userId에 대한 사용자 정보를 찾을 수 없습니다: " + userId);
-        }
+    public void createDrugInfoManually(Long userId, DrugInfoRequest drugInfoRequest) {
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 userId에 대한 사용자 정보를 찾을 수 없습니다: " + userId));
 
         DrugInfo drugInfo = DrugInfoMapper.toDrugInfo(drugInfoRequest);
         drugInfoRepository.save(drugInfo);
+
+        UserDrugInfo userDrugInfo = UserDrugInfo.create(user, drugInfo, null);
+        userDrugInfoRepository.save(userDrugInfo);
     }
 
 }
