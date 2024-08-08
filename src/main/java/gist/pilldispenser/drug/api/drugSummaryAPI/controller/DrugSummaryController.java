@@ -51,6 +51,12 @@ public class DrugSummaryController {
         }
     }
 
+    @Operation(summary = "복용하지 말아야 하는 약 조회", description = "사용자가 복용하지 말아야 하는 약 정보를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "복용하지 말아야 하는 약 정보 조회 성공"),
+            @ApiResponse(responseCode = "404", description = "사용자 정보가 존재하지 않음"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
+    })
 
     @GetMapping("/contraindicated")
     public ResponseEntity<PrecautionResponseDto> getContraindicationsForDrug(
