@@ -8,9 +8,9 @@ import gist.pilldispenser.users.domain.entity.Users;
 
 import java.util.List;
 
-public class MedicationDetailMapper {
+public class FullMedicationInfoMapper {
 
-    public static FullMedicationInfo toMedicationDetail(MedicationDetailRequestDto dto, DrugSummary drugSummary, DrugIdentification drugIdentification, List<DrugProduct> drugProducts, Users user) {
+    public static FullMedicationInfo toFullMedicationInfo(FullMedicationInfoRequestDto dto, DrugSummary drugSummary, DrugIdentification drugIdentification, List<DrugProduct> drugProducts, Users user) {
         return FullMedicationInfo.builder()
                 .itemSeq(dto.getItemSeq())
                 .drugSummary(drugSummary)
@@ -19,8 +19,8 @@ public class MedicationDetailMapper {
                 .build();
     }
 
-    public static MedicationDetailRequestDto toMedicationDetailRequestDto(Long userId, String itemSeq) {
-        return MedicationDetailRequestDto.builder()
+    public static FullMedicationInfoRequestDto toFullMedicationInfoRequestDto(Long userId, String itemSeq) {
+        return FullMedicationInfoRequestDto.builder()
                 .userId(userId)
                 .itemSeq(itemSeq)
                 .build();

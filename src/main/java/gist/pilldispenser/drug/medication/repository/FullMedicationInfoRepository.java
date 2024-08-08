@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 
-public interface MedicationDetailRepository extends JpaRepository<FullMedicationInfo, Long> {
+public interface FullMedicationInfoRepository extends JpaRepository<FullMedicationInfo, Long> {
 
     @EntityGraph(value = "FullMedicationInfo.withRelations", type = EntityGraph.EntityGraphType.LOAD)
     Optional<FullMedicationInfo> findByItemSeq(String itemSeq);

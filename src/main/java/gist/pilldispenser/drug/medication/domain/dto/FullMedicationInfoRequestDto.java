@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MedicationDetailRequestDto {
+public class FullMedicationInfoRequestDto {
+
     private Long userId;
     private String itemSeq;
 }
