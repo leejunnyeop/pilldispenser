@@ -11,7 +11,11 @@ import gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.DrugSummary;
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.QDrugSummary;
 import gist.pilldispenser.drug.api.drugSummaryAPI.repository.DrugSummaryRepository;
 import gist.pilldispenser.drug.medication.domain.MedicationDetail;
+import gist.pilldispenser.drug.medication.domain.dto.MedicationDetailMapper;
+import gist.pilldispenser.drug.medication.domain.dto.MedicationDetailRequestDto;
 import gist.pilldispenser.drug.medication.repository.MedicationDetailRepository;
+import gist.pilldispenser.users.domain.entity.Users;
+import gist.pilldispenser.users.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,52 +31,51 @@ public class MedicationDetailService {
     private final DrugIdentificationRepository drugIdentificationRepository;
     private final DrugProductRepository drugProductRepository;
     private final JPAQueryFactory queryFactory;
+    private final UsersRepository usersRepository;
 
     @Transactional
-    public MedicationDetail saveMedicationDetailByItemSeq(String itemSeq) {
+    public void saveMedicationDetailByItemSeq(Long userId, String itemSeq) {
+        MedicationDetailRequestDto dto = MedicationDetailMapper.toMedicationDetailRequestDto(userId, itemSeq);
 
         QDrugSummary drugSummary = QDrugSummary.drugSummary;
         QDrugIdentification drugIdentification = QDrugIdentification.drugIdentification;
         QDrugProduct drugProduct = QDrugProduct.drugProduct;
 
         DrugSummary fetchedDrugSummary = queryFactory.selectFrom(drugSummary)
-                .where(drugSummary.itemSeq.eq(itemSeq))
+                .where(drugSummary.itemSeq.eq(dto.getItemSeq()))
                 .fetchOne();
 
         if (fetchedDrugSummary == null) {
-            throw new IllegalArgumentException("해당 itemSeq에 대한 DrugSummary 정보를 찾을 수 없습니다: " + itemSeq);
+            throw new IllegalArgumentException("해당 itemSeq에 대한 DrugSummary 정보를 찾을 수 없습니다: " + dto.getItemSeq());
         }
 
         DrugIdentification fetchedDrugIdentification = queryFactory.selectFrom(drugIdentification)
-                .where(drugIdentification.itemSeq.eq(itemSeq))
+                .where(drugIdentification.itemSeq.eq(dto.getItemSeq()))
                 .fetchOne();
 
         if (fetchedDrugIdentification == null) {
-            throw new IllegalArgumentException("해당 itemSeq에 대한 DrugIdentification 정보를 찾을 수 없습니다: " + itemSeq);
+            throw new IllegalArgumentException("해당 itemSeq에 대한 DrugIdentification 정보를 찾을 수 없습니다: " + dto.getItemSeq());
         }
 
         List<DrugProduct> fetchedDrugProducts = queryFactory.selectFrom(drugProduct)
-                .where(drugProduct.itemSeq.eq(itemSeq))
+                .where(drugProduct.itemSeq.eq(dto.getItemSeq()))
                 .fetch();
 
         if (fetchedDrugProducts.isEmpty()) {
-            throw new IllegalArgumentException("해당 itemSeq에 대한 DrugProduct 정보를 찾을 수 없습니다: " + itemSeq);
+            throw new IllegalArgumentException("해당 itemSeq에 대한 DrugProduct 정보를 찾을 수 없습니다: " + dto.getItemSeq());
         }
 
-        // MedicationDetail 엔티티 생성 및 저장
-        MedicationDetail medicationDetail = MedicationDetail.builder()
-                .itemSeq(itemSeq)
-                .drugSummary(fetchedDrugSummary)
-                .drugIdentification(fetchedDrugIdentification)
-                .drugProducts(fetchedDrugProducts)
-                .build();
+        Users user = usersRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 userId에 대한 사용자 정보를 찾을 수 없습니다: " + dto.getUserId()));
 
-        return medicationDetailRepository.save(medicationDetail);
+        MedicationDetail medicationDetail = MedicationDetailMapper.toMedicationDetail(dto, fetchedDrugSummary, fetchedDrugIdentification, fetchedDrugProducts, user);
+        medicationDetailRepository.save(medicationDetail);
     }
 
 
     @Transactional(readOnly = true)
     public MedicationDetail findMedicationDetailByItemSeq(String itemSeq) {
+
         return medicationDetailRepository.findByItemSeq(itemSeq)
                 .orElseThrow(() -> new IllegalArgumentException("해당 itemSeq에 대한 MedicationDetail 정보를 찾을 수 없습니다: " + itemSeq));
     }
