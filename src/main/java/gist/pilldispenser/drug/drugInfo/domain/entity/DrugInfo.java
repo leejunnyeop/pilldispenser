@@ -3,6 +3,7 @@ package gist.pilldispenser.drug.drugInfo.domain.entity;
 
 import gist.pilldispenser.drug.drugInfo.domain.dto.BeforeAfterMeal;
 import gist.pilldispenser.drug.drugInfo.domain.dto.DrugInfoRequest;
+import gist.pilldispenser.drug.medication.domain.MedicationDetail;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -53,6 +54,9 @@ public class DrugInfo {
 
     @Column(nullable = false)
     private boolean mixable;  // 혼용 가능 여부
+
+    @OneToOne(mappedBy = "drugIdentification", fetch = FetchType.LAZY)
+    private MedicationDetail medicationDetail;
 
     public void partialUpdate(DrugInfoRequest updatedDrugInfo) {
         if (updatedDrugInfo.getName() != null) {
