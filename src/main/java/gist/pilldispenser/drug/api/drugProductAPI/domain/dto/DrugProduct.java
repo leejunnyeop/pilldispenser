@@ -1,6 +1,6 @@
 package gist.pilldispenser.drug.api.drugProductAPI.domain.dto;
 
-import gist.pilldispenser.drug.medication.domain.MedicationDetail;
+import gist.pilldispenser.drug.medication.domain.FullMedicationInfo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,5 +44,5 @@ public class DrugProduct {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "medication_detail_id")
-    private MedicationDetail medicationDetail;
+    private FullMedicationInfo fullMedicationInfo;
 }

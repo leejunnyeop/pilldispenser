@@ -4,7 +4,6 @@ package gist.pilldispenser.drug.medication.domain;
 import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.dto.DrugIdentification;
 import gist.pilldispenser.drug.api.drugProductAPI.domain.dto.DrugProduct;
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.DrugSummary;
-import gist.pilldispenser.drug.drugInfo.domain.entity.DrugInfo;
 import gist.pilldispenser.users.domain.entity.Users;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,14 +19,14 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @NamedEntityGraph(
-        name = "MedicationDetail.withRelations",
+        name = "FullMedicationInfo.withRelations",
         attributeNodes = {
                 @NamedAttributeNode("drugSummary"),
                 @NamedAttributeNode("drugIdentification"),
                 @NamedAttributeNode("drugProducts")
         }
 )
-public class MedicationDetail {
+public class FullMedicationInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,12 +42,9 @@ public class MedicationDetail {
     @JoinColumn(name = "drug_identification_id")
     private DrugIdentification drugIdentification;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "medicationDetail")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "fullMedicationInfo")
     private List<DrugProduct> drugProducts;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "drug_info_id")
-    private DrugInfo drugInfo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

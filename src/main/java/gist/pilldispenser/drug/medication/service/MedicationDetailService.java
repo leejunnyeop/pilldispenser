@@ -10,7 +10,7 @@ import gist.pilldispenser.drug.api.drugProductAPI.repository.DrugProductReposito
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.DrugSummary;
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.QDrugSummary;
 import gist.pilldispenser.drug.api.drugSummaryAPI.repository.DrugSummaryRepository;
-import gist.pilldispenser.drug.medication.domain.MedicationDetail;
+import gist.pilldispenser.drug.medication.domain.FullMedicationInfo;
 import gist.pilldispenser.drug.medication.domain.dto.MedicationDetailMapper;
 import gist.pilldispenser.drug.medication.domain.dto.MedicationDetailRequestDto;
 import gist.pilldispenser.drug.medication.repository.MedicationDetailRepository;
@@ -68,15 +68,15 @@ public class MedicationDetailService {
         Users user = usersRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 userId에 대한 사용자 정보를 찾을 수 없습니다: " + dto.getUserId()));
 
-        MedicationDetail medicationDetail = MedicationDetailMapper.toMedicationDetail(dto, fetchedDrugSummary, fetchedDrugIdentification, fetchedDrugProducts, user);
-        medicationDetailRepository.save(medicationDetail);
+        FullMedicationInfo fullMedicationInfo = MedicationDetailMapper.toMedicationDetail(dto, fetchedDrugSummary, fetchedDrugIdentification, fetchedDrugProducts, user);
+        medicationDetailRepository.save(fullMedicationInfo);
     }
 
 
     @Transactional(readOnly = true)
-    public MedicationDetail findMedicationDetailByItemSeq(String itemSeq) {
+    public FullMedicationInfo findMedicationDetailByItemSeq(String itemSeq) {
 
         return medicationDetailRepository.findByItemSeq(itemSeq)
-                .orElseThrow(() -> new IllegalArgumentException("해당 itemSeq에 대한 MedicationDetail 정보를 찾을 수 없습니다: " + itemSeq));
+                .orElseThrow(() -> new IllegalArgumentException("해당 itemSeq에 대한 FullMedicationInfo 정보를 찾을 수 없습니다: " + itemSeq));
     }
 }

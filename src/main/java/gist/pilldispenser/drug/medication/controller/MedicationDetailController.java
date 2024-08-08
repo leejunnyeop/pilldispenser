@@ -1,14 +1,13 @@
 package gist.pilldispenser.drug.medication.controller;
 
 import gist.pilldispenser.common.security.UsersDetails;
-import gist.pilldispenser.drug.medication.domain.MedicationDetail;
+import gist.pilldispenser.drug.medication.domain.FullMedicationInfo;
 import gist.pilldispenser.drug.medication.service.MedicationDetailService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Medication Detail", description = "사용자가 복용 중인 약 정보 관리 API")
@@ -30,8 +29,8 @@ public class MedicationDetailController {
     }
 
     @GetMapping("/details")
-    public ResponseEntity<MedicationDetail> getMedicationDetailByItemSeq(@RequestParam(name = "itemSeq") String itemSeq) {
-        MedicationDetail medicationDetail = medicationDetailService.findMedicationDetailByItemSeq(itemSeq);
-        return ResponseEntity.ok(medicationDetail);
+    public ResponseEntity<FullMedicationInfo> getMedicationDetailByItemSeq(@RequestParam(name = "itemSeq") String itemSeq) {
+        FullMedicationInfo fullMedicationInfo = medicationDetailService.findMedicationDetailByItemSeq(itemSeq);
+        return ResponseEntity.ok(fullMedicationInfo);
     }
 }

@@ -1,6 +1,6 @@
 package gist.pilldispenser.drug.api.drugIdentificationAPI.domain.dto;
 
-import gist.pilldispenser.drug.medication.domain.MedicationDetail;
+import gist.pilldispenser.drug.medication.domain.FullMedicationInfo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -68,7 +68,7 @@ public class DrugIdentification {
     private String thick;
 
     @OneToOne(mappedBy = "drugIdentification", fetch = FetchType.LAZY)
-    private MedicationDetail medicationDetail;
+    private FullMedicationInfo fullMedicationInfo;
 
 
 }

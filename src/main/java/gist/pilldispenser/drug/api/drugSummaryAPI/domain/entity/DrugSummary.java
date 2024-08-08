@@ -1,6 +1,6 @@
 package gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity;
 
-import gist.pilldispenser.drug.medication.domain.MedicationDetail;
+import gist.pilldispenser.drug.medication.domain.FullMedicationInfo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,6 +43,6 @@ public class DrugSummary {
     private String itemImage; // 이미지 이거 사용
 
     @OneToOne(mappedBy = "drugSummary", fetch = FetchType.LAZY)
-    private MedicationDetail medicationDetail;
+    private FullMedicationInfo fullMedicationInfo;
 
 }
