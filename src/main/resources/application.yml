@@ -1,15 +1,20 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-
     url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: 1234
+
 
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate.format_sql: true
@@ -34,6 +39,16 @@ springdoc:
     display-query-params-without-oauth2: true
     doc-expansion: none
 
+kakao:
+  api-key: e5f999aea90e6265d592dd3658b246c5
+  redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+  secret-key: VDJMPMRiNuIBKAEDwNeKFQwwmh3KRWMy
+  token-uri: https://kauth.kakao.com/oauth/token
+  info-uri: https://kapi.kakao.com/v2/user/me
+  msg-uri: https://kapi.kakao.com/v2/api/talk/memo/default/send
+
+jwt:
+  secret: JwtSecret1234567890veryLONGsecret!!!
 
 
 #    version: springdoc ?????? ??? ????.
@@ -51,11 +66,13 @@ springdoc:
 #    display-query-params-without-oauth2: Swagger UI?? OAuth2 ?? ?? ????? ????.
 #    doc-expansion: Swagger UI?? ?? ??? ??????.
 
-server:
-  port: 443
-  ssl:
-    key-store: /app/ssl/keystore.p12	# SSL 인증서로 접근할 컨테이너 내부의 경로
-    key-store-type: PKCS12  # 개인키 파일 형식
-    key-alias: mykey  # 개인키 별칭
-    key-store-password: hackathonSSL12345!
-    enabled: true   # SSL 사용 여부
+#
+#server:
+#  port: 443
+#  ssl:
+#    key-store: /app/ssl/keystore.p12	# SSL 인증서로 접근할 컨테이너 내부의 경로
+#    key-store-type: PKCS12  # 개인키 파일 형식
+#    key-alias: mykey  # 개인키 별칭
+#    key-store-password: hackathonSSL12345!
+#    enabled: true   # SSL 사용 여부
+#
