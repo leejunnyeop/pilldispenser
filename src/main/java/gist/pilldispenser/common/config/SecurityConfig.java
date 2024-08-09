@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -35,18 +36,46 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
-
-                // h2-console
-                .headers(headers -> headers
-                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
-
+                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers(
+                                "/auth/**",
+                                "/swagger-ui/**",
+                                "/api-docs/**",
+                                "/error/**"
+                        ).permitAll()
                         .requestMatchers(AUTH_WHITELIST).permitAll()
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class)
-                ;
+                .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class);
         return http.build();
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()) // Static resources
+                .requestMatchers(
+                        "/error/**",
+                        "/favicon.ico",
+                        "/swagger-ui/**",
+                        "/api-docs/**",
+                        "/auth/login/**",
+                        "swagger-ui.html",
+                        "swagger-ui.html",   // swgger 사용시
+
+                        "/index.html",   // front-end 에서 build한 static file
+
+                        "/favicon.ico",   // 여기서 설정 안 해주면 index.html이 읽을 수 없음
+
+                        "/css/**",   // 여기서 설정 안 해주면 index.html이 읽을 수 없음
+
+                        "/fonts/**",   // 여기서 설정 안 해주면 index.html이 읽을 수 없음
+
+                        "/img/**",   // 여기서 설정 안 해주면 index.html이 읽을 수 없음
+
+                        "/js/**"   // 여기서 설정 안 해주면 index.html이 읽을 수 없음
+                        );
     }
 }
