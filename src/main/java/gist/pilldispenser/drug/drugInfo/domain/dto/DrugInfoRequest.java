@@ -2,10 +2,7 @@ package gist.pilldispenser.drug.drugInfo.domain.dto;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -13,6 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Schema(description = "약 정보 요청 DTO")
 public class DrugInfoRequest {
 

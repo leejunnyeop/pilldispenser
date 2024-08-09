@@ -4,10 +4,7 @@ package gist.pilldispenser.drug.drugInfo.domain.entity;
 import gist.pilldispenser.drug.drugInfo.domain.dto.DrugInfoRequest;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -16,6 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class DrugInfo {
 
     @Id

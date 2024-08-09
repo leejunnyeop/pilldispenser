@@ -5,8 +5,8 @@ import gist.pilldispenser.drug.api.drugSummaryAPI.domain.dto.response.DrugSummar
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.dto.response.PrecautionResponseDto;
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.DrugSummary;
 import gist.pilldispenser.drug.api.drugSummaryAPI.repository.DrugSummaryRepository;
-import gist.pilldispenser.drug.userDrugInfo.UserDrugInfo;
-import gist.pilldispenser.drug.userDrugInfo.UserDrugInfoRepository;
+import gist.pilldispenser.drug.userDrugInfo.domain.entity.UserDrugInfo;
+import gist.pilldispenser.drug.userDrugInfo.repository.UserDrugInfoRepository;
 import gist.pilldispenser.users.domain.entity.Users;
 import gist.pilldispenser.users.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;

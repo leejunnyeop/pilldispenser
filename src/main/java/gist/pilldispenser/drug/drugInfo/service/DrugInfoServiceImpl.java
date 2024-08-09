@@ -4,15 +4,13 @@ import gist.pilldispenser.drug.drugInfo.domain.dto.DrugInfoMapper;
 import gist.pilldispenser.drug.drugInfo.repository.DrugInfoRepository;
 import gist.pilldispenser.drug.drugInfo.domain.dto.DrugInfoRequest;
 import gist.pilldispenser.drug.drugInfo.domain.entity.DrugInfo;
-import gist.pilldispenser.drug.userDrugInfo.UserDrugInfo;
-import gist.pilldispenser.drug.userDrugInfo.UserDrugInfoRepository;
+import gist.pilldispenser.drug.userDrugInfo.domain.entity.UserDrugInfo;
+import gist.pilldispenser.drug.userDrugInfo.repository.UserDrugInfoRepository;
 import gist.pilldispenser.users.domain.entity.Users;
 import gist.pilldispenser.users.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
