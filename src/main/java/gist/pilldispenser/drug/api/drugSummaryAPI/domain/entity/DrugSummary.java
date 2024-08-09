@@ -32,13 +32,8 @@ public class DrugSummary {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 3000)
     private String entpName; // 회사명
-
-    @Column(length = 3000)
     private String itemName; // 알약명
-
-    @Column(length = 3000)
     private String itemSeq; // 알약 고유번호
 
     @Column(length = 3000)

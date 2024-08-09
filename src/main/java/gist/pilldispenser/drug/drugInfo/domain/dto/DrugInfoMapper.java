@@ -13,7 +13,7 @@ public class DrugInfoMapper {
     public static DrugInfo toDrugInfo(DrugInfoRequest drugInfoRequest) {
         return DrugInfo.builder()
                 .name(drugInfoRequest.getName())
-                .usage(drugInfoRequest.getUsage())
+                .usageInfo(drugInfoRequest.getUsage())
                 .dailyDosage(drugInfoRequest.getDailyDosage())
                 .timeOfDay(drugInfoRequest.getTimeOfDay())
                 .shape(drugInfoRequest.getShape())
@@ -32,7 +32,7 @@ public class DrugInfoMapper {
     public static DrugInfoRequest toDrugInfoRequest(DrugInfo drugInfo) {
         return DrugInfoRequest.builder()
                 .name(drugInfo.getName())
-                .usage(drugInfo.getUsage())
+                .usage(drugInfo.getUsageInfo())
                 .dailyDosage(drugInfo.getDailyDosage())
                 .timeOfDay(drugInfo.getTimeOfDay())
                 .shape(drugInfo.getShape())

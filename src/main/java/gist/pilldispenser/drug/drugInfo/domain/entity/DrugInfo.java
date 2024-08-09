@@ -23,9 +23,8 @@ public class DrugInfo {
     @Column(nullable = false)
     private String name;  // 약 이름
 
-
     @Column(nullable = false)
-    private String usage;  // 사용 용법
+    private String usageInfo;  // 사용 용법
 
     @Column(nullable = false)
     private int dailyDosage;  // 하루 복용 횟수
@@ -52,7 +51,7 @@ public class DrugInfo {
             this.name = updatedDrugInfo.getName();
         }
         if (updatedDrugInfo.getUsage() != null) {
-            this.usage = updatedDrugInfo.getUsage();
+            this.usageInfo = updatedDrugInfo.getUsage();
         }
         if (updatedDrugInfo.getDailyDosage() != 0) {
             this.dailyDosage = updatedDrugInfo.getDailyDosage();
