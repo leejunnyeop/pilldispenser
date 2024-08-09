@@ -21,7 +21,7 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private static final String[] AUTH_WHITELIST = {
-            "/h2-console/**", "/login/oauth2/code/kakao", "/users/login"
+            "/h2-console/**", "/login/oauth2/code/kakao", "/users/login","/notice/**"
     };
 
     @Bean
