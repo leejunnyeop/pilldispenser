@@ -45,7 +45,7 @@ public class OAuthController {
 
     @GetMapping("/oauth2/token")
     public void kakaoTokenRenew(@AuthenticationPrincipal UsersDetails usersDetails) throws IOException {
-        oAuthService.reissueTokens(usersDetails);
+        oAuthService.reissueTokens(usersDetails.getUsername());
     }
 
 }

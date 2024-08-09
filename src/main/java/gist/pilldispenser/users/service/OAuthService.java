@@ -2,7 +2,6 @@ package gist.pilldispenser.users.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gist.pilldispenser.common.security.UsersDetails;
 import gist.pilldispenser.common.utils.RedisUtils;
 import gist.pilldispenser.users.domain.model.KakaoUserInfoResponse;
 import gist.pilldispenser.users.domain.model.OAuthTokenResponse;
@@ -21,8 +20,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -98,8 +95,8 @@ public class OAuthService {
                 Long.valueOf(tokenResponse.getRefreshTokenExpiresIn()));
     }
 
-    public void reissueTokens(UsersDetails usersDetails) throws IOException {
-        String refreshTokenKey = "refresh_token_"+usersDetails.getUsername();
+    public void reissueTokens(String email) throws IOException {
+        String refreshTokenKey = "refresh_token_"+email;
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/x-www-form-urlencoded");
@@ -117,10 +114,10 @@ public class OAuthService {
         OAuthTokenResponse tokenResponse = objectMapper.readValue(token.getBody(), OAuthTokenResponse.class);
 
         if (tokenResponse.getRefreshToken() != null) {
-            saveAccessTokenToRedis(tokenResponse, usersDetails.getUsername());
-            saveRefreshTokenToRedis(tokenResponse, usersDetails.getUsername());
+            saveAccessTokenToRedis(tokenResponse, email);
+            saveRefreshTokenToRedis(tokenResponse, email);
         } else {
-            saveAccessTokenToRedis(tokenResponse, usersDetails.getUsername());
+            saveAccessTokenToRedis(tokenResponse, email);
         }
     }
 }
