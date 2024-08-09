@@ -20,6 +20,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -32,8 +34,10 @@ public class OAuthService {
 
     @Value("${kakao.api-key}")
     private String API_KEY;
-    @Value("${kakao.redirect-uri}")
-    private String REDIRECT_URI;
+    @Value("${kakao.redirect-uri-local}")
+    private String REDIRECT_URI_LOCAL;
+    @Value("${kakao.redirect-uri-https}")
+    private String REDIRECT_URI_HTTPS;
     @Value("${kakao.secret-key}")
     private String SECRET_KEY;
     @Value("${kakao.token-uri}")
@@ -41,14 +45,18 @@ public class OAuthService {
     @Value("${kakao.info-uri}")
     private String INFO_URI;
 
-    public OAuthTokenResponse getKakaoToken(String authCode) throws JsonProcessingException {
+    public OAuthTokenResponse getKakaoToken(String authCode, boolean isLocal) throws JsonProcessingException {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/x-www-form-urlencoded");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", API_KEY);
-        params.add("redirect_uri", REDIRECT_URI);
+        if (isLocal){
+            params.add("redirect_uri", REDIRECT_URI_LOCAL);
+        } else {
+            params.add("redirect_uri", REDIRECT_URI_HTTPS);
+        }
         params.add("code", authCode);
         params.add("client_secret", SECRET_KEY);
 
