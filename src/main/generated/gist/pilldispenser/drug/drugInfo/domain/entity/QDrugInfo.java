@@ -36,7 +36,7 @@ public class QDrugInfo extends EntityPathBase<DrugInfo> {
 
     public final ListPath<String, StringPath> timeOfDay = this.<String, StringPath>createList("timeOfDay", String.class, StringPath.class, PathInits.DIRECT2);
 
-    public final StringPath usage = createString("usage");
+    public final StringPath usageInfo = createString("usageInfo");
 
     public QDrugInfo(String variable) {
         super(DrugInfo.class, forVariable(variable));
