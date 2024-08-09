@@ -5,8 +5,6 @@ name: CI/CD
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
 # Docker image build
@@ -50,8 +48,6 @@ jobs:
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         port: 22
         script: |
-          sudo docker stop ${{ secrets.PROJECT_NAME }}
-          sudo docker rm ${{ secrets.PROJECT_NAME }}
-          sudo docker rmi $(docker images -q)
-          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.PROJECT_NAME }}
-          sudo docker run -d -p 443:443 --name ${{ secrets.PROJECT_NAME }} -v /etc/letsencrypt/live/api.pillsogood.shop/keystore.p12:/app/ssl/keystore.p12 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.PROJECT_NAME }}
+          sudo docker-compose -f ${{ secrets.DOCKER_COMPOSE_YML_PATH }} down
+          sudo docker-compose -f ${{ secrets.DOCKER_COMPOSE_YML_PATH }} pull
+          sudo docker-compose -f ${{ secrets.DOCKER_COMPOSE_YML_PATH }} up -d
