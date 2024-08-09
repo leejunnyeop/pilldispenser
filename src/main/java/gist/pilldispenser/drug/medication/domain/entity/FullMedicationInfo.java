@@ -1,10 +1,10 @@
-package gist.pilldispenser.drug.medication.domain;
+package gist.pilldispenser.drug.medication.domain.entity;
 
 
 import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.dto.DrugIdentification;
 import gist.pilldispenser.drug.api.drugProductAPI.domain.dto.DrugProduct;
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.DrugSummary;
-import gist.pilldispenser.users.domain.entity.Users;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,8 +45,4 @@ public class FullMedicationInfo {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "fullMedicationInfo")
     private List<DrugProduct> drugProducts;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private Users user;
 }

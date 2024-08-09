@@ -1,13 +1,15 @@
-package gist.pilldispenser.drug.userDrugInfo;
+package gist.pilldispenser.drug.userDrugInfo.domain.entity;
 
 import gist.pilldispenser.drug.drugInfo.domain.entity.DrugInfo;
-import gist.pilldispenser.drug.medication.domain.FullMedicationInfo;
+import gist.pilldispenser.drug.medication.domain.entity.FullMedicationInfo;
 import gist.pilldispenser.users.domain.entity.Users;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -31,6 +33,7 @@ public class UserDrugInfo {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "full_medication_info_id")
     private FullMedicationInfo fullMedicationInfo;
+
 
     public static UserDrugInfo create(Users user, DrugInfo drugInfo, FullMedicationInfo fullMedicationInfo) {
         return UserDrugInfo.builder()
