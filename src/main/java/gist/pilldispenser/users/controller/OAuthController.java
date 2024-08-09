@@ -29,12 +29,18 @@ public class OAuthController {
         boolean isLocal = request.getRequestURL().toString().contains("localhost");
         log.info("isLocal: " + isLocal+", code: "+code);
 
-        OAuthTokenResponse tokenResponse = oAuthService.getKakaoToken(code, isLocal);
-        UserInfoResponse userInfo = oAuthService.kakaoUserInfo(tokenResponse.getAccessToken());
+        try {
+            OAuthTokenResponse tokenResponse = oAuthService.getKakaoToken(code, isLocal);
+            UserInfoResponse userInfo = oAuthService.kakaoUserInfo(tokenResponse.getAccessToken());
 
-        oAuthService.saveAccessTokenToRedis(tokenResponse, userInfo.getEmail());
-        oAuthService.saveRefreshTokenToRedis(tokenResponse, userInfo.getEmail());
-        return new ResponseEntity<>(userInfo, HttpStatus.OK);
+            oAuthService.saveAccessTokenToRedis(tokenResponse, userInfo.getEmail());
+            oAuthService.saveRefreshTokenToRedis(tokenResponse, userInfo.getEmail());
+            return new ResponseEntity<>(userInfo, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @GetMapping("/oauth2/token")
