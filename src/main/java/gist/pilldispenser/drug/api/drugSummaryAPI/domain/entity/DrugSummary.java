@@ -31,15 +31,29 @@ public class DrugSummary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(length = 3000)
     private String entpName; // 회사명
+
+    @Column(length = 3000)
     private String itemName; // 알약명
+
+    @Column(length = 3000)
     private String itemSeq; // 알약 고유번호
+
+    @Column(length = 3000)
     private String efcyQesitm;  // 성능
+    @Column(length = 3000)
     private String useMethodQesitm; // 용법
+    @Column(length = 3000)
     private String atpnQesitm; // 먹지 말아야하는 대상
+    @Column(length = 3000)
     private String intrcQesitm; // 혼용 금지 성분?
+    @Column(length = 3000)
     private String seQesitm; //주의사항
+    @Column(length = 3000)
     private String depositMethodQesitm; // 보관방법
+    @Column(length = 3000)
     private String itemImage; // 이미지 이거 사용
 
     @OneToOne(mappedBy = "drugSummary", fetch = FetchType.LAZY)
