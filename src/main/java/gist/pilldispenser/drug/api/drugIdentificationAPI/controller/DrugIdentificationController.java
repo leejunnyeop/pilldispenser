@@ -52,7 +52,7 @@ public class DrugIdentificationController {
         })
     @GetMapping("/{itemSeq}")
     public ResponseEntity<DrugSizeCategory> getDrugSizeByItemSeq(
-            @PathVariable String itemSeq) {
+            @PathVariable(name = "itemSeq") String itemSeq) {
         Optional<DrugSizeCategory> drugSizeCategory = drugIdentificationSizeService.findDrugSizeByItemSeq(itemSeq);
         return drugSizeCategory.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());

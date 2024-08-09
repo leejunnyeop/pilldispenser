@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "약 용법 Controller", description = "약물 요약 정보를 검색하는 API를 제공합니다.")
+@Tag(name = "DrugSummary Controller", description = "약물 상세 정보를 검색하는 API를 제공합니다.")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/drug-info")
@@ -60,6 +60,7 @@ public class DrugSummaryController {
 
     @GetMapping("/contraindicated")
     public ResponseEntity<PrecautionResponseDto> getContraindicationsForDrug(
+            @Parameter(description = "조회할 약물의 고유 번호", example = "123456789")
             @RequestParam(name = "itemSeq") String itemSeq,
             @AuthenticationPrincipal UsersDetails userDetails) {
         Long userId = userDetails.getId();

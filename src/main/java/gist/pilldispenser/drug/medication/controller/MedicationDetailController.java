@@ -3,6 +3,7 @@ package gist.pilldispenser.drug.medication.controller;
 import gist.pilldispenser.common.security.UsersDetails;
 import gist.pilldispenser.drug.medication.service.FullMedicationInfoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ public class MedicationDetailController {
     @Operation(summary = "약 정보 저장", description = "사용자가 검색을 통해 알약을 저장합니다.")
     @PostMapping("/register/search")
     public ResponseEntity<String> registerDrugInfoBySearch(
+            @Parameter(description = "조회할 약물의 고유 번호", example = "123456789")
             @RequestParam(name = "itemSeq") String itemSeq,
             @AuthenticationPrincipal UsersDetails userDetails) {
         Long userId = userDetails.getId();
