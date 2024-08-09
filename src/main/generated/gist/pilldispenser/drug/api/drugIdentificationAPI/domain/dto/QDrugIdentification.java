@@ -32,7 +32,7 @@ public class QDrugIdentification extends EntityPathBase<DrugIdentification> {
 
     public final StringPath entpName = createString("entpName");
 
-    public final gist.pilldispenser.drug.medication.domain.QFullMedicationInfo fullMedicationInfo;
+    public final gist.pilldispenser.drug.medication.domain.entity.QFullMedicationInfo fullMedicationInfo;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
@@ -64,7 +64,7 @@ public class QDrugIdentification extends EntityPathBase<DrugIdentification> {
 
     public QDrugIdentification(Class<? extends DrugIdentification> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.fullMedicationInfo = inits.isInitialized("fullMedicationInfo") ? new gist.pilldispenser.drug.medication.domain.QFullMedicationInfo(forProperty("fullMedicationInfo"), inits.get("fullMedicationInfo")) : null;
+        this.fullMedicationInfo = inits.isInitialized("fullMedicationInfo") ? new gist.pilldispenser.drug.medication.domain.entity.QFullMedicationInfo(forProperty("fullMedicationInfo"), inits.get("fullMedicationInfo")) : null;
     }
 
 }

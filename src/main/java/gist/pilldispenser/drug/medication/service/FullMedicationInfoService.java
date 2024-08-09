@@ -11,12 +11,12 @@ import gist.pilldispenser.drug.api.drugProductAPI.repository.DrugProductReposito
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.DrugSummary;
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.QDrugSummary;
 import gist.pilldispenser.drug.api.drugSummaryAPI.repository.DrugSummaryRepository;
-import gist.pilldispenser.drug.medication.domain.FullMedicationInfo;
+import gist.pilldispenser.drug.medication.domain.entity.FullMedicationInfo;
 import gist.pilldispenser.drug.medication.domain.dto.FullMedicationInfoMapper;
 import gist.pilldispenser.drug.medication.domain.dto.FullMedicationInfoRequestDto;
 import gist.pilldispenser.drug.medication.repository.FullMedicationInfoRepository;
-import gist.pilldispenser.drug.userDrugInfo.UserDrugInfo;
-import gist.pilldispenser.drug.userDrugInfo.UserDrugInfoRepository;
+import gist.pilldispenser.drug.userDrugInfo.domain.entity.UserDrugInfo;
+import gist.pilldispenser.drug.userDrugInfo.repository.UserDrugInfoRepository;
 import gist.pilldispenser.users.domain.entity.Users;
 import gist.pilldispenser.users.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,8 +39,8 @@ public class FullMedicationInfoService {
 
     @Transactional
     public void saveFullMedicationInfoByItemSeq(Long userId, String itemSeq) {
-        FullMedicationInfoRequestDto dto = FullMedicationInfoMapper.toFullMedicationInfoRequestDto(userId, itemSeq);
 
+        FullMedicationInfoRequestDto dto = FullMedicationInfoMapper.toFullMedicationInfoRequestDto(userId, itemSeq);
         QDrugSummary drugSummary = QDrugSummary.drugSummary;
         QDrugIdentification drugIdentification = QDrugIdentification.drugIdentification;
         QDrugProduct drugProduct = QDrugProduct.drugProduct;
@@ -69,15 +69,14 @@ public class FullMedicationInfoService {
             throw new IllegalArgumentException("해당 itemSeq에 대한 DrugProduct 정보를 찾을 수 없습니다: " + dto.getItemSeq());
         }
 
+        FullMedicationInfo fullMedicationInfo = FullMedicationInfoMapper.toFullMedicationInfo(dto, fetchedDrugSummary, fetchedDrugIdentification, fetchedDrugProducts);
+        fullMedicationInfoRepository.save(fullMedicationInfo);
+
         Users user = usersRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 userId에 대한 사용자 정보를 찾을 수 없습니다: " + dto.getUserId()));
-
-        FullMedicationInfo fullMedicationInfo = FullMedicationInfoMapper.toFullMedicationInfo(dto, fetchedDrugSummary, fetchedDrugIdentification, fetchedDrugProducts, user);
-        fullMedicationInfoRepository.save(fullMedicationInfo);
 
         UserDrugInfo userDrugInfo = UserDrugInfo.create(user, null, fullMedicationInfo);
         userDrugInfoRepository.save(userDrugInfo);
     }
-
 
 }
