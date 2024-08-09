@@ -2,9 +2,7 @@ package gist.pilldispenser.users.domain.entity;
 
 import gist.pilldispenser.common.entity.BaseEntity;
 import gist.pilldispenser.common.entity.enums.RoleType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity(name = "users")
@@ -25,4 +23,6 @@ public class Users extends BaseEntity {
     // 하드웨어 번호
     @Setter
     private String hardwareNo;
+
+
 }
