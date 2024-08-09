@@ -20,6 +20,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,9 +76,11 @@ public class OAuthService {
         headers.add("Authorization", "Bearer "+accessToken);
         headers.add("Content-Type", "application/x-www-form-urlencoded");
 
+        URL url = new URL(INFO_URI);
+
         HttpEntity<MultiValueMap<String,String>> kakaoUserInfoRequest = new HttpEntity<>(headers);
         ResponseEntity<String> response = restTemplate.exchange(
-                INFO_URI, HttpMethod.GET, kakaoUserInfoRequest, String.class);
+                url.toString(), HttpMethod.GET, kakaoUserInfoRequest, String.class);
 
         KakaoUserInfoResponse userInfo = KakaoUserInfoResponse.fromJson(response.getBody(), objectMapper);
         return KakaoUserInfoResponse.fromKakaoUserInfoResponse(userInfo);
