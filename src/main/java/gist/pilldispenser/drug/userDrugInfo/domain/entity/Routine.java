@@ -35,10 +35,18 @@ public class Routine {
     @Column(nullable = false)
     private boolean isActive;  // 루틴 활성화 여부
 
-    public void updateRoutine(LocalTime time, int dosagePerTake, int dailyDosage, boolean isActive) {
-        this.time = time;
-        this.dosagePerTake = dosagePerTake;
-        this.dailyDosage = dailyDosage;
-        this.isActive = isActive;
+    public void updateRoutine(LocalTime time, int dosagePerTake, int dailyDosage, Boolean isActive) {
+        if (time != null) {
+            this.time = time;
+        }
+        if (dosagePerTake != 0) {
+            this.dosagePerTake = dosagePerTake;
+        }
+        if (dailyDosage != 0) {
+            this.dailyDosage = dailyDosage;
+        }
+        if (isActive != null) {
+            this.isActive = isActive;
+        }
     }
 }

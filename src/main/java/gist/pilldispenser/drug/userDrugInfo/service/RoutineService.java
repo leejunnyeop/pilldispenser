@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,5 +36,35 @@ public class RoutineService {
 
         return routineRepository.save(routine);
     }
+    @Transactional(readOnly = true)
+    public List<Routine> getRoutinesByUserId(Long userId) {
+        return  routineRepository.findByUserDrugInfoUserId(userId);
+    }
 
+    // 특정 루틴 조회
+    @Transactional(readOnly = true)
+    public Optional<Routine> getRoutineById(Long routineId) {
+        return routineRepository.findById(routineId);
+    }
+
+    // 루틴 업데이트
+    @Transactional
+    public Routine updateRoutine(Long routineId, RoutineRequestDto routineRequestDto) {
+        Routine routine = routineRepository.findById(routineId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 루틴을 찾을 수 없습니다."));
+
+        routine.updateRoutine(routineRequestDto.getTime(), routineRequestDto.getDosagePerTake(),
+                routineRequestDto.getDailyDosage(), routineRequestDto.isActive());
+
+        return routineRepository.save(routine);
+    }
+
+    // 루틴 삭제
+    @Transactional
+    public void deleteRoutine(Long routineId) {
+        Routine routine = routineRepository.findById(routineId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 루틴을 찾을 수 없습니다."));
+
+        routineRepository.delete(routine);
+    }
 }
