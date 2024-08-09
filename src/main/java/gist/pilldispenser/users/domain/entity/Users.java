@@ -2,11 +2,8 @@ package gist.pilldispenser.users.domain.entity;
 
 import gist.pilldispenser.common.entity.BaseEntity;
 import gist.pilldispenser.common.entity.enums.RoleType;
-import gist.pilldispenser.drug.medication.domain.FullMedicationInfo;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.List;
 
 @Entity(name = "users")
 @Getter
