@@ -47,13 +47,12 @@ public class DrugSummary {
     private String useMethodQesitm; // 용법
     @Column(length = 3000)
     private String atpnQesitm; // 먹지 말아야하는 대상
-    @Column(length = 3000)
+    @Column(length = 2000)
     private String intrcQesitm; // 혼용 금지 성분?
     @Column(length = 3000)
     private String seQesitm; //주의사항
-    @Column(length = 3000)
+
     private String depositMethodQesitm; // 보관방법
-    @Column(length = 3000)
     private String itemImage; // 이미지 이거 사용
 
     @OneToOne(mappedBy = "drugSummary", fetch = FetchType.LAZY)
