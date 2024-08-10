@@ -2,8 +2,11 @@ package gist.pilldispenser.users.domain.entity;
 
 import gist.pilldispenser.common.entity.BaseEntity;
 import gist.pilldispenser.common.entity.enums.RoleType;
+import gist.pilldispenser.drug.userDrugInfo.domain.entity.UserDrugInfo;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity(name = "users")
 @Getter
@@ -24,5 +27,7 @@ public class Users extends BaseEntity {
     @Setter
     private String hardwareNo;
 
+    @OneToMany(mappedBy = "user")
+    private List<UserDrugInfo> userDrugInfos;
 
 }
