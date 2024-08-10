@@ -30,6 +30,7 @@ public class OAuthController {
 
         URL url = new URL(request.getRequestURL().toString());
         boolean isLocal = url.getHost().contains("localhost");
+        log.info("Kakao login url: " + url.toString());
         log.info("isLocal: " + isLocal+", code: "+code);
 
         try {
