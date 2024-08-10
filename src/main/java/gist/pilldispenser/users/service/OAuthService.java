@@ -55,6 +55,8 @@ public class OAuthService {
         params.add("code", authCode);
         params.add("client_secret", SECRET_KEY);
 
+        log.info("redirect-uri: "+determineRedirectUri(isLocal));
+
         HttpEntity<MultiValueMap<String,String>> kakaoTokenRequest = new HttpEntity<>(params, headers);
         ResponseEntity<String> token = restTemplate.exchange(
                 TOKEN_URI, HttpMethod.POST, kakaoTokenRequest, String.class);
