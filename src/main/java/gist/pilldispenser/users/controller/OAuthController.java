@@ -26,13 +26,15 @@ public class OAuthController {
 
     @GetMapping("/login/oauth2/code/kakao")
     public ResponseEntity<UserInfoResponse> kakaoLogin(HttpServletRequest request,
-                                                       @RequestParam("code") String code,
-                                                       @RequestParam("redirect-uri") String redirectUri) throws IOException {
+                                                       @RequestParam("code") String code) throws IOException {
 
-        log.info("redirect-uri: {}", redirectUri);
+        URL url = new URL(request.getRequestURL().toString());
+        boolean isLocal = url.getHost().contains("localhost");
+        log.info("Kakao login url: " + url.toString());
+        log.info("isLocal: " + isLocal+", code: "+code);
 
         try {
-            OAuthTokenResponse tokenResponse = oAuthService.getKakaoToken(code, redirectUri);
+            OAuthTokenResponse tokenResponse = oAuthService.getKakaoToken(code, isLocal);
             UserInfoResponse userInfo = oAuthService.kakaoUserInfo(tokenResponse.getAccessToken());
 
             oAuthService.saveAccessTokenToRedis(tokenResponse, userInfo.getEmail());
