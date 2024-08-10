@@ -33,7 +33,7 @@ public class Routine {
     private int dailyDosage;  // 하루 복용 횟수
 
     @Column(nullable = false)
-    private boolean isActive;  // 루틴 활성화 여부
+    private Boolean isActive;  // 루틴 활성화 여부
 
     public void updateRoutine(LocalTime time, int dosagePerTake, int dailyDosage, Boolean isActive) {
         if (time != null) {

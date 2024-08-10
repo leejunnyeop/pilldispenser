@@ -26,7 +26,7 @@ public class SchedulerInitConfig {
         return args -> {
             List<Routine> routines = routineRepository.findAll();
             for (Routine routine : routines) {
-                if (routine.isActive()){
+                if (routine.getIsActive()){
                     NotificationTask task = new NotificationTask(notificationHelper, routine);
                     String taskKey = "schedule-"+routine.getId();
                     customScheduleService.scheduleNotification(taskKey, task, notificationHelper.getCronExpression(routine));
