@@ -110,5 +110,8 @@ public class RoutineController {
                 .orElseThrow(() -> new IllegalArgumentException("해당 ID의 루틴을 찾을 수 없습니다."));
 
         routineRepository.delete(routine);
+        String taskKey = "schedule-"+routineId;
+        customScheduleService.cancelScheduledTask(taskKey);
+
     }
 }
