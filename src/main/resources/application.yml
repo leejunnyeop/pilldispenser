@@ -43,10 +43,10 @@ springdoc:
 
 kakao:
   api-key: e5f999aea90e6265d592dd3658b246c5
-  redirect-uri-local-be: http://localhost:8080/login/oauth2/code/kakao
-  redirect-uri-https-be: https://api.pillsogood.shop/login/oauth2/code/kakao
-  redirect-uri-local-fe: http://localhost:5173/login/kakao
-  redirect-uri-https-fe: https://pillsogood.shop/login/kakao
+#  redirect-uri-local-be: http://localhost:8080/login/oauth2/code/kakao
+#  redirect-uri-https-be: https://api.pillsogood.shop/login/oauth2/code/kakao
+  redirect-uri-local: http://localhost:5173/login/kakao
+  redirect-uri-https: https://pillsogood.shop/login/kakao
   secret-key: VDJMPMRiNuIBKAEDwNeKFQwwmh3KRWMy
   token-uri: https://kauth.kakao.com/oauth/token
   info-uri: https://kapi.kakao.com/v2/user/me

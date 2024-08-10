@@ -30,11 +30,10 @@ public class OAuthController {
 
         URL url = new URL(request.getRequestURL().toString());
         boolean isLocal = url.getHost().contains("localhost");
-        boolean isBE = (url.getPort() == 8080);
-        log.info("isLocal: " + isLocal+", isBE: "+isBE+" code: "+code);
+        log.info("isLocal: " + isLocal+", code: "+code);
 
         try {
-            OAuthTokenResponse tokenResponse = oAuthService.getKakaoToken(code, isLocal, isBE);
+            OAuthTokenResponse tokenResponse = oAuthService.getKakaoToken(code, isLocal);
             UserInfoResponse userInfo = oAuthService.kakaoUserInfo(tokenResponse.getAccessToken());
 
             oAuthService.saveAccessTokenToRedis(tokenResponse, userInfo.getEmail());

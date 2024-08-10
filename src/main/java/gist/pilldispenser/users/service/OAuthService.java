@@ -32,14 +32,10 @@ public class OAuthService {
 
     @Value("${kakao.api-key}")
     private String API_KEY;
-    @Value("${kakao.redirect-uri-local-fe}")
-    private String REDIRECT_URI_LOCAL_FE;
-    @Value("${kakao.redirect-uri-https-fe}")
-    private String REDIRECT_URI_HTTPS_FE;
-    @Value("${kakao.redirect-uri-local-be}")
-    private String REDIRECT_URI_LOCAL_BE;
-    @Value("${kakao.redirect-uri-https-be}")
-    private String REDIRECT_URI_HTTPS_BE;
+    @Value("${kakao.redirect-uri-local}")
+    private String REDIRECT_URI_LOCAL;
+    @Value("${kakao.redirect-uri-https}")
+    private String REDIRECT_URI_HTTPS;
     @Value("${kakao.secret-key}")
     private String SECRET_KEY;
     @Value("${kakao.token-uri}")
@@ -48,14 +44,14 @@ public class OAuthService {
     private String INFO_URI;
 
     // 카카오 인가코드로 카카오 액세스 토큰 발급
-    public OAuthTokenResponse getKakaoToken(String authCode, boolean isLocal, boolean isBE) throws JsonProcessingException {
+    public OAuthTokenResponse getKakaoToken(String authCode, boolean isLocal) throws JsonProcessingException {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/x-www-form-urlencoded");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", API_KEY);
-        params.add("redirect_uri", determineRedirectUri(isLocal, isBE));
+        params.add("redirect_uri", determineRedirectUri(isLocal));
         params.add("code", authCode);
         params.add("client_secret", SECRET_KEY);
 
@@ -70,20 +66,10 @@ public class OAuthService {
     }
 
     // redirect-uri 결정
-    private String determineRedirectUri(boolean isLocal, boolean isBE){
+    private String determineRedirectUri(boolean isLocal){
         if (isLocal){
-            if (isBE){
-                return REDIRECT_URI_LOCAL_BE;
-            } else {
-                return REDIRECT_URI_LOCAL_FE;
-            }
-        } else {
-            if (isBE){
-                return REDIRECT_URI_HTTPS_BE;
-            } else {
-                return REDIRECT_URI_HTTPS_FE;
-            }
-        }
+            return REDIRECT_URI_LOCAL;
+        } else return REDIRECT_URI_HTTPS;
     }
 
     // 카카오 유저정보 가져오기
