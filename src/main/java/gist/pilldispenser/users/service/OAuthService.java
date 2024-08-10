@@ -32,10 +32,6 @@ public class OAuthService {
 
     @Value("${kakao.api-key}")
     private String API_KEY;
-    @Value("${kakao.redirect-uri-local}")
-    private String REDIRECT_URI_LOCAL;
-    @Value("${kakao.redirect-uri-https}")
-    private String REDIRECT_URI_HTTPS;
     @Value("${kakao.secret-key}")
     private String SECRET_KEY;
     @Value("${kakao.token-uri}")
@@ -44,18 +40,16 @@ public class OAuthService {
     private String INFO_URI;
 
     // 카카오 인가코드로 카카오 액세스 토큰 발급
-    public OAuthTokenResponse getKakaoToken(String authCode, boolean isLocal) throws JsonProcessingException {
+    public OAuthTokenResponse getKakaoToken(String authCode, String redirectUri) throws JsonProcessingException {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/x-www-form-urlencoded");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", API_KEY);
-        params.add("redirect_uri", determineRedirectUri(isLocal));
+        params.add("redirect_uri", redirectUri);
         params.add("code", authCode);
         params.add("client_secret", SECRET_KEY);
-
-        log.info("redirect-uri: "+determineRedirectUri(isLocal));
 
         HttpEntity<MultiValueMap<String,String>> kakaoTokenRequest = new HttpEntity<>(params, headers);
         ResponseEntity<String> token = restTemplate.exchange(
@@ -65,13 +59,6 @@ public class OAuthService {
         log.info("accessToken: "+tokenResponse.getAccessToken());
 
         return tokenResponse;
-    }
-
-    // redirect-uri 결정
-    private String determineRedirectUri(boolean isLocal){
-        if (isLocal){
-            return REDIRECT_URI_LOCAL;
-        } else return REDIRECT_URI_HTTPS;
     }
 
     // 카카오 유저정보 가져오기
