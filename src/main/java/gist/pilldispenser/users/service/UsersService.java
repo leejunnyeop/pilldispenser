@@ -4,6 +4,7 @@ import gist.pilldispenser.common.security.UsersDetails;
 import gist.pilldispenser.common.security.jwt.JwtProvider;
 import gist.pilldispenser.users.converter.UsersConverter;
 import gist.pilldispenser.users.domain.entity.Users;
+import gist.pilldispenser.users.domain.model.UsersHardwareNoRequest;
 import gist.pilldispenser.users.domain.model.UsersRequest;
 import gist.pilldispenser.users.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -52,4 +53,10 @@ public class UsersService {
         return usersRepository.findFirstById(usersDetails.getId());
     }
 
+    // 하드웨어 시리얼 넘버 추가
+    public Users updateHardwareNo(String email, UsersHardwareNoRequest request){
+        Users users = usersRepository.findByEmail(email);
+        users.setHardwareNo(request.hardwareNo());
+        return usersRepository.save(users);
+    }
 }

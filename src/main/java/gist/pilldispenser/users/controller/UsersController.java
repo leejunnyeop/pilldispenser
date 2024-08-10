@@ -4,6 +4,7 @@ import gist.pilldispenser.common.security.UsersDetails;
 import gist.pilldispenser.users.converter.UsersConverter;
 import gist.pilldispenser.users.domain.entity.Users;
 import gist.pilldispenser.users.domain.model.UserInfoResponse;
+import gist.pilldispenser.users.domain.model.UsersHardwareNoRequest;
 import gist.pilldispenser.users.domain.model.UsersResponse;
 import gist.pilldispenser.users.service.UsersService;
 import lombok.RequiredArgsConstructor;
@@ -40,4 +41,10 @@ public class UsersController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PutMapping("/hardware-no")
+    public ResponseEntity<UsersResponse> hardwareNo(@AuthenticationPrincipal UsersDetails usersDetails,
+                                                    @RequestBody UsersHardwareNoRequest request){
+        Users updatedUser = usersService.updateHardwareNo(usersDetails.getUsername(), request);
+        return new ResponseEntity<>(usersConverter.toResponse(updatedUser), HttpStatus.OK);
+    }
 }
