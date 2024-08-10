@@ -5,6 +5,9 @@ import gist.pilldispenser.drug.userDrugInfo.domain.dto.RoutineRequestDto;
 import gist.pilldispenser.drug.userDrugInfo.domain.entity.Routine;
 import gist.pilldispenser.drug.userDrugInfo.repository.RoutineRepository;
 import gist.pilldispenser.drug.userDrugInfo.service.RoutineService;
+import gist.pilldispenser.notification.service.CustomScheduleService;
+import gist.pilldispenser.notification.service.NotificationHelper;
+import gist.pilldispenser.notification.service.NotificationTask;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,6 +31,8 @@ public class RoutineController {
 
     private final RoutineService routineService;
     private final RoutineRepository routineRepository;
+    private final NotificationHelper notificationHelper;
+    private final CustomScheduleService customScheduleService;
 
     @Operation(summary = "루틴 생성", description = "사용자의 약물 복용 루틴을 생성합니다.")
     @ApiResponses(value = {
@@ -41,7 +46,12 @@ public class RoutineController {
 
         Long userId = userDetails.getId();
 
-        routineService.createRoutine(userId, routineRequestDto);
+        Routine routine = routineService.createRoutine(userId, routineRequestDto);
+
+        // 루틴 생성과 동시에 알림 등록
+        NotificationTask task = new NotificationTask(notificationHelper, routine);
+        String taskKey = "schedule-"+routine.getId();
+        customScheduleService.scheduleNotification(taskKey, task, notificationHelper.getCronExpression(routine));
 
         return ResponseEntity.ok("루틴이 성공적으로 저장되었습니다.");
     }
@@ -80,6 +90,10 @@ public class RoutineController {
             @RequestBody RoutineRequestDto routineRequestDto) {
 
         Routine updatedRoutine = routineService.updateRoutine(routineId, routineRequestDto);
+        NotificationTask task = new NotificationTask(notificationHelper, updatedRoutine);
+        String taskKey = "schedule-"+updatedRoutine.getId();
+        customScheduleService.scheduleNotification(taskKey, task, notificationHelper.getCronExpression(updatedRoutine));
+
         return ResponseEntity.ok(updatedRoutine);
     }
 
