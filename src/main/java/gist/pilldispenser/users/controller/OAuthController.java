@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.net.URL;
 
 @Slf4j
 @RestController
@@ -26,11 +27,14 @@ public class OAuthController {
     @GetMapping("/login/oauth2/code/kakao")
     public ResponseEntity<UserInfoResponse> kakaoLogin(HttpServletRequest request,
                                                        @RequestParam("code") String code) throws IOException {
-        boolean isLocal = request.getRequestURL().toString().contains("localhost");
-        log.info("isLocal: " + isLocal+", code: "+code);
+
+        URL url = new URL(request.getRequestURL().toString());
+        boolean isLocal = url.getHost().contains("localhost");
+        boolean isBE = (url.getPort() == 8080);
+        log.info("isLocal: " + isLocal+", isBE: "+isBE+" code: "+code);
 
         try {
-            OAuthTokenResponse tokenResponse = oAuthService.getKakaoToken(code, isLocal);
+            OAuthTokenResponse tokenResponse = oAuthService.getKakaoToken(code, isLocal, isBE);
             UserInfoResponse userInfo = oAuthService.kakaoUserInfo(tokenResponse.getAccessToken());
 
             oAuthService.saveAccessTokenToRedis(tokenResponse, userInfo.getEmail());
