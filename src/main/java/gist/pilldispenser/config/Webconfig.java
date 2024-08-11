@@ -12,6 +12,7 @@ public class Webconfig implements WebMvcConfigurer {
                 .allowedOriginPatterns("*")  // 모든 오리진 허용
                 .allowedMethods("GET", "POST", "PUT", "DELETE")  // 허용할 HTTP 메서드 지정
                 .allowedHeaders("*")      // 모든 헤더 허용
-                .allowCredentials(true);    // JWT 사용을 위한 자격 증명 허용
+                .allowCredentials(true)
+                .exposedHeaders("Authorization");    // JWT 사용을 위한 자격 증명 허용
     }
 }
