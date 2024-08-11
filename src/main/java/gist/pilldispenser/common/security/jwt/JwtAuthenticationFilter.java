@@ -29,7 +29,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (excludeUrl(request, response, filterChain)){
+        if (isExcludedByUrl(request) || isExcludedByMethod(request)){
+            filterChain.doFilter(request, response);
             return;
         }
 
@@ -63,11 +64,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
-    public boolean excludeUrl(HttpServletRequest request, HttpServletResponse response,
-                              FilterChain filterChain) throws ServletException, IOException {
+    public boolean isExcludedByUrl(HttpServletRequest request)  {
         if (request.getRequestURI().contains("login") || request.getRequestURI().contains("kakao")) {
             log.info("Request sent to: "+request.getRequestURI()+" is excluded from JwtAuthenticationFilter");
-            filterChain.doFilter(request, response);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isExcludedByMethod(HttpServletRequest request) {
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            log.info("Request send via OPTIONS method is excluded from JwtAuthenticationFilter.");
             return true;
         } else {
             return false;
