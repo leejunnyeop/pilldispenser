@@ -87,9 +87,11 @@ public class DrugSummaryController {
             @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @GetMapping("/api/drug-info/componentConflicts")
-    public ResponseEntity<List<String>> findDrugsByComponentName(@Parameter(description = "검색할 성분 이름") @RequestParam String componentName) {
+    public ResponseEntity<List<String>> findDrugsByComponentName(@Parameter(description = "검색할 성분 이름") @RequestParam String componentName, @AuthenticationPrincipal UsersDetails usersDetails) {
         try {
-            List<String> result = drugSummarySearchServiceImpl.findDrugsByComponentName(componentName);
+            Long userId = usersDetails.getId();
+            List<String> result = drugSummarySearchServiceImpl.findDrugsByComponentName(componentName, userId);
+
             return ResponseEntity.ok(result.isEmpty() ? null : result);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);

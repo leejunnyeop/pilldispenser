@@ -1,11 +1,17 @@
 package gist.pilldispenser.drug.api.drugSummaryAPI.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import gist.pilldispenser.drug.api.drugProductAPI.domain.entity.DrugProduct;
 import gist.pilldispenser.drug.api.drugProductAPI.domain.entity.QDrugProduct;
+import gist.pilldispenser.drug.api.drugProductAPI.repository.DrugProductRepository;
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.dto.response.DrugSummaryDTO;
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.DrugSummary;
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.QDrugSummary;
 import gist.pilldispenser.drug.api.drugSummaryAPI.repository.DrugSummaryRepository;
+import gist.pilldispenser.drug.userDrugInfo.domain.dto.UserDrugRoutineResponse;
+import gist.pilldispenser.drug.userDrugInfo.domain.entity.QUserDrugInfo;
+import gist.pilldispenser.drug.userDrugInfo.domain.entity.UserDrugInfo;
+import gist.pilldispenser.drug.userDrugInfo.repository.UserDrugInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,11 +21,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.querydsl.jpa.JPAExpressions.select;
+
 @Service
 @RequiredArgsConstructor
 public class DrugSummarySearchServiceImpl implements DrugSummarySearchService {
 
     private final DrugSummaryRepository drugSummaryRepository;
+    private final DrugProductRepository drugProductRepository;
+    private final UserDrugInfoRepository userDrugInfoRepository;
     private final JPAQueryFactory queryFactory;
 
 
@@ -74,27 +84,23 @@ public class DrugSummarySearchServiceImpl implements DrugSummarySearchService {
 
     // 특정 성분으로 혼용 금지 성분을 포함하는 약물 리스트 반환
     @Transactional(readOnly = true)
-    public List<String> findDrugsByComponentName(String componentName) throws Exception {
+    public List<String> findDrugsByComponentName(String componentName, Long userId) throws Exception {
+        List<String> conflictingDrugs = new ArrayList<>();
         try {
-            QDrugSummary drugSummary = QDrugSummary.drugSummary;
-            QDrugProduct drugProduct = QDrugProduct.drugProduct;
+            List<UserDrugInfo> userDrugInfos = userDrugInfoRepository.findByUserId(userId);
 
-            // 해당 성분이 포함된 intrcQesitm을 가진 DrugSummary를 조회
-            List<String> conflictingDrugs = queryFactory
-                    .select(drugSummary.itemSeq)
-                    .from(drugSummary)
-                    .where(drugSummary.intrcQesitm.like("%" + componentName + "%"))
-                    .fetch();
+            for (UserDrugInfo userDrugInfo : userDrugInfos) {
+                if (userDrugInfo.getFullMedicationInfo() != null) {
+                    String itemSeq = userDrugInfo.getFullMedicationInfo().getItemSeq();
+                    DrugProduct drugProduct = drugProductRepository.findByItemSeq(itemSeq);
 
-            if (conflictingDrugs.isEmpty()) {
-                return new ArrayList<>();
+                    if (drugProduct.getMtralNm().contains(componentName)) {
+                        conflictingDrugs.add(drugProduct.getPrduct());
+                    }
+                }
             }
 
-            return queryFactory
-                    .select(drugProduct.prduct)
-                    .from(drugProduct)
-                    .where(drugProduct.itemSeq.in(conflictingDrugs))
-                    .fetch();
+            return conflictingDrugs;
         } catch (Exception e) {
             throw new Exception("특정 성분으로 혼용 금지 성분을 포함하는 약물을 조회하는 중 오류가 발생했습니다: " + componentName, e);
         }
