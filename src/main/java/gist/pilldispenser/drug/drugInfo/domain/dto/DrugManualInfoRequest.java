@@ -5,22 +5,24 @@ import gist.pilldispenser.drug.drugInfo.domain.entity.DrugShape;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class DrugInfoRequestBase {
+public class DrugManualInfoRequest {
 
     private String name;
     private String dosage;
-    private List<String> ingredients;
-    private int dailyDosage;
-    private List<String> timeOfDay;
-    private List<String> whenToTake;
-    private DrugShape shape;  // Enum 타입
+    private String mtralNm;
+    private Integer dailyDosage;
+    private String shape;  // Enum 타입
+
+    private Double longAxis;
+    private Double shortAxis;
+
+    private Long slotId;
+    private String diskSize;
 
 }

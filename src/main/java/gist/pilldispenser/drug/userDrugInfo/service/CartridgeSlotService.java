@@ -102,11 +102,9 @@ public class CartridgeSlotService {
         }
     }
 
-    public String assignDiskByDrugInfoId(Long userId, Long drugInfoId) {
-        DrugInfo drugInfo = drugInfoRepository.findById(drugInfoId).orElseThrow(
-                () -> new RuntimeException("등록된 약이 존재하지 않습니다."));
+    public String assignDiskByDrugInfoId(Long userId, String drugShape, Double drugLeng) {
 
-        String diskSize = determineDiskSize(drugInfo.getShape().getDescription(), drugInfo.getLongAxis());
+        String diskSize = determineDiskSize(drugShape, drugLeng);
         if (cartridgeSlotRepository.existsByUserIdAndIsOccupiedFalse(userId)) {
             return diskSize;
         } else {

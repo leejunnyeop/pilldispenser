@@ -2,7 +2,7 @@ package gist.pilldispenser.drug.drugInfo.controller;
 
 import gist.pilldispenser.common.security.UsersDetails;
 import gist.pilldispenser.drug.drugInfo.domain.dto.DrugAutoRegistrationRequest;
-import gist.pilldispenser.drug.drugInfo.domain.dto.DrugInfoRequestBase;
+import gist.pilldispenser.drug.drugInfo.domain.dto.DrugManualInfoRequest;
 import gist.pilldispenser.drug.drugInfo.domain.dto.DrugRegistrationResponse;
 import gist.pilldispenser.drug.drugInfo.service.DrugInfoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,10 +30,9 @@ public class DrugInfoController {
     })
     @PostMapping("/register/manual")
     public ResponseEntity<DrugRegistrationResponse> registerDrugInfoManually(
-            @RequestBody DrugInfoRequestBase drugInfoRequest,
+            @RequestBody DrugManualInfoRequest drugInfoRequest,
             @AuthenticationPrincipal UsersDetails userDetails) {
-        Long userId = userDetails.getId();
-        DrugRegistrationResponse response = drugInfoService.createDrugInfoManually(userId, drugInfoRequest);
+        DrugRegistrationResponse response = drugInfoService.createDrugInfoManually(userDetails, drugInfoRequest);
         return ResponseEntity.ok(response);
     }
 

@@ -19,6 +19,7 @@ public class DrugInfo {
     private String name;
     private String dosage;
     private int dailyDosage;
+    private String mtralNm;
 
     @Enumerated(EnumType.STRING)
     private DrugShape shape;

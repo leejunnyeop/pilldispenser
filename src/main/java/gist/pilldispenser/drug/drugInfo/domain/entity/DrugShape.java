@@ -16,4 +16,13 @@ public enum DrugShape {
     public String getDescription() {
         return description;
     }
+
+    public static DrugShape fromDescription(String description) {
+        for (DrugShape shape : DrugShape.values()) {
+            if (shape.getDescription().equalsIgnoreCase(description)) {
+                return shape;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant with description " + description);
+    }
 }
