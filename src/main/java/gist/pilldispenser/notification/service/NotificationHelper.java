@@ -4,9 +4,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.Tuple;
 import gist.pilldispenser.common.utils.RedisUtils;
+import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity.DrugIdentification;
+import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity.QDrugIdentification;
+import gist.pilldispenser.drug.api.drugIdentificationAPI.repository.DrugIdentificationRepository;
 import gist.pilldispenser.drug.drugInfo.domain.entity.DrugInfo;
 import gist.pilldispenser.drug.drugInfo.domain.entity.QDrugInfo;
+import gist.pilldispenser.drug.medication.domain.entity.FullMedicationInfo;
+import gist.pilldispenser.drug.medication.domain.entity.QFullMedicationInfo;
 import gist.pilldispenser.drug.userDrugInfo.domain.entity.Routine;
+import gist.pilldispenser.drug.userDrugInfo.domain.entity.UserDrugInfo;
+import gist.pilldispenser.drug.userDrugInfo.repository.RoutineRepository;
+import gist.pilldispenser.drug.userDrugInfo.repository.UserDrugInfoRepository;
 import gist.pilldispenser.drug.userDrugInfo.repository.UserDrugInfoRepositoryCustomImpl;
 import gist.pilldispenser.notification.domain.NotificationTemplate;
 import gist.pilldispenser.users.domain.entity.QUsers;
@@ -25,10 +33,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.time.DayOfWeek;
 import java.time.LocalTime;
-import java.time.format.TextStyle;
-import java.util.Locale;
 
 @Slf4j
 @Service
@@ -39,6 +44,7 @@ public class NotificationHelper {
     private final RedisUtils redisUtils;
     private final RestTemplate restTemplate;
     private final OAuthService oAuthService;
+    private final DrugIdentificationRepository drugIdentificationRepository;
     private final UserDrugInfoRepositoryCustomImpl userDrugInfoRepositoryCustomImpl;
 
     @Value("${kakao.msg-uri}")
@@ -46,11 +52,38 @@ public class NotificationHelper {
 
     // 지정 시간에 카카오톡 메시지 API를 호출
     public String sendNotification(Routine routine) throws IOException {
-        Tuple tuple = userDrugInfoRepositoryCustomImpl.findUserDrugInfoAndDrugInfoAndUserByRoutineId(routine.getId());
 
-        assert tuple != null;
-        DrugInfo drugInfo = tuple.get(QDrugInfo.drugInfo);
-        Users users = tuple.get(QUsers.users);
+        UserDrugInfo userDrugInfo = userDrugInfoRepositoryCustomImpl.getUserDrugInfoByRoutine(routine.getId());
+
+        DrugInfo drugInfo;
+        Users users;
+        FullMedicationInfo fullMedicationInfo;
+
+        String message;
+
+        if (userDrugInfo.getDrugInfo()==null && userDrugInfo.getFullMedicationInfo()!=null){
+            log.info("db에 저장된 약.");
+            Tuple tuple = userDrugInfoRepositoryCustomImpl.
+                    findUserDrugInfoAndFullMedicationInfoByRoutineId(routine.getId());
+            fullMedicationInfo = tuple.get(QFullMedicationInfo.fullMedicationInfo);
+            users = tuple.get(QUsers.users);
+
+            DrugIdentification drugIdentification = userDrugInfoRepositoryCustomImpl.
+                    getDrugIdentificationByFullMedicationInfo(fullMedicationInfo);
+
+            message = notificationTemplate(routine, drugIdentification);
+
+        } else if (userDrugInfo.getFullMedicationInfo()==null && userDrugInfo.getDrugInfo()!=null){
+            log.info("유저가 저장한 약.");
+            Tuple tuple = userDrugInfoRepositoryCustomImpl.
+                    findUserDrugInfoAndDrugInfoByRoutineId(routine.getId());
+            drugInfo = tuple.get(QDrugInfo.drugInfo);
+            message = notificationTemplate(routine, drugInfo);
+            users = tuple.get(QUsers.users);
+
+        } else {
+            throw new RuntimeException("tuple is null");
+        }
 
         String accessToken = getKakaoToken(users.getEmail());
 
@@ -58,7 +91,7 @@ public class NotificationHelper {
         headers.add("Authorization", "Bearer " + accessToken);
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("template_object", notificationTemplate(routine, drugInfo));
+        params.add("template_object", message);
 
         HttpEntity<MultiValueMap<String,String>> kakaoMessageRequest = new HttpEntity<>(params, headers);
         ResponseEntity<String> response = restTemplate.exchange(
@@ -84,11 +117,11 @@ public class NotificationHelper {
         return response.getBody();
     }
 
-    // 약 복용 알림 메시지를 작성
+    // 약 복용 알림 메시지를 작성(직접 등록한 약)
     private String notificationTemplate(Routine routine, DrugInfo drugInfo) throws JsonProcessingException {
         NotificationTemplate.LinkList linkList = NotificationTemplate.LinkList.builder()
-                .webUrl("http://api.pillsogood.shop")
-                .mobileWebUrl("http://api.pillsogood.shop")
+                .webUrl("https://pillsogood.shop")
+                .mobileWebUrl("https://pillsogood.shop")
                 .build();
 
         String message = drugInfo.getName()
@@ -103,6 +136,26 @@ public class NotificationHelper {
 
         return objectMapper.writeValueAsString(customizedMessage);
     }
+
+    private String notificationTemplate(Routine routine, DrugIdentification drugIdentification) throws JsonProcessingException {
+        NotificationTemplate.LinkList linkList = NotificationTemplate.LinkList.builder()
+                .webUrl("http://api.pillsogood.shop")
+                .mobileWebUrl("http://api.pillsogood.shop")
+                .build();
+
+        String message = drugIdentification.getItemName()
+                +" "+routine.getDailyDosage()+"개 복용 시간입니다.";
+
+        NotificationTemplate customizedMessage = NotificationTemplate.builder()
+                .objectType("text")
+                .text(message)
+                .link(linkList)
+                .buttonTitle("사이트 확인하기")
+                .build();
+
+        return objectMapper.writeValueAsString(customizedMessage);
+    }
+
 
     // 약 복용 확인 알림 메시지 템플릿을 작성
     private String pillTakenNotificationTemplate(boolean isPillTaken) throws JsonProcessingException {

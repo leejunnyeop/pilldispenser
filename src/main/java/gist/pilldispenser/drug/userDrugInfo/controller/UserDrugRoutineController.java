@@ -32,7 +32,8 @@ public class UserDrugRoutineController {
             @ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.")
     })
     @GetMapping()
-    public ResponseEntity<List<UserDrugRoutineResponse>> getUserDrugRoutines(@AuthenticationPrincipal UsersDetails usersDetails) {
+    public ResponseEntity<List<UserDrugRoutineResponse>> getUserDrugRoutines(
+            @AuthenticationPrincipal UsersDetails usersDetails) {
         Long userId = usersDetails.getId();
         List<UserDrugRoutineResponse> routines = userDrugRoutineService.getUserDrugRoutines(userId);
         return ResponseEntity.ok(routines);

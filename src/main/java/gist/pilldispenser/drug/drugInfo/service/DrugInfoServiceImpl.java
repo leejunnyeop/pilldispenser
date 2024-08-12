@@ -42,7 +42,7 @@ public class DrugInfoServiceImpl implements DrugInfoService {
                                                            DrugManualInfoRequest request) {
         DrugInfo drugInfo;
 
-        if (Objects.equals(request.getShortAxis(), request.getLongAxis())) {
+        if (request.getShortAxis().equals(request.getLongAxis())) {
             drugInfo = toDrugInfo(request);
         } else {
             throw new IllegalArgumentException("알 수 없는 약물 정보 요청 타입입니다.");
