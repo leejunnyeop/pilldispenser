@@ -25,7 +25,10 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.time.format.TextStyle;
+import java.util.Locale;
 
 @Slf4j
 @Service
@@ -129,7 +132,7 @@ public class NotificationHelper {
 
     public String getCronExpression(Routine routine) {
         LocalTime time = routine.getTime();
-        return  "0 "+time.getMinute()+" "+time.getHour()+" * * *";
+        return  "0 "+time.getMinute()+" "+time.getHour()+" ? * "+routine.getDays().getCronName();
     }
 
     // 카카오톡 메시지 API 호출에 필요한 액세스 토큰 받아옴

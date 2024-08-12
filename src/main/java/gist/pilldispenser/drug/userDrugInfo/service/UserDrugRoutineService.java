@@ -33,7 +33,7 @@ public class UserDrugRoutineService {
                             .time(routine.getTime())
                             .dosagePerTake(routine.getDosagePerTake())
                             .dailyDosage(routine.getDailyDosage())
-                            .dayOfWeek(routine.getDayOfWeek())
+                            .days(routine.getDays().getDayName())
                             .isActive(routine.getIsActive())
                             .build();
                 }))

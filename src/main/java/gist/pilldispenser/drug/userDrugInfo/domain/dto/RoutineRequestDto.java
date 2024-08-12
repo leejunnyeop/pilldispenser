@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -32,5 +33,5 @@ public class RoutineRequestDto {
     private String itemSeq;  // 약물 고유 번호
 
     @Schema(description = "복용 요일", example = "MONDAY")
-    private DayOfWeek dayOfWeek;  // 복용 요일
+    private List<String> dayOfWeek;  // 복용 요일
 }
