@@ -1,6 +1,7 @@
 package gist.pilldispenser.drug.userDrugInfo.controller;
 
 import gist.pilldispenser.common.security.UsersDetails;
+import gist.pilldispenser.drug.userDrugInfo.domain.dto.MultipleRoutineRequestDto;
 import gist.pilldispenser.drug.userDrugInfo.domain.dto.RoutineRequestDto;
 import gist.pilldispenser.drug.userDrugInfo.domain.entity.Routine;
 import gist.pilldispenser.drug.userDrugInfo.repository.RoutineRepository;
@@ -41,17 +42,20 @@ public class RoutineController {
     })
     @PostMapping("/create")
     public ResponseEntity<String> createRoutine(
-            @RequestBody RoutineRequestDto routineRequestDto,
+            @RequestBody MultipleRoutineRequestDto routineRequestDtos,
             @Parameter(hidden = true) @AuthenticationPrincipal UsersDetails userDetails) {
 
         Long userId = userDetails.getId();
 
-        Routine routine = routineService.createRoutine(userId, routineRequestDto);
+        // 루틴 생성
+        List<Routine> routines = routineService.createRoutine(userId, routineRequestDtos.getRoutines());
 
-        // 루틴 생성과 동시에 알림 등록
-        NotificationTask task = new NotificationTask(notificationHelper, routine);
-        String taskKey = "schedule-"+routine.getId();
-        customScheduleService.scheduleNotification(taskKey, task, notificationHelper.getCronExpression(routine));
+        // 알림 등록
+        for (Routine routine : routines) {
+            NotificationTask task = new NotificationTask(notificationHelper, routine);
+            String taskKey = "schedule-"+routine.getId();
+            customScheduleService.scheduleNotification(taskKey, task, notificationHelper.getCronExpression(routine));
+        }
 
         return ResponseEntity.ok("루틴이 성공적으로 저장되었습니다.");
     }

@@ -1,5 +1,6 @@
 package gist.pilldispenser.drug.userDrugInfo.domain.entity;
 
+import gist.pilldispenser.drug.userDrugInfo.domain.enums.DayType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -36,7 +39,8 @@ public class Routine {
     @Column(nullable = false)
     private Boolean isActive;  // 루틴 활성화 여부
 
-    private DayOfWeek dayOfWeek;
+    @Enumerated(EnumType.STRING)
+    private DayType days;
 
     public void updateRoutine(LocalTime time, int dosagePerTake, int dailyDosage, Boolean isActive) {
         if (time != null) {
