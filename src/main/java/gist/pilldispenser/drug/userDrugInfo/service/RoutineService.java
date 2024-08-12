@@ -1,10 +1,5 @@
 package gist.pilldispenser.drug.userDrugInfo.service;
 
-import gist.pilldispenser.common.security.UsersDetails;
-import gist.pilldispenser.drug.drugInfo.domain.entity.DrugInfo;
-import gist.pilldispenser.drug.medication.domain.entity.FullMedicationInfo;
-import gist.pilldispenser.drug.userDrugInfo.domain.dto.AllRoutineResponse;
-import gist.pilldispenser.drug.userDrugInfo.domain.dto.DrugDetailResponse;
 import gist.pilldispenser.drug.userDrugInfo.domain.dto.RoutineRequestDto;
 import gist.pilldispenser.drug.userDrugInfo.domain.entity.Routine;
 import gist.pilldispenser.drug.userDrugInfo.domain.entity.UserDrugInfo;
@@ -16,12 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.DayOfWeek;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
