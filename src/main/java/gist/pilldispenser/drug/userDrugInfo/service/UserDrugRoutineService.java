@@ -38,6 +38,7 @@ public class UserDrugRoutineService {
                     : userDrugInfo.getFullMedicationInfo().getDrugSummary().getItemImage();
 
             return UserDrugRoutineResponse.builder()
+                .id(userDrugInfo.getId())
                 .drugName(drugName)
                 .entrps(entrps)
                 .image(image)
