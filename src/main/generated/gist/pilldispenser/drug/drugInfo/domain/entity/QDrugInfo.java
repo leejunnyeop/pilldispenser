@@ -27,6 +27,8 @@ public class QDrugInfo extends EntityPathBase<DrugInfo> {
 
     public final NumberPath<Double> longAxis = createNumber("longAxis", Double.class);
 
+    public final StringPath mtralNm = createString("mtralNm");
+
     public final StringPath name = createString("name");
 
     public final EnumPath<DrugShape> shape = createEnum("shape", DrugShape.class);

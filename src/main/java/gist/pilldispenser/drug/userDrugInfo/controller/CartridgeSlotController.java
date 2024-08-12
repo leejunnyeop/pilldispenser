@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,6 +28,7 @@ public class CartridgeSlotController {
 //        return ResponseEntity.ok(assignedSlot);
 //    }
 
+    //
     @GetMapping("/assign")
     public ResponseEntity<Long> findLowestCartridgeNo(@AuthenticationPrincipal UsersDetails usersDetails) {
         Long slotId = cartridgeSlotService.findLowestAvailableSlotId(usersDetails.getId());
@@ -42,21 +44,29 @@ public class CartridgeSlotController {
 //        return ResponseEntity.ok(assignedSlot);
 //    }
 
+    //
     @Operation(summary = "알약 고유번호를 조회하여 디스크 슬롯에 저장", description = "유저의 약물 정보를 조회하고, 해당 알약에 맞는 디스크 슬롯을 찾아 저장합니다.")
-    @GetMapping("/assign-disk-by-item-seq")
+    @GetMapping("/disk/item-seq")
     public ResponseEntity<String> assignDiskByItemSeq(
             @Parameter(description = "유저 ID") @AuthenticationPrincipal UsersDetails usersDetails,
-            @Parameter(description = "알약 고유번호") @RequestParam(required = false) String itemSeq,
-            @Parameter(description = "직접 등록한 약 id") @RequestParam(required = false) Long userDrugInfoId) {
+            @Parameter(description = "알약 고유번호") @RequestParam(required = false) String itemSeq) {
 
-        if (itemSeq != null && userDrugInfoId == null) {
+        if (itemSeq != null) {
             String availableSlot = cartridgeSlotService.assignDiskByItemSeq(usersDetails.getId(), itemSeq);
             return new ResponseEntity<>(availableSlot, HttpStatus.OK);
-        } else if (itemSeq == null && userDrugInfoId != null) {
-            String availableSlot = cartridgeSlotService.assignDiskByDrugInfoId(usersDetails.getId(), userDrugInfoId);
-            return new ResponseEntity<>(availableSlot, HttpStatus.OK);
+        } else {
+            throw new RuntimeException("약을 찾을 수 없습니다.");
         }
-        else throw new RuntimeException("디스크 슬롯을 찾을 수 없습니다.");
     }
 
+    @GetMapping("/disk/user-drug")
+    public ResponseEntity<String> assignDiskByUserDrug(
+            @Parameter(description = "사용자 정보") @AuthenticationPrincipal UsersDetails usersDetails,
+            @Parameter(description = "알약 모양") @RequestParam(required = true) String drugShape,
+            @Parameter(description = "알약 크기") @RequestParam(required = true) Double drugLeng) {
+
+        String availableSlot = cartridgeSlotService.assignDiskByDrugInfoId(
+                usersDetails.getId(), drugShape, drugLeng);
+        return new ResponseEntity<>(availableSlot, HttpStatus.OK);
+    }
 }
