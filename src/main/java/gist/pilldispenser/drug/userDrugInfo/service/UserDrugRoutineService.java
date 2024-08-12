@@ -2,7 +2,6 @@ package gist.pilldispenser.drug.userDrugInfo.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gist.pilldispenser.drug.userDrugInfo.domain.dto.UserDrugRoutineResponse;
-import gist.pilldispenser.drug.userDrugInfo.domain.entity.Routine;
 import gist.pilldispenser.drug.userDrugInfo.domain.entity.UserDrugInfo;
 import gist.pilldispenser.drug.userDrugInfo.repository.RoutineRepository;
 import gist.pilldispenser.drug.userDrugInfo.repository.UserDrugInfoRepository;
@@ -25,21 +24,19 @@ public class UserDrugRoutineService {
     public List<UserDrugRoutineResponse> getUserDrugRoutines(Long userId) {
         List<UserDrugInfo> userDrugInfos = userDrugInfoRepository.findByUserId(userId);
 
-        return userDrugInfos.stream()
-                .flatMap(userDrugInfo -> {
-                    List<Routine> routines = routineRepository.findByUserDrugInfoId(userDrugInfo.getId());
-                    return routines.stream().map(routine -> {
-                        String drugName = userDrugInfo.getDrugInfo() != null
-                                ? userDrugInfo.getDrugInfo().getName()
-                                : userDrugInfo.getFullMedicationInfo().getDrugSummary().getItemName();
+        return userDrugInfos.stream().map(userDrugInfo -> {
+            String drugName = userDrugInfo.getDrugInfo() != null
+                ? userDrugInfo.getDrugInfo().getName()
+                : userDrugInfo.getFullMedicationInfo().getDrugSummary().getItemName();
 
-                        return UserDrugRoutineResponse.builder()
-                                .drugName(drugName)
-                                .dosagePerTake(routine.getDosagePerTake())
-                                .days(routine.getDays())
-                                .build();
-                    });
-                })
-                .collect(Collectors.toList());
+            String entrps = userDrugInfo.getDrugInfo() != null
+                ? null
+                : userDrugInfo.getFullMedicationInfo().getDrugSummary().getEntpName();
+
+            return UserDrugRoutineResponse.builder()
+                .drugName(drugName)
+                .entrps(entrps)
+                .build();
+        }).collect(Collectors.toList());
     }
 }
