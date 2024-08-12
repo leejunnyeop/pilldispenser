@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -22,13 +21,9 @@ public class QDrugInfo extends EntityPathBase<DrugInfo> {
 
     public final NumberPath<Integer> dailyDosage = createNumber("dailyDosage", Integer.class);
 
-    public final NumberPath<Double> diameter = createNumber("diameter", Double.class);
-
     public final StringPath dosage = createString("dosage");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
-
-    public final ListPath<String, StringPath> ingredients = this.<String, StringPath>createList("ingredients", String.class, StringPath.class, PathInits.DIRECT2);
 
     public final NumberPath<Double> longAxis = createNumber("longAxis", Double.class);
 
@@ -37,10 +32,6 @@ public class QDrugInfo extends EntityPathBase<DrugInfo> {
     public final EnumPath<DrugShape> shape = createEnum("shape", DrugShape.class);
 
     public final NumberPath<Double> shortAxis = createNumber("shortAxis", Double.class);
-
-    public final ListPath<String, StringPath> timeOfDay = this.<String, StringPath>createList("timeOfDay", String.class, StringPath.class, PathInits.DIRECT2);
-
-    public final ListPath<String, StringPath> whenToTake = this.<String, StringPath>createList("whenToTake", String.class, StringPath.class, PathInits.DIRECT2);
 
     public QDrugInfo(String variable) {
         super(DrugInfo.class, forVariable(variable));

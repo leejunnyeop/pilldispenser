@@ -8,7 +8,6 @@ import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
-import gist.pilldispenser.drug.api.drugProductAPI.domain.entity.DrugProduct;
 
 
 /**
@@ -23,9 +22,9 @@ public class QFullMedicationInfo extends EntityPathBase<FullMedicationInfo> {
 
     public static final QFullMedicationInfo fullMedicationInfo = new QFullMedicationInfo("fullMedicationInfo");
 
-    public final gist.pilldispenser.drug.api.drugIdentificationAPI.domain.dto.QDrugIdentification drugIdentification;
+    public final gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity.QDrugIdentification drugIdentification;
 
-    public final ListPath<DrugProduct, gist.pilldispenser.drug.api.drugProductAPI.domain.dto.QDrugProduct> drugProducts = this.<DrugProduct, gist.pilldispenser.drug.api.drugProductAPI.domain.dto.QDrugProduct>createList("drugProducts", DrugProduct.class, gist.pilldispenser.drug.api.drugProductAPI.domain.dto.QDrugProduct.class, PathInits.DIRECT2);
+    public final ListPath<gist.pilldispenser.drug.api.drugProductAPI.domain.entity.DrugProduct, gist.pilldispenser.drug.api.drugProductAPI.domain.entity.QDrugProduct> drugProducts = this.<gist.pilldispenser.drug.api.drugProductAPI.domain.entity.DrugProduct, gist.pilldispenser.drug.api.drugProductAPI.domain.entity.QDrugProduct>createList("drugProducts", gist.pilldispenser.drug.api.drugProductAPI.domain.entity.DrugProduct.class, gist.pilldispenser.drug.api.drugProductAPI.domain.entity.QDrugProduct.class, PathInits.DIRECT2);
 
     public final gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.QDrugSummary drugSummary;
 
@@ -51,7 +50,7 @@ public class QFullMedicationInfo extends EntityPathBase<FullMedicationInfo> {
 
     public QFullMedicationInfo(Class<? extends FullMedicationInfo> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.drugIdentification = inits.isInitialized("drugIdentification") ? new gist.pilldispenser.drug.api.drugIdentificationAPI.domain.dto.QDrugIdentification(forProperty("drugIdentification"), inits.get("drugIdentification")) : null;
+        this.drugIdentification = inits.isInitialized("drugIdentification") ? new gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity.QDrugIdentification(forProperty("drugIdentification"), inits.get("drugIdentification")) : null;
         this.drugSummary = inits.isInitialized("drugSummary") ? new gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.QDrugSummary(forProperty("drugSummary"), inits.get("drugSummary")) : null;
     }
 

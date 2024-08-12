@@ -50,7 +50,7 @@ public class DrugInfoServiceImpl implements DrugInfoService {
         String size;
 
         if (drugInfo.getShape() == DrugShape.ROUND) {
-            size = "직경 " + drugInfo.getDiameter() + "mm";
+            size = "직경 " + drugInfo.getLongAxis() + "mm";
         } else if (drugInfo.getShape() == DrugShape.OVAL) {
             size = "장축 " + drugInfo.getLongAxis() + "mm, 단축 " + drugInfo.getShortAxis() + "mm";
         } else {
@@ -59,8 +59,7 @@ public class DrugInfoServiceImpl implements DrugInfoService {
 
         return DrugInfoResponse.builder()
                 .drugName(drugInfo.getName())
-                .mainIngredient(String.join(", ", drugInfo.getIngredients()))
-                .dosageInstructions("하루 " + drugInfo.getDailyDosage() + "번 " + String.join(" ", drugInfo.getWhenToTake()))
+                .dosageInstructions("하루 " + drugInfo.getDailyDosage() + "번 ")
                 .shape(shape)
                 .size(size)
                 .build();

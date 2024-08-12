@@ -1,7 +1,7 @@
 package gist.pilldispenser.drug.api.drugProductAPI.custom;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import gist.pilldispenser.drug.api.drugProductAPI.domain.dto.QDrugProduct;
+import gist.pilldispenser.drug.api.drugProductAPI.domain.entity.QDrugProduct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

@@ -22,12 +22,6 @@ public class QDrugSummary extends EntityPathBase<DrugSummary> {
 
     public static final QDrugSummary drugSummary = new QDrugSummary("drugSummary");
 
-    public final StringPath atpnQesitm = createString("atpnQesitm");
-
-    public final StringPath depositMethodQesitm = createString("depositMethodQesitm");
-
-    public final StringPath efcyQesitm = createString("efcyQesitm");
-
     public final StringPath entpName = createString("entpName");
 
     public final gist.pilldispenser.drug.medication.domain.entity.QFullMedicationInfo fullMedicationInfo;
@@ -41,8 +35,6 @@ public class QDrugSummary extends EntityPathBase<DrugSummary> {
     public final StringPath itemName = createString("itemName");
 
     public final StringPath itemSeq = createString("itemSeq");
-
-    public final StringPath seQesitm = createString("seQesitm");
 
     public final StringPath useMethodQesitm = createString("useMethodQesitm");
 

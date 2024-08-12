@@ -10,12 +10,8 @@ public class DrugInfoMapper {
         return DrugInfo.builder()
                 .name(dto.getName())
                 .dosage(dto.getDosage())
-                .ingredients(dto.getIngredients())
                 .dailyDosage(dto.getDailyDosage())
-                .timeOfDay(dto.getTimeOfDay())
-                .whenToTake(dto.getWhenToTake())
                 .shape(DrugShape.ROUND)
-                .diameter(dto.getDiameter())
                 .build();
     }
 
@@ -23,10 +19,7 @@ public class DrugInfoMapper {
         return DrugInfo.builder()
                 .name(dto.getName())
                 .dosage(dto.getDosage())
-                .ingredients(dto.getIngredients())
                 .dailyDosage(dto.getDailyDosage())
-                .timeOfDay(dto.getTimeOfDay())
-                .whenToTake(dto.getWhenToTake())
                 .shape(DrugShape.OVAL)
                 .longAxis(dto.getLongAxis())
                 .shortAxis(dto.getShortAxis())
