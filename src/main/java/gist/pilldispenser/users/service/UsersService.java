@@ -2,17 +2,22 @@ package gist.pilldispenser.users.service;
 
 import gist.pilldispenser.common.security.UsersDetails;
 import gist.pilldispenser.common.security.jwt.JwtProvider;
+import gist.pilldispenser.drug.userDrugInfo.domain.entity.CartridgeSlot;
+import gist.pilldispenser.drug.userDrugInfo.repository.CartridgeSlotRepository;
 import gist.pilldispenser.users.converter.UsersConverter;
 import gist.pilldispenser.users.domain.entity.Users;
 import gist.pilldispenser.users.domain.model.UsersHardwareNoRequest;
 import gist.pilldispenser.users.domain.model.UsersRequest;
 import gist.pilldispenser.users.repository.UsersRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import static gist.pilldispenser.common.security.jwt.JwtProperties.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UsersService {
@@ -21,6 +26,7 @@ public class UsersService {
     private final UsersRepository usersRepository;
     private final JwtProvider jwtProvider;
     private final UsersConverter usersConverter;
+    private final CartridgeSlotRepository cartridgeSlotRepository;
 
     // 카카오 로그인 -> 연동 여부에 따라 회원정보 db에 저장
     public Users loginUser(UsersRequest request) {
@@ -54,9 +60,24 @@ public class UsersService {
     }
 
     // 하드웨어 시리얼 넘버 추가
-    public Users updateHardwareNo(String email, UsersHardwareNoRequest request){
+    @Transactional
+    public void updateHardwareNo(String email, UsersHardwareNoRequest request){
         Users users = usersRepository.findByEmail(email);
+//        Users updatedUsers = users.toBuilder()
+//                .hardwareNo(request.hardwareNo())
+//                .build();
+
         users.setHardwareNo(request.hardwareNo());
-        return usersRepository.save(users);
+        usersRepository.save(users);
+        log.info(users.getHardwareNo());
+
+        for (int i=1; i<7; i++) {
+            CartridgeSlot cartridgeSlot = CartridgeSlot.builder()
+                    .slotNumber(i)
+                    .isOccupied(false)
+                    .userId(users.getId())
+                    .build();
+            cartridgeSlotRepository.save(cartridgeSlot);
+        }
     }
 }

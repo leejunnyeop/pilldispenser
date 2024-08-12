@@ -1,8 +1,9 @@
 package gist.pilldispenser.drug.drugInfo.controller;
 
 import gist.pilldispenser.common.security.UsersDetails;
+import gist.pilldispenser.drug.drugInfo.domain.dto.DrugAutoRegistrationRequest;
 import gist.pilldispenser.drug.drugInfo.domain.dto.DrugInfoRequestBase;
-import gist.pilldispenser.drug.drugInfo.domain.dto.DrugInfoResponse;
+import gist.pilldispenser.drug.drugInfo.domain.dto.DrugRegistrationResponse;
 import gist.pilldispenser.drug.drugInfo.service.DrugInfoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,11 +29,20 @@ public class DrugInfoController {
             @ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.")
     })
     @PostMapping("/register/manual")
-    public ResponseEntity<DrugInfoResponse> registerDrugInfoManually(
+    public ResponseEntity<DrugRegistrationResponse> registerDrugInfoManually(
             @RequestBody DrugInfoRequestBase drugInfoRequest,
             @AuthenticationPrincipal UsersDetails userDetails) {
         Long userId = userDetails.getId();
-        DrugInfoResponse response = drugInfoService.createDrugInfoManually(userId, drugInfoRequest);
+        DrugRegistrationResponse response = drugInfoService.createDrugInfoManually(userId, drugInfoRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/register/auto")
+    public ResponseEntity<DrugRegistrationResponse> registerDrugInfoAutomatically(
+            @RequestBody DrugAutoRegistrationRequest request,
+            @AuthenticationPrincipal UsersDetails userDetails) {
+
+        DrugRegistrationResponse response = drugInfoService.createDrugInfoAutomatically(userDetails, request);
         return ResponseEntity.ok(response);
     }
 }

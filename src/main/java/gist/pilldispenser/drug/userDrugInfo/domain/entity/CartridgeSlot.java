@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartridgeSlot {
@@ -21,12 +21,11 @@ public class CartridgeSlot {
     @JoinColumn(name = "user_drug_info_id")
     private UserDrugInfo userDrugInfo;
 
+    private Long userId;
 
     private int slotNumber;  // 카트리지 슬롯 번호 (1~6번)
 
-
     private boolean isOccupied;  // 해당 슬롯이 사용 중인지 여부
-
 
     private String size;  // 슬롯의 사이즈 (S, M, L)
 

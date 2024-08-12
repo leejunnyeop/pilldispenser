@@ -32,6 +32,8 @@ public class QCartridgeSlot extends EntityPathBase<CartridgeSlot> {
 
     public final QUserDrugInfo userDrugInfo;
 
+    public final NumberPath<Long> userId = createNumber("userId", Long.class);
+
     public QCartridgeSlot(String variable) {
         this(CartridgeSlot.class, forVariable(variable), INITS);
     }

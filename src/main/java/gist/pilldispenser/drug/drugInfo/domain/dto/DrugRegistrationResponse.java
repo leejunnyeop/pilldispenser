@@ -10,11 +10,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DrugInfoResponse {
+public class DrugRegistrationResponse {
 
     private String drugName;
     private String mainIngredient;
     private String dosageInstructions;
     private String shape;
     private String size;
+    private String slotNumber;
+    private String slotSize;
 }
