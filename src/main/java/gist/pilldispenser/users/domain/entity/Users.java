@@ -1,5 +1,6 @@
 package gist.pilldispenser.users.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import gist.pilldispenser.common.entity.BaseEntity;
 import gist.pilldispenser.common.entity.enums.RoleType;
 import gist.pilldispenser.drug.userDrugInfo.domain.entity.UserDrugInfo;
@@ -28,6 +29,7 @@ public class Users extends BaseEntity {
     private String hardwareNo;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<UserDrugInfo> userDrugInfos;
 
 }
