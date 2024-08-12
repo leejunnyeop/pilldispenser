@@ -21,4 +21,8 @@ public class RedisUtils {
         return redisTemplate.opsForValue().get(key);
     }
 
+    public boolean keyExists(String key) {
+        return Boolean.TRUE.equals(redisTemplate.hasKey(key));
+    }
+
 }

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,7 @@ public class RoutineService {
         // Routine 엔티티 생성 및 저장
         Routine routine = Routine.builder()
                 .userDrugInfo(userDrugInfo)
-                .time(routineRequestDto.getTime())
+                .time((routineRequestDto.getTime()))
                 .dosagePerTake(routineRequestDto.getDosagePerTake())
                 .dailyDosage(routineRequestDto.getDailyDosage())
                 .isActive(routineRequestDto.isActive())
@@ -54,7 +55,7 @@ public class RoutineService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 ID의 루틴을 찾을 수 없습니다."));
 
         routine.updateRoutine(routineRequestDto.getTime(), routineRequestDto.getDosagePerTake(),
-                routineRequestDto.getDailyDosage(), routineRequestDto.isActive(), routineRequestDto.getDayOfWeek());
+                routineRequestDto.getDailyDosage(), routineRequestDto.isActive());
 
         return routineRepository.save(routine);
     }

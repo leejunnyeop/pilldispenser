@@ -2,7 +2,6 @@ package gist.pilldispenser.users.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gist.pilldispenser.common.security.UsersDetails;
 import gist.pilldispenser.common.utils.RedisUtils;
 import gist.pilldispenser.users.domain.model.KakaoUserInfoResponse;
 import gist.pilldispenser.users.domain.model.OAuthTokenResponse;
@@ -20,8 +19,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.URL;
 
 @Slf4j
 @Service
@@ -34,10 +32,6 @@ public class OAuthService {
 
     @Value("${kakao.api-key}")
     private String API_KEY;
-    @Value("${kakao.redirect-uri-local}")
-    private String REDIRECT_URI_LOCAL;
-    @Value("${kakao.redirect-uri-https}")
-    private String REDIRECT_URI_HTTPS;
     @Value("${kakao.secret-key}")
     private String SECRET_KEY;
     @Value("${kakao.token-uri}")
@@ -45,18 +39,15 @@ public class OAuthService {
     @Value("${kakao.info-uri}")
     private String INFO_URI;
 
-    public OAuthTokenResponse getKakaoToken(String authCode, boolean isLocal) throws JsonProcessingException {
+    // 카카오 인가코드로 카카오 액세스 토큰 발급
+    public OAuthTokenResponse getKakaoToken(String authCode, String redirectUri) throws JsonProcessingException {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/x-www-form-urlencoded");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", API_KEY);
-        if (isLocal){
-            params.add("redirect_uri", REDIRECT_URI_LOCAL);
-        } else {
-            params.add("redirect_uri", REDIRECT_URI_HTTPS);
-        }
+        params.add("redirect_uri", redirectUri);
         params.add("code", authCode);
         params.add("client_secret", SECRET_KEY);
 
@@ -70,14 +61,17 @@ public class OAuthService {
         return tokenResponse;
     }
 
+    // 카카오 유저정보 가져오기
     public UserInfoResponse kakaoUserInfo(String accessToken) throws IOException {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer "+accessToken);
         headers.add("Content-Type", "application/x-www-form-urlencoded");
 
+        URL url = new URL(INFO_URI);
+
         HttpEntity<MultiValueMap<String,String>> kakaoUserInfoRequest = new HttpEntity<>(headers);
         ResponseEntity<String> response = restTemplate.exchange(
-                INFO_URI, HttpMethod.GET, kakaoUserInfoRequest, String.class);
+                url.toString(), HttpMethod.GET, kakaoUserInfoRequest, String.class);
 
         KakaoUserInfoResponse userInfo = KakaoUserInfoResponse.fromJson(response.getBody(), objectMapper);
         return KakaoUserInfoResponse.fromKakaoUserInfoResponse(userInfo);
@@ -95,8 +89,9 @@ public class OAuthService {
                 Long.valueOf(tokenResponse.getRefreshTokenExpiresIn()));
     }
 
-    public void reissueTokens(UsersDetails usersDetails) throws IOException {
-        String refreshTokenKey = "refresh_token_"+usersDetails.getUsername();
+    // 카카오 토큰 재발급
+    public void reissueTokens(String email) throws IOException {
+        String refreshTokenKey = "refresh_token_"+email;
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/x-www-form-urlencoded");
@@ -114,10 +109,10 @@ public class OAuthService {
         OAuthTokenResponse tokenResponse = objectMapper.readValue(token.getBody(), OAuthTokenResponse.class);
 
         if (tokenResponse.getRefreshToken() != null) {
-            saveAccessTokenToRedis(tokenResponse, usersDetails.getUsername());
-            saveRefreshTokenToRedis(tokenResponse, usersDetails.getUsername());
+            saveAccessTokenToRedis(tokenResponse, email);
+            saveRefreshTokenToRedis(tokenResponse, email);
         } else {
-            saveAccessTokenToRedis(tokenResponse, usersDetails.getUsername());
+            saveAccessTokenToRedis(tokenResponse, email);
         }
     }
 }

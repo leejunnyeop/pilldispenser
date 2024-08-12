@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -41,6 +42,8 @@ public class QUsers extends EntityPathBase<Users> {
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
+
+    public final ListPath<gist.pilldispenser.drug.userDrugInfo.domain.entity.UserDrugInfo, gist.pilldispenser.drug.userDrugInfo.domain.entity.QUserDrugInfo> userDrugInfos = this.<gist.pilldispenser.drug.userDrugInfo.domain.entity.UserDrugInfo, gist.pilldispenser.drug.userDrugInfo.domain.entity.QUserDrugInfo>createList("userDrugInfos", gist.pilldispenser.drug.userDrugInfo.domain.entity.UserDrugInfo.class, gist.pilldispenser.drug.userDrugInfo.domain.entity.QUserDrugInfo.class, PathInits.DIRECT2);
 
     public QUsers(String variable) {
         super(Users.class, forVariable(variable));
