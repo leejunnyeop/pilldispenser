@@ -29,8 +29,8 @@ public class RoutineRequestDto {
     @Schema(description = "루틴 활성화 여부", example = "true")
     private Boolean isActive;  // 루틴 활성화 여부
 
-    @Schema(description = "약물 고유 번호 (itemSeq)", example = "123456789")
-    private String itemSeq;  // 약물 고유 번호
+    @Schema(description = "사용자가 복용 등록해둔 약 id", example = "123")
+    private Long userDrugInfoId;  // 약물 고유 번호
 
     @Schema(description = "복용 요일", example = "MONDAY")
     private List<String> dayOfWeek;  // 복용 요일

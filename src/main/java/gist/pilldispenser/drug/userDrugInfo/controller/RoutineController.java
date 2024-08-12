@@ -2,6 +2,7 @@ package gist.pilldispenser.drug.userDrugInfo.controller;
 
 import gist.pilldispenser.common.security.UsersDetails;
 import gist.pilldispenser.drug.userDrugInfo.domain.dto.MultipleRoutineRequestDto;
+import gist.pilldispenser.drug.userDrugInfo.domain.dto.RoutineResponse;
 import gist.pilldispenser.drug.userDrugInfo.domain.entity.Routine;
 import gist.pilldispenser.drug.userDrugInfo.repository.RoutineRepository;
 import gist.pilldispenser.drug.userDrugInfo.service.RoutineService;
@@ -21,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Tag(name = "Routine API", description = "사용자의 약물 복용 루틴을 관리하는 API")
@@ -39,7 +41,7 @@ public class RoutineController {
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
     })
     @PostMapping("/create")
-    public ResponseEntity<String> createRoutine(
+    public ResponseEntity<RoutineResponse> createRoutine(
             @RequestBody MultipleRoutineRequestDto routineRequestDtos,
             @Parameter(hidden = true) @AuthenticationPrincipal UsersDetails userDetails) {
 
@@ -47,14 +49,16 @@ public class RoutineController {
         // 루틴 생성
         List<Routine> routines = routineService.createRoutine(userId, routineRequestDtos.getRoutines());
 
+        List<Long> routineIds = new ArrayList<>();
         // 알림 등록
         for (Routine routine : routines) {
+            routineIds.add(routine.getId());
             NotificationTask task = new NotificationTask(notificationHelper, routine);
             String taskKey = "schedule-" + routine.getId();
             customScheduleService.scheduleNotification(taskKey, task, notificationHelper.getCronExpression(routine));
         }
 
-        return ResponseEntity.ok("루틴이 성공적으로 저장되었습니다.");
+        return ResponseEntity.ok(new RoutineResponse(routineIds));
     }
 
     @Operation(summary = "루틴 삭제", description = "루틴 ID로 특정 루틴을 삭제합니다.")

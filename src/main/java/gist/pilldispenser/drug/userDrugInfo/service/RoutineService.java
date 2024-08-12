@@ -1,5 +1,6 @@
 package gist.pilldispenser.drug.userDrugInfo.service;
 
+import gist.pilldispenser.drug.medication.repository.FullMedicationInfoRepository;
 import gist.pilldispenser.drug.userDrugInfo.domain.dto.RoutineRequestDto;
 import gist.pilldispenser.drug.userDrugInfo.domain.entity.Routine;
 import gist.pilldispenser.drug.userDrugInfo.domain.entity.UserDrugInfo;
@@ -20,15 +21,14 @@ public class RoutineService {
 
     private final RoutineRepository routineRepository;
     private final UserDrugInfoRepository userDrugInfoRepository;
+    private final FullMedicationInfoRepository fullMedicationInfoRepository;
     private final CustomScheduleService customScheduleService;
 
     @Transactional
     public List<Routine> createRoutine(Long userId, List<RoutineRequestDto> routineRequestDtos) {
-        String itemSeq = routineRequestDtos.get(0).getItemSeq();
-
-        // userId와 itemSeq를 이용해 UserDrugInfo를 찾음
-        UserDrugInfo userDrugInfo = userDrugInfoRepository.findByUserIdAndFullMedicationInfoItemSeq(userId, itemSeq)
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자 또는 약물 정보입니다."));
+        Long userDrugInfoId = routineRequestDtos.get(0).getUserDrugInfoId();
+        UserDrugInfo userDrugInfo = userDrugInfoRepository.findById(userDrugInfoId)
+                .orElseThrow(() -> new RuntimeException("약이 등록되지 않았습니다."));
 
         List<Routine> routines = new ArrayList<>();
 
