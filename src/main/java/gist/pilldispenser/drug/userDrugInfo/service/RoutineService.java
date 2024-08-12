@@ -32,7 +32,7 @@ public class RoutineService {
                 .time((routineRequestDto.getTime()))
                 .dosagePerTake(routineRequestDto.getDosagePerTake())
                 .dailyDosage(routineRequestDto.getDailyDosage())
-                .isActive(routineRequestDto.isActive())
+                .isActive(routineRequestDto.getIsActive())
                 .build();
 
         return routineRepository.save(routine);
@@ -55,7 +55,7 @@ public class RoutineService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 ID의 루틴을 찾을 수 없습니다."));
 
         routine.updateRoutine(routineRequestDto.getTime(), routineRequestDto.getDosagePerTake(),
-                routineRequestDto.getDailyDosage(), routineRequestDto.isActive());
+                routineRequestDto.getDailyDosage(), routineRequestDto.getIsActive());
 
         return routineRepository.save(routine);
     }

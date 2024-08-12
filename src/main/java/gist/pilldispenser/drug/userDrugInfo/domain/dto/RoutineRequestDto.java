@@ -17,7 +17,7 @@ public class RoutineRequestDto {
 
     @Schema(description = "복용 시간", example = "08:00")
     @JsonFormat(pattern = "HH:mm")
-    private String time;  // 복용 시간
+    private LocalTime time;  // 복용 시간
 
     @Schema(description = "복용 시 1회 복용량", example = "2")
     private Integer dosagePerTake;  // 복용 시 1회 복용량
