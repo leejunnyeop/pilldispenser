@@ -1,7 +1,10 @@
 package gist.pilldispenser.drug.userDrugInfo.service;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import gist.pilldispenser.drug.userDrugInfo.domain.dto.UserDrugRoutineResponse;
+import gist.pilldispenser.drug.userDrugInfo.domain.entity.Routine;
 import gist.pilldispenser.drug.userDrugInfo.domain.entity.UserDrugInfo;
+import gist.pilldispenser.drug.userDrugInfo.repository.RoutineRepository;
 import gist.pilldispenser.drug.userDrugInfo.repository.UserDrugInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,29 +17,29 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserDrugRoutineService {
 
+    private final JPAQueryFactory queryFactory;
     private final UserDrugInfoRepository userDrugInfoRepository;
+    private final RoutineRepository routineRepository;
 
     @Transactional(readOnly = true)
     public List<UserDrugRoutineResponse> getUserDrugRoutines(Long userId) {
         List<UserDrugInfo> userDrugInfos = userDrugInfoRepository.findByUserId(userId);
 
         return userDrugInfos.stream()
-                .flatMap(userDrugInfo -> userDrugInfo.getRoutines().stream().map(routine -> {
-                    String drugName = userDrugInfo.getDrugInfo() != null
-                            ? userDrugInfo.getDrugInfo().getName()
-                            : userDrugInfo.getFullMedicationInfo().getDrugSummary().getItemName();
-                    String drugType = userDrugInfo.getDrugInfo() != null ? "direct" : "search";
+                .flatMap(userDrugInfo -> {
+                    List<Routine> routines = routineRepository.findByUserDrugInfoId(userDrugInfo.getId());
+                    return routines.stream().map(routine -> {
+                        String drugName = userDrugInfo.getDrugInfo() != null
+                                ? userDrugInfo.getDrugInfo().getName()
+                                : userDrugInfo.getFullMedicationInfo().getDrugSummary().getItemName();
 
-                    return UserDrugRoutineResponse.builder()
-                            .drugName(drugName)
-                            .drugType(drugType)
-                            .time(routine.getTime())
-                            .dosagePerTake(routine.getDosagePerTake())
-                            .dailyDosage(routine.getDailyDosage())
-                            .days(routine.getDays().getDayName())
-                            .isActive(routine.getIsActive())
-                            .build();
-                }))
+                        return UserDrugRoutineResponse.builder()
+                                .drugName(drugName)
+                                .dosagePerTake(routine.getDosagePerTake())
+                                .days(routine.getDays())
+                                .build();
+                    });
+                })
                 .collect(Collectors.toList());
     }
 }

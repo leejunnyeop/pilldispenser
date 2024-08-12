@@ -44,18 +44,9 @@ public class DrugIdentification {
      // 업체명
     private String entpName;
 
-    // 성상
-    private String chart;
-
 
     // 형태
     private String drugShape;
-
-    // 색상 1
-    private String colorClass1;
-
-    // 색상 2
-    private String colorClass2;
 
 
     // 길이(대)
@@ -64,8 +55,6 @@ public class DrugIdentification {
     // 길이(소)
     private String lengShort;
 
-    // 두께
-    private String thick;
 
     @OneToOne(mappedBy = "drugIdentification", fetch = FetchType.LAZY)
     private FullMedicationInfo fullMedicationInfo;

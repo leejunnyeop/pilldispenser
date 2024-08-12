@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface UserDrugInfoRepository extends JpaRepository<UserDrugInfo, Long> {
 
 
+  Optional<UserDrugInfo> findByDrugInfoId(Long drugInfoId);
 
   List<UserDrugInfo> findByUserId(Long userId);
 

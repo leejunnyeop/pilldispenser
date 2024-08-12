@@ -10,13 +10,9 @@ public class DrugIdentificationMapper {
                 .itemSeq(request.getItemSeq())
                 .itemName(request.getItemName())
                 .entpName(request.getEntpName())
-                .chart(request.getChart())
                 .drugShape(request.getDrugShape())
-                .colorClass1(request.getColorClass1())
-                .colorClass2(request.getColorClass2())
                 .lengLong(request.getLengLong())
                 .lengShort(request.getLengShort())
-                .thick(request.getThick())
                 .build();
 
     }

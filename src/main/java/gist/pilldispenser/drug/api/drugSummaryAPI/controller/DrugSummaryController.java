@@ -80,8 +80,14 @@ public class DrugSummaryController {
      * @param componentName 검색할 성분 이름
      * @return 혼용 금지 성분이 포함된 약물 이름 리스트 또는 null
      */
+
+    @Operation(summary = "특정 성분으로 혼용 금지 성분을 포함하는 약물 정보 조회", description = "특정 성분으로 혼용 금지 성분을 포함하는 약물 정보를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "혼용 금지 성분이 포함된 약물 이름 리스트 조회 성공"),
+            @ApiResponse(responseCode = "500", description = "서버 오류")
+    })
     @GetMapping("/api/drug-info/componentConflicts")
-    public ResponseEntity<List<String>> findDrugsByComponentName(@RequestParam String componentName) {
+    public ResponseEntity<List<String>> findDrugsByComponentName(@Parameter(description = "검색할 성분 이름") @RequestParam String componentName) {
         try {
             List<String> result = drugSummarySearchServiceImpl.findDrugsByComponentName(componentName);
             return ResponseEntity.ok(result.isEmpty() ? null : result);

@@ -21,7 +21,7 @@ public class DrugInfoController {
 
     private final DrugInfoService drugInfoService;
 
-    @Operation(summary = "직접 약 정보 등록", description = "사용자가 직접 약 정보를 등록합니다.")
+    @Operation(summary = "직접 약 정보 등록  ", description = "사용자가 직접 약 정보를 등록합니다. (직접 약 등록 DrugInfo 테이블) ")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "직접 약 정보가 성공적으로 저장되었습니다."),
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),

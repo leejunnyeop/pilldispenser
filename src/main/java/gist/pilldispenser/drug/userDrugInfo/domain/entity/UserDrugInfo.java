@@ -35,9 +35,10 @@ public class UserDrugInfo {
     @JoinColumn(name = "full_medication_info_id")
     private FullMedicationInfo fullMedicationInfo;
 
+
+
     @OneToMany(mappedBy = "userDrugInfo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Routine> routines;
-
 
     public static UserDrugInfo create(Users user, DrugInfo drugInfo, FullMedicationInfo fullMedicationInfo) {
         return UserDrugInfo.builder()

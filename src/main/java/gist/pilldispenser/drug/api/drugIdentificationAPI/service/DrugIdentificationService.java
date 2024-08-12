@@ -52,13 +52,9 @@ public class DrugIdentificationService {
                                         .itemSeq(drugItem.getItemSeq())
                                         .itemName(drugItem.getItemName())
                                         .entpName(drugItem.getEntpName())
-                                        .chart(drugItem.getChart())
                                         .drugShape(drugItem.getDrugShape())
-                                        .colorClass1(drugItem.getColorClass1())
-                                        .colorClass2(drugItem.getColorClass2())
                                         .lengLong(drugItem.getLengLong())
                                         .lengShort(drugItem.getLengShort())
-                                        .thick(drugItem.getThick())
                                         .build())
                                 .forEach(this::save);
                     }

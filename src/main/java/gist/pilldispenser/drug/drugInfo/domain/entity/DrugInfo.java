@@ -18,6 +18,8 @@ public class DrugInfo {
     private Long id;
 
     private String name;
+
+
     private String dosage;
 
     @ElementCollection
@@ -40,5 +42,4 @@ public class DrugInfo {
     private Double diameter;  // 원형일 때 사용
     private Double longAxis;  // 타원형일 때 사용
     private Double shortAxis; // 타원형일 때 사용
-
 }

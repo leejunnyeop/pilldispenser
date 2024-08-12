@@ -22,12 +22,6 @@ public class QDrugIdentification extends EntityPathBase<DrugIdentification> {
 
     public static final QDrugIdentification drugIdentification = new QDrugIdentification("drugIdentification");
 
-    public final StringPath chart = createString("chart");
-
-    public final StringPath colorClass1 = createString("colorClass1");
-
-    public final StringPath colorClass2 = createString("colorClass2");
-
     public final StringPath drugShape = createString("drugShape");
 
     public final StringPath entpName = createString("entpName");
@@ -43,8 +37,6 @@ public class QDrugIdentification extends EntityPathBase<DrugIdentification> {
     public final StringPath lengLong = createString("lengLong");
 
     public final StringPath lengShort = createString("lengShort");
-
-    public final StringPath thick = createString("thick");
 
     public QDrugIdentification(String variable) {
         this(DrugIdentification.class, forVariable(variable), INITS);

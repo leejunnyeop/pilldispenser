@@ -1,5 +1,10 @@
 package gist.pilldispenser.drug.userDrugInfo.service;
 
+import gist.pilldispenser.common.security.UsersDetails;
+import gist.pilldispenser.drug.drugInfo.domain.entity.DrugInfo;
+import gist.pilldispenser.drug.medication.domain.entity.FullMedicationInfo;
+import gist.pilldispenser.drug.userDrugInfo.domain.dto.AllRoutineResponse;
+import gist.pilldispenser.drug.userDrugInfo.domain.dto.DrugDetailResponse;
 import gist.pilldispenser.drug.userDrugInfo.domain.dto.RoutineRequestDto;
 import gist.pilldispenser.drug.userDrugInfo.domain.entity.Routine;
 import gist.pilldispenser.drug.userDrugInfo.domain.entity.UserDrugInfo;
@@ -16,6 +21,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -61,16 +67,9 @@ public class RoutineService {
         return routines;
     }
 
-    @Transactional(readOnly = true)
-    public List<Routine> getRoutinesByUserId(Long userId) {
-        return  routineRepository.findByUserDrugInfoUserId(userId);
-    }
 
-    // 특정 루틴 조회
-    @Transactional(readOnly = true)
-    public Optional<Routine> getRoutineById(Long routineId) {
-        return routineRepository.findById(routineId);
-    }
+
+
 
     // 루틴 업데이트
     @Transactional

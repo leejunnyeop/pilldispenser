@@ -37,10 +37,5 @@ public class CartridgeSlotMapper {
                 .build();
     }
 
-    // FreeSlotRequestDto를 CartridgeSlot 엔티티로 변환
-    public static CartridgeSlot toCartridgeSlot(FreeSlotRequestDto requestDto) {
-        return CartridgeSlot.builder()
-                .slotNumber(requestDto.getSlotNumber())
-                .build();
-    }
+
 }
