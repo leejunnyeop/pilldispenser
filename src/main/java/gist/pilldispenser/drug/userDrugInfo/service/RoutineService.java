@@ -67,10 +67,6 @@ public class RoutineService {
         return routines;
     }
 
-
-
-
-
     // 루틴 업데이트
     @Transactional
     public Routine updateRoutine(Long routineId, RoutineRequestDto routineRequestDto) {
