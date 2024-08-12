@@ -15,4 +15,8 @@ public interface CartridgeSlotRepository extends JpaRepository<CartridgeSlot, Lo
 
     // 특정 크기의 비어있는 슬롯을 조회
     Optional<CartridgeSlot> findBySizeAndIsOccupiedFalse(String size);
+
+    Optional<CartridgeSlot> findFirstByUserIdAndIsOccupiedFalseOrderBySlotNumberAsc(Long userId);
+
+    boolean existsByUserIdAndIsOccupiedFalse(Long userId);
 }
