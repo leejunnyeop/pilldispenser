@@ -33,9 +33,14 @@ public class UserDrugRoutineService {
                 ? null
                 : userDrugInfo.getFullMedicationInfo().getDrugSummary().getEntpName();
 
+            String image = userDrugInfo.getDrugInfo() != null
+                    ? null
+                    : userDrugInfo.getFullMedicationInfo().getDrugSummary().getItemImage();
+
             return UserDrugRoutineResponse.builder()
                 .drugName(drugName)
                 .entrps(entrps)
+                .image(image)
                 .build();
         }).collect(Collectors.toList());
     }

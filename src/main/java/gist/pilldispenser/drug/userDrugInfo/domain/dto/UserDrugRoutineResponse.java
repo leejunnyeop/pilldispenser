@@ -9,6 +9,5 @@ public class UserDrugRoutineResponse {
 
     private String drugName;       // 약물 이름
     private String entrps;          // 업체명
-
-
+    private String image;
 }
