@@ -1,9 +1,8 @@
 package gist.pilldispenser.drug.api.drugSummaryAPI.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import gist.pilldispenser.drug.api.drugProductAPI.domain.dto.QDrugProduct;
+import gist.pilldispenser.drug.api.drugProductAPI.domain.entity.QDrugProduct;
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.dto.response.DrugSummaryDTO;
-import gist.pilldispenser.drug.api.drugSummaryAPI.domain.dto.response.PrecautionResponseDto;
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.DrugSummary;
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.QDrugSummary;
 import gist.pilldispenser.drug.api.drugSummaryAPI.repository.DrugSummaryRepository;

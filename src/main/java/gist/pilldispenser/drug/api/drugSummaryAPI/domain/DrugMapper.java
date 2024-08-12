@@ -10,13 +10,8 @@ public class DrugMapper {
                 .entpName(drugSummaryRequest.getEntpName())
                 .itemName(drugSummaryRequest.getItemName())
                 .itemSeq(drugSummaryRequest.getItemSeq())
-                .efcyQesitm(drugSummaryRequest.getEfcyQesitm())
                 .useMethodQesitm(drugSummaryRequest.getUseMethodQesitm())
-                .atpnQesitm(drugSummaryRequest.getAtpnQesitm())
                 .intrcQesitm(drugSummaryRequest.getIntrcQesitm())
-                .seQesitm(drugSummaryRequest.getSeQesitm())
-                .depositMethodQesitm(drugSummaryRequest.getDepositMethodQesitm())
-
                 .itemImage(drugSummaryRequest.getItemImage())
 
                 .build();

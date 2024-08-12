@@ -2,10 +2,10 @@ package gist.pilldispenser.drug.medication.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity.DrugIdentification;
-import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.dto.QDrugIdentification;
+import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity.QDrugIdentification;
 import gist.pilldispenser.drug.api.drugIdentificationAPI.repository.DrugIdentificationRepository;
 import gist.pilldispenser.drug.api.drugProductAPI.domain.entity.DrugProduct;
-import gist.pilldispenser.drug.api.drugProductAPI.domain.dto.QDrugProduct;
+import gist.pilldispenser.drug.api.drugProductAPI.domain.entity.QDrugProduct;
 import gist.pilldispenser.drug.api.drugProductAPI.repository.DrugProductRepository;
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.DrugSummary;
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.QDrugSummary;
