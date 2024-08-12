@@ -42,9 +42,9 @@ public class UsersController {
     }
 
     @PutMapping("/hardware-no")
-    public ResponseEntity<UsersResponse> hardwareNo(@AuthenticationPrincipal UsersDetails usersDetails,
+    public ResponseEntity<Void> hardwareNo(@AuthenticationPrincipal UsersDetails usersDetails,
                                                     @RequestBody UsersHardwareNoRequest request){
-        Users updatedUser = usersService.updateHardwareNo(usersDetails.getUsername(), request);
-        return new ResponseEntity<>(usersConverter.toResponse(updatedUser), HttpStatus.OK);
+        usersService.updateHardwareNo(usersDetails.getUsername(), request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
