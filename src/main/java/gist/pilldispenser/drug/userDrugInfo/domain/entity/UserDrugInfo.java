@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,6 +34,9 @@ public class UserDrugInfo {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "full_medication_info_id")
     private FullMedicationInfo fullMedicationInfo;
+
+    @OneToMany(mappedBy = "userDrugInfo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Routine> routines;
 
 
     public static UserDrugInfo create(Users user, DrugInfo drugInfo, FullMedicationInfo fullMedicationInfo) {

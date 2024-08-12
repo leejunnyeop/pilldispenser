@@ -20,23 +20,27 @@ public class QDrugInfo extends EntityPathBase<DrugInfo> {
 
     public static final QDrugInfo drugInfo = new QDrugInfo("drugInfo");
 
-    public final StringPath color = createString("color");
-
     public final NumberPath<Integer> dailyDosage = createNumber("dailyDosage", Integer.class);
 
     public final NumberPath<Double> diameter = createNumber("diameter", Double.class);
 
+    public final StringPath dosage = createString("dosage");
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    public final ListPath<String, StringPath> ingredients = this.<String, StringPath>createList("ingredients", String.class, StringPath.class, PathInits.DIRECT2);
+
+    public final NumberPath<Double> longAxis = createNumber("longAxis", Double.class);
 
     public final StringPath name = createString("name");
 
-    public final StringPath shape = createString("shape");
+    public final EnumPath<DrugShape> shape = createEnum("shape", DrugShape.class);
 
-    public final NumberPath<Double> thickness = createNumber("thickness", Double.class);
+    public final NumberPath<Double> shortAxis = createNumber("shortAxis", Double.class);
 
     public final ListPath<String, StringPath> timeOfDay = this.<String, StringPath>createList("timeOfDay", String.class, StringPath.class, PathInits.DIRECT2);
 
-    public final StringPath usageInfo = createString("usageInfo");
+    public final ListPath<String, StringPath> whenToTake = this.<String, StringPath>createList("whenToTake", String.class, StringPath.class, PathInits.DIRECT2);
 
     public QDrugInfo(String variable) {
         super(DrugInfo.class, forVariable(variable));

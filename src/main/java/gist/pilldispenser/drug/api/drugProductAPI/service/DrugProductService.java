@@ -8,6 +8,7 @@ import gist.pilldispenser.drug.api.drugProductAPI.domain.entity.DrugProductReque
 import gist.pilldispenser.drug.api.drugProductAPI.repository.DrugProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -78,4 +79,10 @@ public class DrugProductService {
             throw new RuntimeException("URL 인코딩 중 오류가 발생했습니다.", e);
         }
     }
+
+    @Transactional(readOnly = true)
+    public List<String> searchMtralNmByPartialName(String partialName) {
+        return drugProductRepository.findDistinctMtralNmByPartialName(partialName);
+    }
+
 }

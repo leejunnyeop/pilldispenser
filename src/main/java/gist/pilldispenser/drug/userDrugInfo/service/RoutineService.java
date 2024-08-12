@@ -54,7 +54,7 @@ public class RoutineService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 ID의 루틴을 찾을 수 없습니다."));
 
         routine.updateRoutine(routineRequestDto.getTime(), routineRequestDto.getDosagePerTake(),
-                routineRequestDto.getDailyDosage(), routineRequestDto.isActive());
+                routineRequestDto.getDailyDosage(), routineRequestDto.isActive(), routineRequestDto.getDayOfWeek());
 
         return routineRepository.save(routine);
     }

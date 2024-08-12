@@ -24,6 +24,8 @@ public class QRoutine extends EntityPathBase<Routine> {
 
     public final NumberPath<Integer> dailyDosage = createNumber("dailyDosage", Integer.class);
 
+    public final EnumPath<java.time.DayOfWeek> dayOfWeek = createEnum("dayOfWeek", java.time.DayOfWeek.class);
+
     public final NumberPath<Integer> dosagePerTake = createNumber("dosagePerTake", Integer.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);

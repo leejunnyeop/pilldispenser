@@ -6,7 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping
@@ -23,5 +26,12 @@ public class DrugProductController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body("서버 오류: " + e.getMessage());
         }
+    }
+
+
+    @GetMapping("/api/drug-info/autocomplete")
+    public ResponseEntity<List<String>> autocompleteMtralNm(@RequestParam String partialName) {
+        List<String> results = drugProductService.searchMtralNmByPartialName(partialName);
+        return ResponseEntity.ok(results);
     }
 }

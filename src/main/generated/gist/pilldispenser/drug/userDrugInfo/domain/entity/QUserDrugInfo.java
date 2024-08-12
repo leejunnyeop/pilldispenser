@@ -22,11 +22,13 @@ public class QUserDrugInfo extends EntityPathBase<UserDrugInfo> {
 
     public static final QUserDrugInfo userDrugInfo = new QUserDrugInfo("userDrugInfo");
 
-    public final gist.pilldispenser.drug.drugInfo.domain.entity.QDrugInfo drugInfo;
+    public final SimplePath<gist.pilldispenser.drug.drugInfo.domain.entity.DrugInfo> drugInfo = createSimple("drugInfo", gist.pilldispenser.drug.drugInfo.domain.entity.DrugInfo.class);
 
     public final gist.pilldispenser.drug.medication.domain.entity.QFullMedicationInfo fullMedicationInfo;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    public final ListPath<Routine, QRoutine> routines = this.<Routine, QRoutine>createList("routines", Routine.class, QRoutine.class, PathInits.DIRECT2);
 
     public final gist.pilldispenser.users.domain.entity.QUsers user;
 
@@ -48,7 +50,6 @@ public class QUserDrugInfo extends EntityPathBase<UserDrugInfo> {
 
     public QUserDrugInfo(Class<? extends UserDrugInfo> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.drugInfo = inits.isInitialized("drugInfo") ? new gist.pilldispenser.drug.drugInfo.domain.entity.QDrugInfo(forProperty("drugInfo")) : null;
         this.fullMedicationInfo = inits.isInitialized("fullMedicationInfo") ? new gist.pilldispenser.drug.medication.domain.entity.QFullMedicationInfo(forProperty("fullMedicationInfo"), inits.get("fullMedicationInfo")) : null;
         this.user = inits.isInitialized("user") ? new gist.pilldispenser.users.domain.entity.QUsers(forProperty("user")) : null;
     }

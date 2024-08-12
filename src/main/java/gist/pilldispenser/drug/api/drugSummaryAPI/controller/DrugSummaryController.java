@@ -4,6 +4,7 @@ import gist.pilldispenser.common.security.UsersDetails;
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.dto.response.DrugSummaryDTO;
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.dto.response.PrecautionResponseDto;
 import gist.pilldispenser.drug.api.drugSummaryAPI.service.DrugSummarySearchService;
+import gist.pilldispenser.drug.api.drugSummaryAPI.service.DrugSummarySearchServiceImpl;
 import gist.pilldispenser.drug.api.drugSummaryAPI.service.DrugSummaryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -23,11 +24,11 @@ import java.util.List;
 @Tag(name = "DrugSummary Controller", description = "약물 상세 정보를 검색하는 API를 제공합니다.")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/drug-info")
 public class DrugSummaryController {
 
     private final DrugSummarySearchService drugSummarySearchService;
     private final DrugSummaryService drugSummaryService;
+    private final DrugSummarySearchServiceImpl drugSummarySearchServiceImpl;
 
     @GetMapping("/fetch-and-save-drugs")
     public ResponseEntity<String> fetchAndSaveDrugs() throws Exception {
@@ -40,7 +41,7 @@ public class DrugSummaryController {
             @ApiResponse(responseCode = "200", description = "검색된 약물 정보 리스트"),
             @ApiResponse(responseCode = "500", description = "서버 오류")
     })
-    @GetMapping("/search-drugs")
+    @GetMapping("/api/medications/search-drugs")
     public ResponseEntity<List<DrugSummaryDTO>> searchDrugsByName(
             @Parameter(description = "검색할 약 이름") @RequestParam(name = "itemName") String itemName) {
         try {
@@ -57,14 +58,37 @@ public class DrugSummaryController {
             @ApiResponse(responseCode = "404", description = "사용자 정보가 존재하지 않음"),
             @ApiResponse(responseCode = "500", description = "서버 오류")
     })
-
-    @GetMapping("/contraindicated")
-    public ResponseEntity<PrecautionResponseDto> getContraindicationsForDrug(
-            @Parameter(description = "조회할 약물의 고유 번호", example = "123456789")
-            @RequestParam(name = "itemSeq") String itemSeq,
-            @AuthenticationPrincipal UsersDetails userDetails) {
-        Long userId = userDetails.getId();
-        PrecautionResponseDto precautionResponseDto = drugSummarySearchService.findContraindicationsForDrug(userId, itemSeq);
-        return ResponseEntity.ok(precautionResponseDto);
+    /**
+     * itemSeq로 혼용이 안 되는 성분을 포함하는 약물 정보 조회
+     *
+     * @param itemSeq 약의 고유번호
+     * @return 혼용 금지 성분이 포함된 약물 이름 리스트 또는 null
+     */
+    @GetMapping("/api/medications/checkConflicts")
+    public ResponseEntity<List<String>> findDrugsByConflictingComponents(@RequestParam(name = "itemSeq") String itemSeq) {
+        try {
+            List<String> result = drugSummarySearchServiceImpl.findDrugsByConflictingComponents(itemSeq);
+            return ResponseEntity.ok(result.isEmpty() ? null : result);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
     }
+
+    /**
+     * 특정 성분으로 혼용 금지 성분을 포함하는 약물 정보 조회
+     *
+     * @param componentName 검색할 성분 이름
+     * @return 혼용 금지 성분이 포함된 약물 이름 리스트 또는 null
+     */
+    @GetMapping("/api/drug-info/componentConflicts")
+    public ResponseEntity<List<String>> findDrugsByComponentName(@RequestParam String componentName) {
+        try {
+            List<String> result = drugSummarySearchServiceImpl.findDrugsByComponentName(componentName);
+            return ResponseEntity.ok(result.isEmpty() ? null : result);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+
 }

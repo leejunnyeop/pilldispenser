@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 @Entity
@@ -34,8 +35,11 @@ public class Routine {
 
     @Column(nullable = false)
     private boolean isActive;  // 루틴 활성화 여부
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private DayOfWeek dayOfWeek;  // 요일
 
-    public void updateRoutine(LocalTime time, int dosagePerTake, int dailyDosage, Boolean isActive) {
+    public void updateRoutine(LocalTime time, int dosagePerTake, int dailyDosage, Boolean isActive, DayOfWeek dayOfWeek) {
         if (time != null) {
             this.time = time;
         }
@@ -48,5 +52,9 @@ public class Routine {
         if (isActive != null) {
             this.isActive = isActive;
         }
+        if (dayOfWeek != null) {
+            this.dayOfWeek = dayOfWeek;
+        }
     }
+
 }

@@ -11,6 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DrugSummaryDTO {
 
+
+    @Schema(description = "회사명", example = "유한켐버린")
+    private String entpName; // 회사명
+
     @Schema(description = "알약명", example = "타이레놀")
     private String itemName;
 

@@ -9,5 +9,4 @@ public interface DrugSummarySearchService  {
 
     public List<DrugSummaryDTO> searchDrugsByName(String itemName) throws Exception;
 
-    public PrecautionResponseDto findContraindicationsForDrug(Long userId, String itemSeq);
 }

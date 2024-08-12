@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 @Getter
@@ -24,4 +25,7 @@ public class RoutineRequestDto {
 
     @Schema(description = "약물 고유 번호 (itemSeq)", example = "123456789")
     private String itemSeq;  // 약물 고유 번호
+
+    @Schema(description = "복용 요일", example = "MONDAY")
+    private DayOfWeek dayOfWeek;  // 복용 요일
 }

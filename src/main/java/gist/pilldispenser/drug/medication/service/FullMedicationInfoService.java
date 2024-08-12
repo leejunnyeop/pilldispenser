@@ -1,6 +1,5 @@
 package gist.pilldispenser.drug.medication.service;
 
-
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.dto.DrugIdentification;
 import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.dto.QDrugIdentification;
@@ -11,9 +10,10 @@ import gist.pilldispenser.drug.api.drugProductAPI.repository.DrugProductReposito
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.DrugSummary;
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.QDrugSummary;
 import gist.pilldispenser.drug.api.drugSummaryAPI.repository.DrugSummaryRepository;
-import gist.pilldispenser.drug.medication.domain.entity.FullMedicationInfo;
 import gist.pilldispenser.drug.medication.domain.dto.FullMedicationInfoMapper;
 import gist.pilldispenser.drug.medication.domain.dto.FullMedicationInfoRequestDto;
+import gist.pilldispenser.drug.medication.domain.dto.MedicationInfoResponse;
+import gist.pilldispenser.drug.medication.domain.entity.FullMedicationInfo;
 import gist.pilldispenser.drug.medication.repository.FullMedicationInfoRepository;
 import gist.pilldispenser.drug.userDrugInfo.domain.entity.UserDrugInfo;
 import gist.pilldispenser.drug.userDrugInfo.repository.UserDrugInfoRepository;
@@ -38,7 +38,7 @@ public class FullMedicationInfoService {
     private final UserDrugInfoRepository userDrugInfoRepository;
 
     @Transactional
-    public void saveFullMedicationInfoByItemSeq(Long userId, String itemSeq) {
+    public MedicationInfoResponse saveFullMedicationInfoByItemSeq(Long userId, String itemSeq) {
 
         FullMedicationInfoRequestDto dto = FullMedicationInfoMapper.toFullMedicationInfoRequestDto(userId, itemSeq);
         QDrugSummary drugSummary = QDrugSummary.drugSummary;
@@ -77,6 +77,18 @@ public class FullMedicationInfoService {
 
         UserDrugInfo userDrugInfo = UserDrugInfo.create(user, null, fullMedicationInfo);
         userDrugInfoRepository.save(userDrugInfo);
-    }
 
+        // DTO를 사용하여 복용 방법을 제외한 정보를 반환
+        String shape = fetchedDrugIdentification.getDrugShape();
+        String size = shape.equals("원형")
+                ? "직경 " + fetchedDrugIdentification.getLengLong() + "mm"
+                : "장축 " + fetchedDrugIdentification.getLengLong() + "mm, 단축 " + fetchedDrugIdentification.getLengShort() + "mm";
+
+        return MedicationInfoResponse.builder()
+                .drugName(fetchedDrugSummary.getItemName())
+                .mainIngredient(fetchedDrugProducts.stream().map(DrugProduct::getMtralNm).findFirst().orElse("성분 정보 없음"))
+                .shape(shape)
+                .size(size)
+                .build();
+    }
 }
