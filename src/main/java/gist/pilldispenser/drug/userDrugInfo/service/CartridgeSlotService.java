@@ -1,19 +1,16 @@
 package gist.pilldispenser.drug.userDrugInfo.service;
 
 import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity.DrugIdentification;
-import gist.pilldispenser.drug.drugInfo.domain.entity.DrugInfo;
 import gist.pilldispenser.drug.drugInfo.repository.DrugInfoRepository;
 import gist.pilldispenser.drug.medication.domain.entity.FullMedicationInfo;
 import gist.pilldispenser.drug.medication.repository.FullMedicationInfoRepository;
+import gist.pilldispenser.drug.userDrugInfo.domain.dto.CartridgeSlotResponseDto;
 import gist.pilldispenser.drug.userDrugInfo.domain.entity.CartridgeSlot;
-import gist.pilldispenser.drug.userDrugInfo.domain.entity.UserDrugInfo;
 import gist.pilldispenser.drug.userDrugInfo.repository.CartridgeSlotRepository;
 import gist.pilldispenser.drug.userDrugInfo.repository.UserDrugInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -55,12 +52,15 @@ public class CartridgeSlotService {
 //    }
 
     @Transactional
-    public Long findLowestAvailableSlotId(Long userId) {
+    public CartridgeSlotResponseDto findLowestAvailableSlotId(Long userId) {
         // 비어있는 슬롯을 번호 순으로 조회하여 가장 낮은 슬롯 선택
         CartridgeSlot availableSlot = cartridgeSlotRepository.findFirstByUserIdAndIsOccupiedFalseOrderBySlotNumberAsc(userId)
                 .stream().findFirst()
                 .orElseThrow(() -> new IllegalStateException("사용 가능한 슬롯이 없습니다."));
-        return availableSlot.getId();
+        return CartridgeSlotResponseDto.builder()
+                .slotId(availableSlot.getId())
+                .slotNumber(availableSlot.getSlotNumber())
+                .build();
     }
 
     // 알약 고유번호를 기반으로 디스크 슬롯을 배정하는 메서드

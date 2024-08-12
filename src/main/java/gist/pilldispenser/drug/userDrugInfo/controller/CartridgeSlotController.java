@@ -1,6 +1,7 @@
 package gist.pilldispenser.drug.userDrugInfo.controller;
 
 import gist.pilldispenser.common.security.UsersDetails;
+import gist.pilldispenser.drug.userDrugInfo.domain.dto.CartridgeSlotResponseDto;
 import gist.pilldispenser.drug.userDrugInfo.service.CartridgeSlotService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -27,12 +28,11 @@ public class CartridgeSlotController {
 //                    cartridgeSlotService.assignDrugToLowestAvailableSlot(usersDetails.getId());
 //        return ResponseEntity.ok(assignedSlot);
 //    }
-
-    //
-    @GetMapping("/assign")
-    public ResponseEntity<Long> findLowestCartridgeNo(@AuthenticationPrincipal UsersDetails usersDetails) {
-        Long slotId = cartridgeSlotService.findLowestAvailableSlotId(usersDetails.getId());
-        return ResponseEntity.ok(slotId);
+@Operation(summary = "유저가 약을 넣어야 하는 카트리지 번호를 반환", description = "유저에게 남은 카트리지 중 약을 담을 카트리지 번호를 반환합니다.")
+@GetMapping("/assign")
+    public ResponseEntity<CartridgeSlotResponseDto> findLowestCartridgeNo(@AuthenticationPrincipal UsersDetails usersDetails) {
+        CartridgeSlotResponseDto response = cartridgeSlotService.findLowestAvailableSlotId(usersDetails.getId());
+        return ResponseEntity.ok(response);
     }
 
 //    @Operation(summary = "알약 고유번호를 조회하여 디스크 슬롯에 저장", description = "유저의 약물 정보를 조회하고, 해당 알약에 맞는 디스크 슬롯을 찾아 저장합니다.")
@@ -45,7 +45,7 @@ public class CartridgeSlotController {
 //    }
 
     //
-    @Operation(summary = "알약 고유번호를 조회하여 디스크 슬롯에 저장", description = "유저의 약물 정보를 조회하고, 해당 알약에 맞는 디스크 슬롯을 찾아 저장합니다.")
+    @Operation(summary = "DB에서 알약 일련번호를 조회하여 디스크 사이즈를 반환", description = "해당 알약에 맞는 디스크 사이즈를 찾아 반환합니다.")
     @GetMapping("/disk/item-seq")
     public ResponseEntity<String> assignDiskByItemSeq(
             @Parameter(description = "유저 ID") @AuthenticationPrincipal UsersDetails usersDetails,
@@ -59,6 +59,7 @@ public class CartridgeSlotController {
         }
     }
 
+    @Operation(summary = "유저가 등록한 약에 맞는 디스크 사이즈를 반환", description = "유저가 등록한 알약에 맞는 디스크사이즈를 찾아 반환합니다")
     @GetMapping("/disk/user-drug")
     public ResponseEntity<String> assignDiskByUserDrug(
             @Parameter(description = "사용자 정보") @AuthenticationPrincipal UsersDetails usersDetails,
