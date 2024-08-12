@@ -5,4 +5,5 @@ import gist.pilldispenser.drug.api.drugProductAPI.domain.entity.DrugProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DrugProductRepository extends JpaRepository<DrugProduct, Long> , DrugProductRepositoryCustom {
+    DrugProduct findByItemSeq(String itemSeq);
 }
