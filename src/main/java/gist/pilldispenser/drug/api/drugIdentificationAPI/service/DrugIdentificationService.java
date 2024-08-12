@@ -2,10 +2,10 @@ package gist.pilldispenser.drug.api.drugIdentificationAPI.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.DrugIdentificationMapper;
-import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.dto.DrugIdentification;
-import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity.DrugIdentificationApiResponse;
+import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity.DrugIdentification;
+import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.dto.DrugIdentificationApiResponse;
 import gist.pilldispenser.drug.api.drugIdentificationAPI.repository.DrugIdentificationRepository;
-import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity.DrugIdentificationRequest;
+import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.dto.DrugIdentificationRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

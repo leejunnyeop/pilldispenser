@@ -1,4 +1,4 @@
-package gist.pilldispenser.drug.api.drugIdentificationAPI.domain.dto;
+package gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity;
 
 import gist.pilldispenser.drug.medication.domain.entity.FullMedicationInfo;
 import jakarta.persistence.*;
@@ -40,21 +40,17 @@ public class DrugIdentification {
     // 품목명
     private String itemName;
 
-
      // 업체명
     private String entpName;
 
-
     // 형태
     private String drugShape;
-
 
     // 길이(대)
     private String lengLong;
 
     // 길이(소)
     private String lengShort;
-
 
     @OneToOne(mappedBy = "drugIdentification", fetch = FetchType.LAZY)
     private FullMedicationInfo fullMedicationInfo;

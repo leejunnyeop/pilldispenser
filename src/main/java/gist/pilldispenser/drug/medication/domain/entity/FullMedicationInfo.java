@@ -1,8 +1,8 @@
 package gist.pilldispenser.drug.medication.domain.entity;
 
 
-import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.dto.DrugIdentification;
-import gist.pilldispenser.drug.api.drugProductAPI.domain.dto.DrugProduct;
+import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity.DrugIdentification;
+import gist.pilldispenser.drug.api.drugProductAPI.domain.entity.DrugProduct;
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.DrugSummary;
 
 import jakarta.persistence.*;

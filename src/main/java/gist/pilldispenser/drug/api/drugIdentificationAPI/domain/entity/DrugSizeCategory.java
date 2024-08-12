@@ -1,4 +1,4 @@
-package gist.pilldispenser.drug.api.drugIdentificationAPI.domain.dto;
+package gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package gist.pilldispenser.drug.api.drugProductAPI.domain.entity;
+package gist.pilldispenser.drug.api.drugProductAPI.domain.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

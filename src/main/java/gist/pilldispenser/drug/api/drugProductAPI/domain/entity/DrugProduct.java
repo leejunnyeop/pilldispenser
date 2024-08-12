@@ -1,4 +1,4 @@
-package gist.pilldispenser.drug.api.drugProductAPI.domain.dto;
+package gist.pilldispenser.drug.api.drugProductAPI.domain.entity;
 
 import gist.pilldispenser.drug.medication.domain.entity.FullMedicationInfo;
 import jakarta.persistence.*;
@@ -34,13 +34,8 @@ public class DrugProduct {
    // private String entrpsPrmisnNo; // 업체 허가 번호
     private String entrps; // 업체명
     private String prduct; // 제품명
-    private String mtralSn; // 자재 일련번호
-    private String mtralCode; // 자재 코드
     private String mtralNm; // 자재 명칭
-    private String qnt; // 자재 수량
-    private String ingdUnitCd; // 자재 단위 코드
     private String itemSeq; // 품목 일련번호
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "medication_detail_id")
