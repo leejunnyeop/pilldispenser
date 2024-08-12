@@ -1,6 +1,6 @@
 package gist.pilldispenser.drug.userDrugInfo.service;
 
-import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.dto.DrugIdentification;
+import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity.DrugIdentification;
 import gist.pilldispenser.drug.userDrugInfo.domain.CartridgeSlotMapper;
 import gist.pilldispenser.drug.userDrugInfo.domain.dto.CartridgeSlotResponseDto;
 import gist.pilldispenser.drug.userDrugInfo.domain.dto.DrugAssignmentResponseDto;

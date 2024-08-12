@@ -1,7 +1,7 @@
 package gist.pilldispenser.drug.api.drugProductAPI.domain;
 
-import gist.pilldispenser.drug.api.drugProductAPI.domain.dto.DrugProduct;
-import gist.pilldispenser.drug.api.drugProductAPI.domain.entity.DrugProductRequest;
+import gist.pilldispenser.drug.api.drugProductAPI.domain.entity.DrugProduct;
+import gist.pilldispenser.drug.api.drugProductAPI.domain.dto.DrugProductRequest;
 
 public class DrugProductMapper {
 

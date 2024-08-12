@@ -8,6 +8,7 @@ import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
+import gist.pilldispenser.drug.api.drugProductAPI.domain.entity.DrugProduct;
 
 
 /**
@@ -24,7 +25,7 @@ public class QFullMedicationInfo extends EntityPathBase<FullMedicationInfo> {
 
     public final gist.pilldispenser.drug.api.drugIdentificationAPI.domain.dto.QDrugIdentification drugIdentification;
 
-    public final ListPath<gist.pilldispenser.drug.api.drugProductAPI.domain.dto.DrugProduct, gist.pilldispenser.drug.api.drugProductAPI.domain.dto.QDrugProduct> drugProducts = this.<gist.pilldispenser.drug.api.drugProductAPI.domain.dto.DrugProduct, gist.pilldispenser.drug.api.drugProductAPI.domain.dto.QDrugProduct>createList("drugProducts", gist.pilldispenser.drug.api.drugProductAPI.domain.dto.DrugProduct.class, gist.pilldispenser.drug.api.drugProductAPI.domain.dto.QDrugProduct.class, PathInits.DIRECT2);
+    public final ListPath<DrugProduct, gist.pilldispenser.drug.api.drugProductAPI.domain.dto.QDrugProduct> drugProducts = this.<DrugProduct, gist.pilldispenser.drug.api.drugProductAPI.domain.dto.QDrugProduct>createList("drugProducts", DrugProduct.class, gist.pilldispenser.drug.api.drugProductAPI.domain.dto.QDrugProduct.class, PathInits.DIRECT2);
 
     public final gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.QDrugSummary drugSummary;
 

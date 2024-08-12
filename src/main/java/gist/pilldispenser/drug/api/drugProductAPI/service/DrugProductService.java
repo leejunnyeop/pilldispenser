@@ -2,9 +2,9 @@ package gist.pilldispenser.drug.api.drugProductAPI.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gist.pilldispenser.drug.api.drugProductAPI.domain.DrugProductMapper;
-import gist.pilldispenser.drug.api.drugProductAPI.domain.dto.DrugProduct;
-import gist.pilldispenser.drug.api.drugProductAPI.domain.entity.DrugProductApiResponse;
-import gist.pilldispenser.drug.api.drugProductAPI.domain.entity.DrugProductRequest;
+import gist.pilldispenser.drug.api.drugProductAPI.domain.entity.DrugProduct;
+import gist.pilldispenser.drug.api.drugProductAPI.domain.dto.DrugProductApiResponse;
+import gist.pilldispenser.drug.api.drugProductAPI.domain.dto.DrugProductRequest;
 import gist.pilldispenser.drug.api.drugProductAPI.repository.DrugProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity;
+package gist.pilldispenser.drug.api.drugIdentificationAPI.domain.dto;
 
 
 
