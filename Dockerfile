@@ -2,7 +2,7 @@ FROM openjdk:17-alpine
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y tzdata
+RUN apk update && apk add tzdata
 ENV TZ=Asia/Seoul
 
 COPY build/libs/pilldispenser-0.0.1-SNAPSHOT.jar /app
