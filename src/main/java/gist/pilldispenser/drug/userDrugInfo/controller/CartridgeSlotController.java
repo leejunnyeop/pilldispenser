@@ -1,6 +1,9 @@
 package gist.pilldispenser.drug.userDrugInfo.controller;
 
 import gist.pilldispenser.common.security.UsersDetails;
+import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity.DrugIdentification;
+import gist.pilldispenser.drug.api.drugIdentificationAPI.repository.DrugIdentificationRepository;
+import gist.pilldispenser.drug.userDrugInfo.domain.dto.CartridgeDiskSizeResponse;
 import gist.pilldispenser.drug.userDrugInfo.domain.dto.CartridgeSlotResponseDto;
 import gist.pilldispenser.drug.userDrugInfo.service.CartridgeSlotService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class CartridgeSlotController {
 
     private final CartridgeSlotService cartridgeSlotService;
+    private final DrugIdentificationRepository drugIdentificationRepository;
 
 //    @Operation(summary = "가장 낮은 번호의 비어있는 카트리지 슬롯에 약물 할당", description = "유저의 약물 정보를 조회하고, 가장 낮은 번호의 비어있는 슬롯에 할당합니다.")
 //    @PostMapping("/assign")
@@ -31,7 +35,8 @@ public class CartridgeSlotController {
 //    }
 @Operation(summary = "유저가 약을 넣어야 하는 카트리지 번호를 반환", description = "유저에게 남은 카트리지 중 약을 담을 카트리지 번호를 반환합니다.")
 @GetMapping("/assign")
-    public ResponseEntity<CartridgeSlotResponseDto> findLowestCartridgeNo(@AuthenticationPrincipal UsersDetails usersDetails) {
+    public ResponseEntity<CartridgeSlotResponseDto> findLowestCartridgeNo(
+            @AuthenticationPrincipal UsersDetails usersDetails) {
         CartridgeSlotResponseDto response = cartridgeSlotService.findLowestAvailableSlotId(usersDetails.getId());
         return ResponseEntity.ok(response);
     }
@@ -48,13 +53,20 @@ public class CartridgeSlotController {
     //
     @Operation(summary = "DB에서 알약 일련번호를 조회하여 디스크 사이즈를 반환", description = "해당 알약에 맞는 디스크 사이즈를 찾아 반환합니다.")
     @GetMapping("/disk/item-seq")
-    public ResponseEntity<String> assignDiskByItemSeq(
+    public ResponseEntity<CartridgeDiskSizeResponse> assignDiskByItemSeq(
             @Parameter(description = "유저 ID") @AuthenticationPrincipal UsersDetails usersDetails,
             @Parameter(description = "알약 고유번호") @RequestParam(required = false) String itemSeq) {
 
         if (itemSeq != null) {
+            DrugIdentification drugIdentification = drugIdentificationRepository.findByItemSeq(itemSeq)
+                    .orElseThrow(()->new RuntimeException("no such entry"));
             String availableSlot = cartridgeSlotService.assignDiskByItemSeq(usersDetails.getId(), itemSeq);
-            return new ResponseEntity<>(availableSlot, HttpStatus.OK);
+            CartridgeDiskSizeResponse response = CartridgeDiskSizeResponse.builder()
+                    .diskSize(availableSlot)
+                    .drugShape(drugIdentification.getDrugShape())
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             throw new RuntimeException("약을 찾을 수 없습니다.");
         }

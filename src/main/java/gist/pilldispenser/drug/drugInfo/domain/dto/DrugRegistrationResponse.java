@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DrugRegistrationResponse {
 
+    private Long drugId;
     private String drugName;
     private String mainIngredient;
     private String dosageInstructions;
