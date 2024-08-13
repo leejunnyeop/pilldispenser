@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class MedicationDetailController {
 
-    private final FullMedicationInfoService fullMedicationDetailService;
+//    private final FullMedicationInfoService fullMedicationDetailService;
 
 //        @Operation(summary = "약 정보 등록", description = "사용자가 검색을 통해 알약을 저장합니다. (검색을 활용해서 등록)")
 //        @PostMapping("/register")

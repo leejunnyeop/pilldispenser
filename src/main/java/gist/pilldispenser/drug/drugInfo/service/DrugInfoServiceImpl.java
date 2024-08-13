@@ -3,8 +3,11 @@ package gist.pilldispenser.drug.drugInfo.service;
 import com.querydsl.core.Tuple;
 import gist.pilldispenser.common.security.UsersDetails;
 import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity.DrugIdentification;
+import gist.pilldispenser.drug.api.drugIdentificationAPI.repository.DrugIdentificationRepository;
 import gist.pilldispenser.drug.api.drugProductAPI.domain.entity.DrugProduct;
+import gist.pilldispenser.drug.api.drugProductAPI.repository.DrugProductRepository;
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.DrugSummary;
+import gist.pilldispenser.drug.api.drugSummaryAPI.repository.DrugSummaryRepository;
 import gist.pilldispenser.drug.drugInfo.domain.dto.*;
 import gist.pilldispenser.drug.drugInfo.repository.DrugInfoRepository;
 import gist.pilldispenser.drug.drugInfo.domain.entity.DrugInfo;
@@ -19,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static gist.pilldispenser.drug.drugInfo.domain.DrugInfoMapper.toDrugInfo;
 
 @Service
@@ -28,6 +33,8 @@ public class DrugInfoServiceImpl implements DrugInfoService {
     private final DrugInfoRepository drugInfoRepository;
     private final UserDrugInfoRepository userDrugInfoRepository;
     private final FullMedicationInfoRepository fullMedicationInfoRepository;
+    private final DrugIdentificationRepository drugIdentificationRepository;
+    private final DrugSummaryRepository drugSummaryRepository;
     private final CartridgeSlotRepository cartridgeSlotRepository;
     private final DrugInfoRepositoryCustomImpl drugInfoRepositoryCustomImpl;
 
@@ -63,8 +70,15 @@ public class DrugInfoServiceImpl implements DrugInfoService {
 
     public DrugRegistrationResponse createDrugInfoAutomatically(UsersDetails usersDetails,
                                                                 DrugAutoRegistrationRequest request){
-        FullMedicationInfo fullMedicationInfo = fullMedicationInfoRepository.findByItemSeq(request.getItemSeq())
-                .orElseThrow(() -> new RuntimeException("약이 존재하지 않습니다."));
+        DrugIdentification drugIdentification = drugIdentificationRepository.findByItemSeq(request.getItemSeq())
+                .orElseThrow(() -> new RuntimeException("약 성분 정보가 존재하지 않습니다."));
+        DrugSummary drugSummary = drugSummaryRepository.findByItemSeq(request.getItemSeq())
+                .orElseThrow(()->new RuntimeException("약 혼용 정보가 존재하지 않습니다."));
+
+        FullMedicationInfo fullMedicationInfo = FullMedicationInfo.builder()
+                .drugIdentification(drugIdentification)
+                .drugSummary(drugSummary)
+                .build();
 
         UserDrugInfo userDrugInfo = UserDrugInfo.builder()
                 .user(usersDetails.getUsers())
@@ -80,22 +94,23 @@ public class DrugInfoServiceImpl implements DrugInfoService {
                 .isOccupied(true)
                 .build();
 
+        fullMedicationInfoRepository.save(fullMedicationInfo);
         userDrugInfoRepository.save(userDrugInfo);
         cartridgeSlotRepository.save(updatedSlot);
 
         Tuple tuple = drugInfoRepositoryCustomImpl.findDrugIdentificationAndSummaryAndProductByItemSeq(
                 request.getItemSeq());
-        DrugIdentification drugIdentification = tuple.get(0, DrugIdentification.class);
-        DrugSummary drugSummary = tuple.get(1, DrugSummary.class);
+        DrugIdentification drugIdentity = tuple.get(0, DrugIdentification.class);
+        DrugSummary drugSum = tuple.get(1, DrugSummary.class);
         DrugProduct drugProduct = tuple.get(2, DrugProduct.class);
 
         return DrugRegistrationResponse.builder()
                 .drugId(userDrugInfo.getId())
-                .drugName(drugIdentification.getItemName())
+                .drugName(drugIdentity.getItemName())
                 .mainIngredient(drugProduct.getMtralNm())
-                .shape(drugIdentification.getDrugShape())
-                .dosageInstructions(drugSummary.getUseMethodQesitm())
-                .size(drugIdentification.getLengLong())
+                .shape(drugIdentity.getDrugShape())
+                .dosageInstructions(drugSum.getUseMethodQesitm())
+                .size(drugIdentity.getLengLong())
                 .slotNumber(String.valueOf(updatedSlot.getSlotNumber()))
                 .slotSize(request.getDiskSize())
                 .build();
