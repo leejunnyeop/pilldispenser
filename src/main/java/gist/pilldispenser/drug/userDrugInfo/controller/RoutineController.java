@@ -2,6 +2,7 @@ package gist.pilldispenser.drug.userDrugInfo.controller;
 
 import gist.pilldispenser.common.security.UsersDetails;
 import gist.pilldispenser.drug.userDrugInfo.domain.dto.MultipleRoutineRequestDto;
+import gist.pilldispenser.drug.userDrugInfo.domain.dto.MultipleRoutineResponse;
 import gist.pilldispenser.drug.userDrugInfo.domain.dto.RoutineResponse;
 import gist.pilldispenser.drug.userDrugInfo.domain.entity.Routine;
 import gist.pilldispenser.drug.userDrugInfo.repository.RoutineRepository;
@@ -69,13 +70,23 @@ public class RoutineController {
     @DeleteMapping("/{routineId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
-    public void deleteRoutine(@PathVariable(name = "routineId") Long routineId) {
-        Routine routine = routineRepository.findById(routineId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 루틴을 찾을 수 없습니다."));
+    public void deleteRoutine(@PathVariable(name = "routineId") String routineIds) {
+        String[] ids = routineIds.split(",");
+        for (String id : ids) {
+            Routine routine = routineRepository.findById(Long.valueOf(id))
+                    .orElseThrow(() -> new IllegalArgumentException("해당 ID의 루틴을 찾을 수 없습니다."));
+            routineRepository.delete(routine);
+            String taskKey = "schedule-" + id;
+            customScheduleService.cancelScheduledTask(taskKey);
+        }
+    }
 
-        routineRepository.delete(routine);
-        String taskKey = "schedule-" + routineId;
-        customScheduleService.cancelScheduledTask(taskKey);
-
+    @GetMapping("/get/{drugId}")
+    public ResponseEntity<MultipleRoutineResponse> getRoutines(
+            @PathVariable(name = "drugId") Long userDrugInfoId
+    ){
+        List<RoutineResponse> responses = routineService.getRoutinesForUserDrugInfo(userDrugInfoId);
+        MultipleRoutineResponse response = new MultipleRoutineResponse(responses);
+        return ResponseEntity.ok(response);
     }
 }

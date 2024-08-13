@@ -7,16 +7,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Builder
 @Getter
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
-public class RoutineResponse {
+@NoArgsConstructor
+public class MultipleRoutineResponse {
 
-    private Long routineId;
-    private String dailyDosage;
-    private String dosagePerTake;
-    private String time;
-    private String day;
-
+    private List<RoutineResponse> routines;
 }
