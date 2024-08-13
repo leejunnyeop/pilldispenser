@@ -50,6 +50,7 @@ public class DrugInfoServiceImpl implements DrugInfoService {
         cartridgeSlotRepository.save(cartridgeSlot);
 
         return DrugRegistrationResponse.builder()
+                .drugId(userDrugInfo.getId())
                 .drugName(drugInfo.getName())
                 .mainIngredient(drugInfo.getMtralNm())
                 .dosageInstructions("하루 " + drugInfo.getDailyDosage() + "번 ")
@@ -89,6 +90,7 @@ public class DrugInfoServiceImpl implements DrugInfoService {
         DrugProduct drugProduct = tuple.get(2, DrugProduct.class);
 
         return DrugRegistrationResponse.builder()
+                .drugId(userDrugInfo.getId())
                 .drugName(drugIdentification.getItemName())
                 .mainIngredient(drugProduct.getMtralNm())
                 .shape(drugIdentification.getDrugShape())
