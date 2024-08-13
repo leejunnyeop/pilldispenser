@@ -20,9 +20,6 @@ import java.util.stream.Collectors;
 public class UserDrugRoutineService {
 
     private final UserDrugInfoRepository userDrugInfoRepository;
-    private final FullMedicationInfoRepository fullMedicationInfoRepository;
-    private final DrugInfoRepository drugInfoRepository;
-    private final RoutineRepository routineRepository;
 
     @Transactional(readOnly = true)
     public List<UserDrugRoutineResponse> getUserDrugRoutines(Long userId) {

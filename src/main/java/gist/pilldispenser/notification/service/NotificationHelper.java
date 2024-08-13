@@ -44,7 +44,6 @@ public class NotificationHelper {
     private final RedisUtils redisUtils;
     private final RestTemplate restTemplate;
     private final OAuthService oAuthService;
-    private final DrugIdentificationRepository drugIdentificationRepository;
     private final UserDrugInfoRepositoryCustomImpl userDrugInfoRepositoryCustomImpl;
 
     @Value("${kakao.msg-uri}")
@@ -52,7 +51,7 @@ public class NotificationHelper {
 
     // 지정 시간에 카카오톡 메시지 API를 호출
     public String sendNotification(Routine routine) throws IOException {
-
+        log.info("message preparation started");
         UserDrugInfo userDrugInfo = userDrugInfoRepositoryCustomImpl.getUserDrugInfoByRoutine(routine.getId());
 
         DrugInfo drugInfo;
