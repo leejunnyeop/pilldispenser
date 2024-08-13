@@ -1,6 +1,9 @@
 package gist.pilldispenser.drug.userDrugInfo.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import gist.pilldispenser.drug.drugInfo.repository.DrugInfoRepository;
+import gist.pilldispenser.drug.medication.domain.entity.FullMedicationInfo;
+import gist.pilldispenser.drug.medication.repository.FullMedicationInfoRepository;
 import gist.pilldispenser.drug.userDrugInfo.domain.dto.UserDrugRoutineResponse;
 import gist.pilldispenser.drug.userDrugInfo.domain.entity.UserDrugInfo;
 import gist.pilldispenser.drug.userDrugInfo.repository.RoutineRepository;
@@ -16,8 +19,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserDrugRoutineService {
 
-    private final JPAQueryFactory queryFactory;
     private final UserDrugInfoRepository userDrugInfoRepository;
+    private final FullMedicationInfoRepository fullMedicationInfoRepository;
+    private final DrugInfoRepository drugInfoRepository;
     private final RoutineRepository routineRepository;
 
     @Transactional(readOnly = true)
@@ -44,5 +48,9 @@ public class UserDrugRoutineService {
                 .image(image)
                 .build();
         }).collect(Collectors.toList());
+    }
+
+    public List<UserDrugInfo> getUserDrugInfos(Long userId){
+        return userDrugInfoRepository.findByUserId(userId);
     }
 }

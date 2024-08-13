@@ -18,4 +18,5 @@ public class RoutineResponse {
     private String dosagePerTake;
     private String time;
     private String day;
+
 }
