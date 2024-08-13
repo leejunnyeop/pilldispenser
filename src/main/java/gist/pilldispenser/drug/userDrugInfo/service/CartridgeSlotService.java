@@ -2,6 +2,7 @@ package gist.pilldispenser.drug.userDrugInfo.service;
 
 import gist.pilldispenser.common.security.UsersDetails;
 import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity.DrugIdentification;
+import gist.pilldispenser.drug.api.drugIdentificationAPI.repository.DrugIdentificationRepository;
 import gist.pilldispenser.drug.medication.domain.entity.FullMedicationInfo;
 import gist.pilldispenser.drug.medication.repository.FullMedicationInfoRepository;
 import gist.pilldispenser.drug.userDrugInfo.domain.dto.CartridgeSlotResponseDto;
@@ -21,7 +22,7 @@ public class CartridgeSlotService {
 
     private final CartridgeSlotRepository cartridgeSlotRepository;
     private final UserDrugInfoRepository userDrugInfoRepository;
-    private final FullMedicationInfoRepository fullMedicationInfoRepository;
+    private final DrugIdentificationRepository drugIdentificationRepository;
 
 // 약물 정보를 조회하고, 가장 낮은 번호의 비어있는 슬롯에 할당 후 저장하는 메서드
 //    @Transactional
@@ -86,11 +87,11 @@ public class CartridgeSlotService {
 //    }
 
     public String assignDiskByItemSeq(Long userId, String itemSeq){
-        FullMedicationInfo fullMedicationInfo = fullMedicationInfoRepository.findByItemSeq(itemSeq)
-                .orElseThrow(() -> new RuntimeException("해당 일련번호의 약이 존재하지 않습니다."));
+
+        DrugIdentification drugIdentification = drugIdentificationRepository.findByItemSeq(itemSeq)
+                .orElseThrow(()->new RuntimeException("no such entry"));
 
         // 알약의 크기와 형태를 기반으로 디스크 크기를 결정
-        DrugIdentification drugIdentification = fullMedicationInfo.getDrugIdentification();
         String diskSize = determineDiskSize(drugIdentification.getDrugShape(),
                 Double.parseDouble(drugIdentification.getLengLong()));
 
