@@ -24,31 +24,13 @@ public class CartridgeSlotController {
     private final CartridgeSlotService cartridgeSlotService;
     private final DrugIdentificationRepository drugIdentificationRepository;
 
-//    @Operation(summary = "가장 낮은 번호의 비어있는 카트리지 슬롯에 약물 할당", description = "유저의 약물 정보를 조회하고, 가장 낮은 번호의 비어있는 슬롯에 할당합니다.")
-//    @PostMapping("/assign")
-//    public ResponseEntity<DrugAssignmentResponseDto> assignDrugToLowestAvailableSlot(
-//            @Parameter(description = "유저 ID") @AuthenticationPrincipal UsersDetails usersDetails){
-//
-//            DrugAssignmentResponseDto assignedSlot =
-//                    cartridgeSlotService.assignDrugToLowestAvailableSlot(usersDetails.getId());
-//        return ResponseEntity.ok(assignedSlot);
-//    }
-@Operation(summary = "유저가 약을 넣어야 하는 카트리지 번호를 반환", description = "유저에게 남은 카트리지 중 약을 담을 카트리지 번호를 반환합니다.")
-@GetMapping("/assign")
+    @Operation(summary = "유저가 약을 넣어야 하는 카트리지 번호를 반환", description = "유저에게 남은 카트리지 중 약을 담을 카트리지 번호를 반환합니다.")
+    @GetMapping("/assign")
     public ResponseEntity<CartridgeSlotResponseDto> findLowestCartridgeNo(
             @AuthenticationPrincipal UsersDetails usersDetails) {
         CartridgeSlotResponseDto response = cartridgeSlotService.findLowestAvailableSlotId(usersDetails.getId());
         return ResponseEntity.ok(response);
     }
-
-//    @Operation(summary = "알약 고유번호를 조회하여 디스크 슬롯에 저장", description = "유저의 약물 정보를 조회하고, 해당 알약에 맞는 디스크 슬롯을 찾아 저장합니다.")
-//    @PostMapping("/assign-disk-by-item-seq")
-//    public ResponseEntity<CartridgeSlotResponseDto> assignDiskByItemSeq(
-//            @Parameter(description = "유저 ID") @AuthenticationPrincipal UsersDetails usersDetails,
-//            @Parameter(description = "알약 고유번호") @RequestParam String itemSeq) {
-//        CartridgeSlotResponseDto assignedSlot = cartridgeSlotService.assignDiskByItemSeq(usersDetails.getId(), itemSeq);
-//        return ResponseEntity.ok(assignedSlot);
-//    }
 
     //
     @Operation(summary = "DB에서 알약 일련번호를 조회하여 디스크 사이즈를 반환", description = "해당 알약에 맞는 디스크 사이즈를 찾아 반환합니다.")
@@ -96,4 +78,9 @@ public class CartridgeSlotController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+//    @DeleteMapping("/remove/{cartridgeId}")
+//    public ResponseEntity<String> removeSingleCartridge(
+//            @Parameter(description = "사용자 정보") @AuthenticationPrincipal UsersDetails usersDetails
+//    )
 }

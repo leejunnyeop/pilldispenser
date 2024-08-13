@@ -15,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static gist.pilldispenser.common.security.jwt.JwtProperties.*;
 
 @Slf4j
@@ -63,21 +65,24 @@ public class UsersService {
     @Transactional
     public void updateHardwareNo(String email, UsersHardwareNoRequest request){
         Users users = usersRepository.findByEmail(email);
-//        Users updatedUsers = users.toBuilder()
-//                .hardwareNo(request.hardwareNo())
-//                .build();
 
-        users.setHardwareNo(request.hardwareNo());
-        usersRepository.save(users);
-        log.info(users.getHardwareNo());
+        if (!usersRepository.existsByHardwareNo(email)) {
+            users.setHardwareNo(request.hardwareNo());
+            usersRepository.save(users);
+            log.info(users.getHardwareNo());
+        }
 
-        for (int i=1; i<7; i++) {
-            CartridgeSlot cartridgeSlot = CartridgeSlot.builder()
-                    .slotNumber(i)
-                    .isOccupied(false)
-                    .userId(users.getId())
-                    .build();
-            cartridgeSlotRepository.save(cartridgeSlot);
+        List<CartridgeSlot> cartridgeSlots = cartridgeSlotRepository.findAllByUserId(users.getId());
+        // 카트리지가 없을 때는 카트리지 6개 추가
+        if (cartridgeSlots.isEmpty()){
+            for (int i=1; i<7; i++) {
+                CartridgeSlot cartridgeSlot = CartridgeSlot.builder()
+                        .slotNumber(i)
+                        .isOccupied(false)
+                        .userId(users.getId())
+                        .build();
+                cartridgeSlotRepository.save(cartridgeSlot);
+            }
         }
     }
 }

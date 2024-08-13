@@ -33,8 +33,6 @@ public class DrugInfoServiceImpl implements DrugInfoService {
     private final DrugInfoRepository drugInfoRepository;
     private final UserDrugInfoRepository userDrugInfoRepository;
     private final FullMedicationInfoRepository fullMedicationInfoRepository;
-    private final DrugIdentificationRepository drugIdentificationRepository;
-    private final DrugSummaryRepository drugSummaryRepository;
     private final CartridgeSlotRepository cartridgeSlotRepository;
     private final DrugInfoRepositoryCustomImpl drugInfoRepositoryCustomImpl;
 
@@ -73,16 +71,6 @@ public class DrugInfoServiceImpl implements DrugInfoService {
         FullMedicationInfo fullMedicationInfo = fullMedicationInfoRepository.findByItemSeq(request.getItemSeq())
                 .orElseThrow(() -> new RuntimeException("약이 존재하지 않습니다."));
 
-//        DrugIdentification drugIdentification = drugIdentificationRepository.findByItemSeq(request.getItemSeq())
-//                .orElseThrow(() -> new RuntimeException("약 성분 정보가 존재하지 않습니다."));
-//        DrugSummary drugSummary = drugSummaryRepository.findByItemSeq(request.getItemSeq())
-//                .orElseThrow(()->new RuntimeException("약 혼용 정보가 존재하지 않습니다."));
-//
-//        FullMedicationInfo fullMedicationInfo = FullMedicationInfo.builder()
-//                .drugIdentification(drugIdentification)
-//                .drugSummary(drugSummary)
-//                .build();
-
         UserDrugInfo userDrugInfo = UserDrugInfo.builder()
                 .user(usersDetails.getUsers())
                 .fullMedicationInfo(fullMedicationInfo)
@@ -97,7 +85,6 @@ public class DrugInfoServiceImpl implements DrugInfoService {
                 .isOccupied(true)
                 .build();
 
-//        fullMedicationInfoRepository.save(fullMedicationInfo);
         userDrugInfoRepository.save(userDrugInfo);
         cartridgeSlotRepository.save(updatedSlot);
 

@@ -26,6 +26,7 @@ public class Users extends BaseEntity {
 
     // 하드웨어 번호
     @Setter
+    @Column(unique = true)
     private String hardwareNo;
 
     @OneToMany(mappedBy = "user")
