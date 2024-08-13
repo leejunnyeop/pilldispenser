@@ -65,9 +65,10 @@ public class DrugSummaryController {
      * @return 혼용 금지 성분이 포함된 약물 이름 리스트 또는 null
      */
     @GetMapping("/api/medications/checkConflicts")
-    public ResponseEntity<List<String>> findDrugsByConflictingComponents(@RequestParam(name = "itemSeq") String itemSeq) {
+    public ResponseEntity<List<String>> findDrugsByConflictingComponents(@RequestParam(name = "itemSeq") String itemSeq, @AuthenticationPrincipal UsersDetails usersDetails) {
         try {
-            List<String> result = drugSummarySearchServiceImpl.findDrugsByConflictingComponents(itemSeq);
+            Long userId = usersDetails.getId();
+            List<String> result = drugSummarySearchServiceImpl.findDrugsByConflictingComponents(itemSeq, userId);
             return ResponseEntity.ok(result.isEmpty() ? null : result);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null);
