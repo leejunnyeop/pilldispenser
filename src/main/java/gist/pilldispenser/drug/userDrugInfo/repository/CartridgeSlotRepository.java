@@ -18,5 +18,7 @@ public interface CartridgeSlotRepository extends JpaRepository<CartridgeSlot, Lo
 
     Optional<CartridgeSlot> findFirstByUserIdAndIsOccupiedFalseOrderBySlotNumberAsc(Long userId);
 
+    List<CartridgeSlot> findAllByUserId(Long userId);
+
     boolean existsByUserIdAndIsOccupiedFalse(Long userId);
 }

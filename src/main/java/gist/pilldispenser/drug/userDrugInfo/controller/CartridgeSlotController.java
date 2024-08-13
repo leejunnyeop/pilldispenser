@@ -6,12 +6,13 @@ import gist.pilldispenser.drug.userDrugInfo.service.CartridgeSlotService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/cartridge-slots")
 @RequiredArgsConstructor
@@ -69,5 +70,18 @@ public class CartridgeSlotController {
         String availableSlot = cartridgeSlotService.assignDiskByDrugInfoId(
                 usersDetails.getId(), drugShape, drugLeng);
         return new ResponseEntity<>(availableSlot, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/reset")
+    public ResponseEntity<String> resetCartridge(
+            @Parameter(description = "사용자 정보") @AuthenticationPrincipal UsersDetails usersDetails){
+
+        try {
+            cartridgeSlotService.resetCartridgeSlots(usersDetails);
+            return ResponseEntity.ok("카트리지 리셋");
+        } catch (Exception e) {
+            log.info("카트리지 리셋에 실패했습니다.");
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

@@ -36,6 +36,7 @@ public class CartridgeSlot {
                 .slotNumber(this.slotNumber)
                 .isOccupied(isOccupied)
                 .size(size)
+                .userId(this.userId)
                 .build();
     }
 
