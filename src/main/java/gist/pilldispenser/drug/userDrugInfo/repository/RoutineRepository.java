@@ -9,10 +9,6 @@ import java.util.Optional;
 
 public interface RoutineRepository extends JpaRepository<Routine, Long> {
 
-    List<Routine> findByUserDrugInfoUserId(Long userId);
-
-    List<Routine> findByUserDrugInfoId(Long userId);
-
-
+    List<Routine> findByUserDrugInfo(UserDrugInfo userDrugInfo);
 
 }
