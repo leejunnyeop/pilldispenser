@@ -70,15 +70,18 @@ public class DrugInfoServiceImpl implements DrugInfoService {
 
     public DrugRegistrationResponse createDrugInfoAutomatically(UsersDetails usersDetails,
                                                                 DrugAutoRegistrationRequest request){
-        DrugIdentification drugIdentification = drugIdentificationRepository.findByItemSeq(request.getItemSeq())
-                .orElseThrow(() -> new RuntimeException("약 성분 정보가 존재하지 않습니다."));
-        DrugSummary drugSummary = drugSummaryRepository.findByItemSeq(request.getItemSeq())
-                .orElseThrow(()->new RuntimeException("약 혼용 정보가 존재하지 않습니다."));
+        FullMedicationInfo fullMedicationInfo = fullMedicationInfoRepository.findByItemSeq(request.getItemSeq())
+                .orElseThrow(() -> new RuntimeException("약이 존재하지 않습니다."));
 
-        FullMedicationInfo fullMedicationInfo = FullMedicationInfo.builder()
-                .drugIdentification(drugIdentification)
-                .drugSummary(drugSummary)
-                .build();
+//        DrugIdentification drugIdentification = drugIdentificationRepository.findByItemSeq(request.getItemSeq())
+//                .orElseThrow(() -> new RuntimeException("약 성분 정보가 존재하지 않습니다."));
+//        DrugSummary drugSummary = drugSummaryRepository.findByItemSeq(request.getItemSeq())
+//                .orElseThrow(()->new RuntimeException("약 혼용 정보가 존재하지 않습니다."));
+//
+//        FullMedicationInfo fullMedicationInfo = FullMedicationInfo.builder()
+//                .drugIdentification(drugIdentification)
+//                .drugSummary(drugSummary)
+//                .build();
 
         UserDrugInfo userDrugInfo = UserDrugInfo.builder()
                 .user(usersDetails.getUsers())
@@ -94,7 +97,7 @@ public class DrugInfoServiceImpl implements DrugInfoService {
                 .isOccupied(true)
                 .build();
 
-        fullMedicationInfoRepository.save(fullMedicationInfo);
+//        fullMedicationInfoRepository.save(fullMedicationInfo);
         userDrugInfoRepository.save(userDrugInfo);
         cartridgeSlotRepository.save(updatedSlot);
 
