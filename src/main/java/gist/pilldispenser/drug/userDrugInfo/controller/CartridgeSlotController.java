@@ -64,8 +64,8 @@ public class CartridgeSlotController {
     @GetMapping("/disk/user-drug")
     public ResponseEntity<String> assignDiskByUserDrug(
             @Parameter(description = "사용자 정보") @AuthenticationPrincipal UsersDetails usersDetails,
-            @Parameter(description = "알약 모양") @RequestParam(required = true) String drugShape,
-            @Parameter(description = "알약 크기") @RequestParam(required = true) Double drugLeng) {
+            @Parameter(description = "알약 모양") @RequestParam String drugShape,
+            @Parameter(description = "알약 크기") @RequestParam Double drugLeng) {
 
         String availableSlot = cartridgeSlotService.assignDiskByDrugInfoId(
                 usersDetails.getId(), drugShape, drugLeng);

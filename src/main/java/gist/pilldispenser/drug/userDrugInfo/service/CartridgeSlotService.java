@@ -2,7 +2,6 @@ package gist.pilldispenser.drug.userDrugInfo.service;
 
 import gist.pilldispenser.common.security.UsersDetails;
 import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity.DrugIdentification;
-import gist.pilldispenser.drug.drugInfo.repository.DrugInfoRepository;
 import gist.pilldispenser.drug.medication.domain.entity.FullMedicationInfo;
 import gist.pilldispenser.drug.medication.repository.FullMedicationInfoRepository;
 import gist.pilldispenser.drug.userDrugInfo.domain.dto.CartridgeSlotResponseDto;

@@ -40,20 +40,20 @@ public class Routine {
     @Enumerated(EnumType.STRING)
     private DayType days;
 
-    public void updateRoutine(LocalTime time, int dosagePerTake, int dailyDosage, Boolean isActive) {
-        if (time != null) {
-            this.time = time;
-        }
-        if (dosagePerTake != 0) {
-            this.dosagePerTake = dosagePerTake;
-        }
-        if (dailyDosage != 0) {
-            this.dailyDosage = dailyDosage;
-        }
-        if (isActive != null) {
-            this.isActive = isActive;
-        }
-    }
+//    public void updateRoutine(LocalTime time, int dosagePerTake, int dailyDosage, Boolean isActive) {
+//        if (time != null) {
+//            this.time = time;
+//        }
+//        if (dosagePerTake != 0) {
+//            this.dosagePerTake = dosagePerTake;
+//        }
+//        if (dailyDosage != 0) {
+//            this.dailyDosage = dailyDosage;
+//        }
+//        if (isActive != null) {
+//            this.isActive = isActive;
+//        }
+//    }
 
     public static RoutineResponse toRoutineResponse(Routine routine){
         return RoutineResponse.builder()

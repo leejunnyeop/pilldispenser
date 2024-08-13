@@ -1,12 +1,7 @@
 package gist.pilldispenser.drug.userDrugInfo.service;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import gist.pilldispenser.drug.drugInfo.repository.DrugInfoRepository;
-import gist.pilldispenser.drug.medication.domain.entity.FullMedicationInfo;
-import gist.pilldispenser.drug.medication.repository.FullMedicationInfoRepository;
 import gist.pilldispenser.drug.userDrugInfo.domain.dto.UserDrugRoutineResponse;
 import gist.pilldispenser.drug.userDrugInfo.domain.entity.UserDrugInfo;
-import gist.pilldispenser.drug.userDrugInfo.repository.RoutineRepository;
 import gist.pilldispenser.drug.userDrugInfo.repository.UserDrugInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
