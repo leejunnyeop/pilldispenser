@@ -54,10 +54,11 @@ public class DrugSummarySearchServiceImpl implements DrugSummarySearchService {
 
     // itemSeq를 기반으로 혼용이 안 되는 성분을 찾아서 해당 성분을 포함하는 약물 리스트 반환
     @Transactional(readOnly = true)
-    public List<String> findDrugsByConflictingComponents(String itemSeq) throws Exception {
+    public List<String> findDrugsByConflictingComponents(String itemSeq, Long userId) throws Exception {
         try {
             QDrugSummary drugSummary = QDrugSummary.drugSummary;
             QDrugProduct drugProduct = QDrugProduct.drugProduct;
+            List<UserDrugInfo> userDrugInfos = userDrugInfoRepository.findByUserId(userId);
 
             String conflictingComponents = queryFactory
                     .select(drugSummary.intrcQesitm)
@@ -69,14 +70,68 @@ public class DrugSummarySearchServiceImpl implements DrugSummarySearchService {
                 return new ArrayList<>();
             }
 
-            String[] componentsArray = conflictingComponents.split(",");
+            String[] componentsArray = conflictingComponents.split(", ");
             List<String> components = Arrays.asList(componentsArray);
 
-            return queryFactory
-                    .select(drugProduct.prduct)
+            List<String> confilctList = queryFactory
+                    .select(drugProduct.itemSeq)
                     .from(drugProduct)
                     .where(drugProduct.mtralNm.in(components))
                     .fetch();
+
+            // 사용자가 등록한 약인지 탐색
+            List<String> result = new ArrayList<>();
+            for (String conflict : confilctList) {
+                for (UserDrugInfo userDrugInfo : userDrugInfos) {
+                    if (userDrugInfo.getFullMedicationInfo() != null && userDrugInfo.getFullMedicationInfo().getItemSeq().contains(conflict)) {
+                        result.add(userDrugInfo.getFullMedicationInfo().getDrugSummary().getItemName());
+                    }
+                }
+            }
+
+            List<String> newResults = findConflictingDrugsByMtral(itemSeq, userId);
+            for (String newResult : newResults) {
+                if (!result.contains(newResult)) {
+                    result.add(newResult);
+                }
+            }
+
+            return result;
+        } catch (Exception e) {
+            throw new Exception("itemSeq로 혼용 금지 성분을 조회하는 중 오류가 발생했습니다: " + itemSeq, e);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    private List<String> findConflictingDrugsByMtral(String itemSeq, Long userId) throws Exception {
+        try {
+            QDrugSummary drugSummary = QDrugSummary.drugSummary;
+            QDrugProduct drugProduct = QDrugProduct.drugProduct;
+            List<UserDrugInfo> userDrugInfos = userDrugInfoRepository.findByUserId(userId);
+
+            String mtralName = queryFactory
+                    .select(drugProduct.mtralNm)
+                    .from(drugProduct)
+                    .where(drugProduct.itemSeq.eq(itemSeq))
+                    .fetchOne();
+
+            List<String> confilctList = queryFactory
+                    .select(drugSummary.itemSeq)
+                    .from(drugSummary)
+                    .where(drugSummary.intrcQesitm.like("%" + mtralName + "%"))
+                    .fetch();
+
+            // 사용자가 등록한 약인지 탐색
+            List<String> result = new ArrayList<>();
+            for (String conflict : confilctList) {
+                for (UserDrugInfo userDrugInfo : userDrugInfos) {
+                    if (userDrugInfo.getFullMedicationInfo() != null && userDrugInfo.getFullMedicationInfo().getItemSeq().equals(conflict)) {
+                        result.add(userDrugInfo.getFullMedicationInfo().getDrugSummary().getItemName());
+                    }
+                }
+            }
+
+            return result;
         } catch (Exception e) {
             throw new Exception("itemSeq로 혼용 금지 성분을 조회하는 중 오류가 발생했습니다: " + itemSeq, e);
         }
