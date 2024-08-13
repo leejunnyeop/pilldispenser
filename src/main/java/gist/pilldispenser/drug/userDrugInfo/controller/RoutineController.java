@@ -42,24 +42,32 @@ public class RoutineController {
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
     })
     @PostMapping("/create")
-    public ResponseEntity<RoutineResponse> createRoutine(
+    public ResponseEntity<MultipleRoutineResponse> createRoutine(
             @RequestBody MultipleRoutineRequestDto routineRequestDtos,
             @Parameter(hidden = true) @AuthenticationPrincipal UsersDetails userDetails) {
 
         Long userId = userDetails.getId();
         // 루틴 생성
         List<Routine> routines = routineService.createRoutine(userId, routineRequestDtos.getRoutines());
-
-        List<Long> routineIds = new ArrayList<>();
+        List<RoutineResponse> responses = new ArrayList<>();
         // 알림 등록
         for (Routine routine : routines) {
-            routineIds.add(routine.getId());
             NotificationTask task = new NotificationTask(notificationHelper, routine);
             String taskKey = "schedule-" + routine.getId();
             customScheduleService.scheduleNotification(taskKey, task, notificationHelper.getCronExpression(routine));
+
+            RoutineResponse routineResponse = RoutineResponse.builder()
+                    .routineId(routine.getId())
+                    .day(routine.getDays().getDayName())
+                    .dailyDosage(String.valueOf(routine.getDailyDosage()))
+                    .dosagePerTake(String.valueOf(routine.getDosagePerTake()))
+                    .time(String.valueOf(routine.getTime()))
+                    .build();
+
+            responses.add(routineResponse);
         }
 
-        return ResponseEntity.ok(new RoutineResponse(routineIds));
+        return ResponseEntity.ok(new MultipleRoutineResponse(responses));
     }
 
     @Operation(summary = "루틴 삭제", description = "루틴 ID로 특정 루틴을 삭제합니다.")
