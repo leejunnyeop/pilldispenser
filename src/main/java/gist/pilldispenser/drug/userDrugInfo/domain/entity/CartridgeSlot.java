@@ -29,19 +29,20 @@ public class CartridgeSlot {
 
     private String size;  // 슬롯의 사이즈 (S, M, L)
 
-    public CartridgeSlot updateSlot(UserDrugInfo userDrugInfo, boolean isOccupied, String size) {
-        return CartridgeSlot.builder()
-                .id(this.id)
-                .userDrugInfo(userDrugInfo != null ? userDrugInfo : this.userDrugInfo)
-                .slotNumber(this.slotNumber)
-                .isOccupied(isOccupied)
-                .size(size)
-                .build();
-    }
+//    public CartridgeSlot updateSlot(UserDrugInfo userDrugInfo, boolean isOccupied, String size) {
+//        return CartridgeSlot.builder()
+//                .id(this.id)
+//                .userDrugInfo(userDrugInfo != null ? userDrugInfo : this.userDrugInfo)
+//                .slotNumber(this.slotNumber)
+//                .isOccupied(isOccupied)
+//                .size(size)
+//                .userId(this.userId)
+//                .build();
+//    }
 
-    public CartridgeSlot updateSize(String size) {
-        return CartridgeSlot.builder()
-                .size(size)
-                .build();
-    }
+//    public CartridgeSlot updateSize(String size) {
+//        return CartridgeSlot.builder()
+//                .size(size)
+//                .build();
+//    }
 }

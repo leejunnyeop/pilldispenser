@@ -5,16 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.Tuple;
 import gist.pilldispenser.common.utils.RedisUtils;
 import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity.DrugIdentification;
-import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity.QDrugIdentification;
-import gist.pilldispenser.drug.api.drugIdentificationAPI.repository.DrugIdentificationRepository;
 import gist.pilldispenser.drug.drugInfo.domain.entity.DrugInfo;
 import gist.pilldispenser.drug.drugInfo.domain.entity.QDrugInfo;
 import gist.pilldispenser.drug.medication.domain.entity.FullMedicationInfo;
 import gist.pilldispenser.drug.medication.domain.entity.QFullMedicationInfo;
 import gist.pilldispenser.drug.userDrugInfo.domain.entity.Routine;
 import gist.pilldispenser.drug.userDrugInfo.domain.entity.UserDrugInfo;
-import gist.pilldispenser.drug.userDrugInfo.repository.RoutineRepository;
-import gist.pilldispenser.drug.userDrugInfo.repository.UserDrugInfoRepository;
 import gist.pilldispenser.drug.userDrugInfo.repository.UserDrugInfoRepositoryCustomImpl;
 import gist.pilldispenser.notification.domain.NotificationTemplate;
 import gist.pilldispenser.users.domain.entity.QUsers;
@@ -44,7 +40,6 @@ public class NotificationHelper {
     private final RedisUtils redisUtils;
     private final RestTemplate restTemplate;
     private final OAuthService oAuthService;
-    private final DrugIdentificationRepository drugIdentificationRepository;
     private final UserDrugInfoRepositoryCustomImpl userDrugInfoRepositoryCustomImpl;
 
     @Value("${kakao.msg-uri}")
@@ -52,7 +47,7 @@ public class NotificationHelper {
 
     // 지정 시간에 카카오톡 메시지 API를 호출
     public String sendNotification(Routine routine) throws IOException {
-
+        log.info("message preparation started");
         UserDrugInfo userDrugInfo = userDrugInfoRepositoryCustomImpl.getUserDrugInfoByRoutine(routine.getId());
 
         DrugInfo drugInfo;

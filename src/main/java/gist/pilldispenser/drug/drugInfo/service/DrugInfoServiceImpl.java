@@ -5,9 +5,7 @@ import gist.pilldispenser.common.security.UsersDetails;
 import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity.DrugIdentification;
 import gist.pilldispenser.drug.api.drugProductAPI.domain.entity.DrugProduct;
 import gist.pilldispenser.drug.api.drugSummaryAPI.domain.entity.DrugSummary;
-import gist.pilldispenser.drug.drugInfo.domain.DrugInfoMapper;
 import gist.pilldispenser.drug.drugInfo.domain.dto.*;
-import gist.pilldispenser.drug.drugInfo.domain.entity.DrugShape;
 import gist.pilldispenser.drug.drugInfo.repository.DrugInfoRepository;
 import gist.pilldispenser.drug.drugInfo.domain.entity.DrugInfo;
 import gist.pilldispenser.drug.drugInfo.repository.DrugInfoRepositoryCustomImpl;
@@ -17,12 +15,9 @@ import gist.pilldispenser.drug.userDrugInfo.domain.entity.CartridgeSlot;
 import gist.pilldispenser.drug.userDrugInfo.domain.entity.UserDrugInfo;
 import gist.pilldispenser.drug.userDrugInfo.repository.CartridgeSlotRepository;
 import gist.pilldispenser.drug.userDrugInfo.repository.UserDrugInfoRepository;
-import gist.pilldispenser.users.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Objects;
 
 import static gist.pilldispenser.drug.drugInfo.domain.DrugInfoMapper.toDrugInfo;
 

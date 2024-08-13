@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Tag(name = "Routine API", description = "사용자의 약물 복용 루틴을 관리하는 API")
 @RestController
 @RequestMapping("/api/routines")
@@ -45,26 +47,18 @@ public class RoutineController {
     public ResponseEntity<MultipleRoutineResponse> createRoutine(
             @RequestBody MultipleRoutineRequestDto routineRequestDtos,
             @Parameter(hidden = true) @AuthenticationPrincipal UsersDetails userDetails) {
-
-        Long userId = userDetails.getId();
         // 루틴 생성
-        List<Routine> routines = routineService.createRoutine(userId, routineRequestDtos.getRoutines());
+        List<Routine> routines = routineService.createRoutine(userDetails.getId(), routineRequestDtos.getRoutines());
         List<RoutineResponse> responses = new ArrayList<>();
         // 알림 등록
         for (Routine routine : routines) {
             NotificationTask task = new NotificationTask(notificationHelper, routine);
             String taskKey = "schedule-" + routine.getId();
+            log.info(taskKey);
+            log.info(notificationHelper.getCronExpression(routine));
             customScheduleService.scheduleNotification(taskKey, task, notificationHelper.getCronExpression(routine));
 
-            RoutineResponse routineResponse = RoutineResponse.builder()
-                    .routineId(routine.getId())
-                    .day(routine.getDays().getDayName())
-                    .dailyDosage(String.valueOf(routine.getDailyDosage()))
-                    .dosagePerTake(String.valueOf(routine.getDosagePerTake()))
-                    .time(String.valueOf(routine.getTime()))
-                    .build();
-
-            responses.add(routineResponse);
+            responses.add(Routine.toRoutineResponse(routine));
         }
 
         return ResponseEntity.ok(new MultipleRoutineResponse(responses));

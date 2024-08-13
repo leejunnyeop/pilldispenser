@@ -1,5 +1,6 @@
 package gist.pilldispenser.drug.userDrugInfo.domain.entity;
 
+import gist.pilldispenser.drug.userDrugInfo.domain.dto.RoutineResponse;
 import gist.pilldispenser.drug.userDrugInfo.domain.enums.DayType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,10 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.DayOfWeek;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -42,18 +40,28 @@ public class Routine {
     @Enumerated(EnumType.STRING)
     private DayType days;
 
-    public void updateRoutine(LocalTime time, int dosagePerTake, int dailyDosage, Boolean isActive) {
-        if (time != null) {
-            this.time = time;
-        }
-        if (dosagePerTake != 0) {
-            this.dosagePerTake = dosagePerTake;
-        }
-        if (dailyDosage != 0) {
-            this.dailyDosage = dailyDosage;
-        }
-        if (isActive != null) {
-            this.isActive = isActive;
-        }
+//    public void updateRoutine(LocalTime time, int dosagePerTake, int dailyDosage, Boolean isActive) {
+//        if (time != null) {
+//            this.time = time;
+//        }
+//        if (dosagePerTake != 0) {
+//            this.dosagePerTake = dosagePerTake;
+//        }
+//        if (dailyDosage != 0) {
+//            this.dailyDosage = dailyDosage;
+//        }
+//        if (isActive != null) {
+//            this.isActive = isActive;
+//        }
+//    }
+
+    public static RoutineResponse toRoutineResponse(Routine routine){
+        return RoutineResponse.builder()
+                .routineId(routine.getId())
+                .day(routine.getDays().getDayName())
+                .dailyDosage(String.valueOf(routine.getDailyDosage()))
+                .dosagePerTake(String.valueOf(routine.getDosagePerTake()))
+                .time(String.valueOf(routine.getTime()))
+                .build();
     }
 }

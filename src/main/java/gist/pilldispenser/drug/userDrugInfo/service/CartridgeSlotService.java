@@ -1,16 +1,19 @@
 package gist.pilldispenser.drug.userDrugInfo.service;
 
+import gist.pilldispenser.common.security.UsersDetails;
 import gist.pilldispenser.drug.api.drugIdentificationAPI.domain.entity.DrugIdentification;
-import gist.pilldispenser.drug.drugInfo.repository.DrugInfoRepository;
 import gist.pilldispenser.drug.medication.domain.entity.FullMedicationInfo;
 import gist.pilldispenser.drug.medication.repository.FullMedicationInfoRepository;
 import gist.pilldispenser.drug.userDrugInfo.domain.dto.CartridgeSlotResponseDto;
 import gist.pilldispenser.drug.userDrugInfo.domain.entity.CartridgeSlot;
+import gist.pilldispenser.drug.userDrugInfo.domain.entity.UserDrugInfo;
 import gist.pilldispenser.drug.userDrugInfo.repository.CartridgeSlotRepository;
 import gist.pilldispenser.drug.userDrugInfo.repository.UserDrugInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,10 +22,6 @@ public class CartridgeSlotService {
     private final CartridgeSlotRepository cartridgeSlotRepository;
     private final UserDrugInfoRepository userDrugInfoRepository;
     private final FullMedicationInfoRepository fullMedicationInfoRepository;
-    private final DrugInfoRepository drugInfoRepository;
-
-
-    // 약물 정보를 조회하고, 가장 낮은 번호의 비어있는 슬롯에 할당 후 저장하는 메서드
 
 // 약물 정보를 조회하고, 가장 낮은 번호의 비어있는 슬롯에 할당 후 저장하는 메서드
 //    @Transactional
@@ -131,6 +130,25 @@ public class CartridgeSlotService {
             } else {
                 return "S";
             }
+        }
+    }
+
+    public void resetCartridgeSlots(UsersDetails usersDetails) {
+        List<CartridgeSlot> cartridges = cartridgeSlotRepository.findAllByUserId(usersDetails.getId());
+
+        for (CartridgeSlot cartridgeSlot : cartridges) {
+            Long userDrugInfoId = cartridgeSlot.getUserDrugInfo().getId();
+
+            CartridgeSlot updatedCartridge = cartridgeSlot.toBuilder()
+                    .isOccupied(false)
+                    .userDrugInfo(null)
+                    .size(null)
+                    .build();
+
+            cartridgeSlotRepository.save(updatedCartridge);
+            UserDrugInfo userDrugInfo = userDrugInfoRepository.findById(userDrugInfoId)
+                    .orElseThrow(() -> new RuntimeException("no user drug info"));
+            userDrugInfoRepository.delete(userDrugInfo);
         }
     }
 }
