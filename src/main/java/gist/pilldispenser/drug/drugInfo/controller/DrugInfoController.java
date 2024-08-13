@@ -32,8 +32,14 @@ public class DrugInfoController {
     public ResponseEntity<DrugRegistrationResponse> registerDrugInfoManually(
             @RequestBody DrugManualInfoRequest drugInfoRequest,
             @AuthenticationPrincipal UsersDetails userDetails) {
-        DrugRegistrationResponse response = drugInfoService.createDrugInfoManually(userDetails, drugInfoRequest);
-        return ResponseEntity.ok(response);
+
+        String drugShape = drugInfoRequest.getShape();
+        if (drugShape.equals("원형") || drugShape.equals("타원형")) {
+            DrugRegistrationResponse response = drugInfoService.createDrugInfoManually(userDetails, drugInfoRequest);
+            return ResponseEntity.ok(response);
+        } else {
+            throw new RuntimeException("타입이 일치하지 않습니다.");
+        }
     }
 
     @PostMapping("/register/auto")

@@ -1,7 +1,6 @@
 package gist.pilldispenser.drug.drugInfo.domain;
 
 import gist.pilldispenser.drug.drugInfo.domain.dto.DrugManualInfoRequest;
-import gist.pilldispenser.drug.drugInfo.domain.dto.DrugRegistrationResponse;
 import gist.pilldispenser.drug.drugInfo.domain.entity.DrugInfo;
 import gist.pilldispenser.drug.drugInfo.domain.entity.DrugShape;
 

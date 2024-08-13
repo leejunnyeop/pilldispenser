@@ -31,7 +31,6 @@ import static gist.pilldispenser.drug.drugInfo.domain.DrugInfoMapper.toDrugInfo;
 public class DrugInfoServiceImpl implements DrugInfoService {
 
     private final DrugInfoRepository drugInfoRepository;
-    private final UsersRepository usersRepository;
     private final UserDrugInfoRepository userDrugInfoRepository;
     private final FullMedicationInfoRepository fullMedicationInfoRepository;
     private final CartridgeSlotRepository cartridgeSlotRepository;
@@ -40,13 +39,7 @@ public class DrugInfoServiceImpl implements DrugInfoService {
     @Transactional
     public DrugRegistrationResponse createDrugInfoManually(UsersDetails usersDetails,
                                                            DrugManualInfoRequest request) {
-        DrugInfo drugInfo;
-
-        if (request.getShortAxis().equals(request.getLongAxis())) {
-            drugInfo = toDrugInfo(request);
-        } else {
-            throw new IllegalArgumentException("알 수 없는 약물 정보 요청 타입입니다.");
-        }
+        DrugInfo drugInfo = toDrugInfo(request);
 
         UserDrugInfo userDrugInfo = UserDrugInfo.create(usersDetails.getUsers(), drugInfo, null);
         CartridgeSlot cartridgeSlot = cartridgeSlotRepository.findById(request.getSlotId()).orElseThrow(
