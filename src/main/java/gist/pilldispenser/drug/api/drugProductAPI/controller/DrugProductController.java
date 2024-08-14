@@ -2,6 +2,7 @@ package gist.pilldispenser.drug.api.drugProductAPI.controller;
 
 
 import gist.pilldispenser.drug.api.drugProductAPI.service.DrugProductService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Tag(name = "OPEN API - Drug Product", description = "OpenApi에서 약물 크기 정보를 가져옵니다.")
 @RestController
 @RequestMapping
 @RequiredArgsConstructor

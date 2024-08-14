@@ -4,6 +4,7 @@ import gist.pilldispenser.common.security.UsersDetails;
 import gist.pilldispenser.drug.userDrugInfo.service.UserDrugRoutineService;
 import gist.pilldispenser.drug.userDrugInfo.domain.dto.UserDrugRoutineResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "User Medications", description = "사용자 복용 중인 약물 관리 API")
+@Tag(name = "User Medications API", description = "사용자 복용 중인 약물 관리 API")
 @RestController
 @RequestMapping("/api/user-drugs")
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class UserDrugRoutineController {
 
     private final UserDrugRoutineService userDrugRoutineService;
 
-    @Operation(summary = "모든 복용 중인 약 조회", description = "현재 로그인된 사용자의 모든 복용 중인 약과 관련된 루틴 정보를 조회합니다.")
+    @Operation(summary = "모든 복용 중인 약 조회", description = "현재 로그인된 사용자의 복용 중인 약을 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "복용 중인 약물 정보가 성공적으로 조회되었습니다."),
             @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자입니다."),
@@ -33,7 +34,7 @@ public class UserDrugRoutineController {
     })
     @GetMapping()
     public ResponseEntity<List<UserDrugRoutineResponse>> getUserDrugRoutines(
-            @AuthenticationPrincipal UsersDetails usersDetails) {
+            @Parameter(description = "사용자 정보")@AuthenticationPrincipal UsersDetails usersDetails) {
         Long userId = usersDetails.getId();
         List<UserDrugRoutineResponse> routines = userDrugRoutineService.getUserDrugRoutines(userId);
         return ResponseEntity.ok(routines);

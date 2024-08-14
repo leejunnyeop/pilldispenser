@@ -38,7 +38,7 @@ public class RoutineController {
     private final NotificationHelper notificationHelper;
     private final CustomScheduleService customScheduleService;
 
-    @Operation(summary = "루틴 생성", description = "사용자의 약물 복용 루틴을 생성합니다.")
+    @Operation(summary = "정기 복용 루틴 생성", description = "사용자의 약물 복용 루틴을 생성합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "루틴이 성공적으로 저장되었습니다."),
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
@@ -64,7 +64,7 @@ public class RoutineController {
         return ResponseEntity.ok(new MultipleRoutineResponse(responses));
     }
 
-    @Operation(summary = "루틴 삭제", description = "루틴 ID로 특정 루틴을 삭제합니다.")
+    @Operation(summary = "루틴 삭제", description = "루틴 ID(복수 가능)로 특정 루틴을 삭제합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "루틴이 성공적으로 삭제되었습니다."),
             @ApiResponse(responseCode = "404", description = "루틴을 찾을 수 없습니다.")
@@ -72,7 +72,8 @@ public class RoutineController {
     @DeleteMapping("/{routineId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
-    public void deleteRoutine(@PathVariable(name = "routineId") String routineIds) {
+    public void deleteRoutine(
+            @Parameter(description = "루틴 id") @PathVariable(name = "routineId") String routineIds) {
         String[] ids = routineIds.split(",");
         for (String id : ids) {
             Routine routine = routineRepository.findById(Long.valueOf(id))
@@ -83,9 +84,14 @@ public class RoutineController {
         }
     }
 
+    @Operation(summary = "복용약에 등록된 사용자의 루틴 조회", description = "사용자가 특정 약에 등록한 정기 복용 루틴을 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "루틴이 성공적으로 조회되었습니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
+    })
     @GetMapping("/get/{drugId}")
     public ResponseEntity<MultipleRoutineResponse> getRoutines(
-            @PathVariable(name = "drugId") Long userDrugInfoId
+            @Parameter(description = "검색할 약 id")@PathVariable(name = "drugId") Long userDrugInfoId
     ){
         List<RoutineResponse> responses = routineService.getRoutinesForUserDrugInfo(userDrugInfoId);
         MultipleRoutineResponse response = new MultipleRoutineResponse(responses);

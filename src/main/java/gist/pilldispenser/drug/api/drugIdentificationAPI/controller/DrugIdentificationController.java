@@ -10,15 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-@Tag(name = "DrugIdentification", description = "약물 식별 정보를 관리하는 API를 제공합니다.")
+@Tag(name = "OPEN API - Drug Identification", description = "OpenApi에서 약물 식별 정보를 가져옵니다.")
 @RestController
 @RequestMapping("/api/drug-identification")
 @RequiredArgsConstructor
 public class DrugIdentificationController {
 
     private final DrugIdentificationService drugIdentificationService;
-
-
 
     /**
      * API를 통해 의약품 식별 정보를 가져와서 저장합니다.

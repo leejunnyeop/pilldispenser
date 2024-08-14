@@ -8,6 +8,9 @@ import gist.pilldispenser.drug.userDrugInfo.domain.dto.CartridgeSlotResponseDto;
 import gist.pilldispenser.drug.userDrugInfo.service.CartridgeSlotService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Cartridge Slot API", description = "디스펜서 카트리지 관리 API")
 @Slf4j
 @RestController
 @RequestMapping("/cartridge-slots")
@@ -33,7 +37,7 @@ public class CartridgeSlotController {
     }
 
     //
-    @Operation(summary = "DB에서 알약 일련번호를 조회하여 디스크 사이즈를 반환", description = "해당 알약에 맞는 디스크 사이즈를 찾아 반환합니다.")
+    @Operation(summary = "검색한 약에 필요한 디스크 사이즈를 반환", description = "해당 알약에 맞는 디스크 사이즈를 찾아 반환합니다.")
     @GetMapping("/disk/item-seq")
     public ResponseEntity<CartridgeDiskSizeResponse> assignDiskByItemSeq(
             @Parameter(description = "유저 ID") @AuthenticationPrincipal UsersDetails usersDetails,
@@ -66,6 +70,12 @@ public class CartridgeSlotController {
         return new ResponseEntity<>(availableSlot, HttpStatus.OK);
     }
 
+    @Operation(summary = "복용약 삭제", description = "등록된 복용약 정보를 전부 삭제합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공적으로 리셋되었습니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
+            @ApiResponse(responseCode = "500", description = "삭제에 실패했습니다.")
+    })
     @DeleteMapping("/reset")
     public ResponseEntity<String> resetCartridge(
             @Parameter(description = "사용자 정보") @AuthenticationPrincipal UsersDetails usersDetails){

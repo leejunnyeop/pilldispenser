@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "DrugInfo", description = "약 정보 관리 API")
+@Tag(name = "Drug Info API", description = "복용약 관리 API")
 @RestController
 @RequestMapping("/api/drug-info")
 @RequiredArgsConstructor
@@ -42,6 +42,12 @@ public class DrugInfoController {
         }
     }
 
+    @Operation(summary = "검색 후 약 정보 등록  ", description = "사용자가 검색을 통해 약 정보를 등록합니다. ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "복용 약 정보가 성공적으로 저장되었습니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
+            @ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.")
+    })
     @PostMapping("/register/auto")
     public ResponseEntity<DrugRegistrationResponse> registerDrugInfoAutomatically(
             @RequestBody DrugAutoRegistrationRequest request,
