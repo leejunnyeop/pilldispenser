@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "DrugSummary Controller", description = "약물 상세 정보를 검색하는 API를 제공합니다.")
+@Tag(name = "OPEN API - Drug Summary", description = "OpenApi에서 약물 혼용불가성분 정보를 가져옵니다.")
 @RestController
 @RequiredArgsConstructor
 public class DrugSummaryController {
